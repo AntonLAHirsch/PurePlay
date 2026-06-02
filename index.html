@@ -81,11 +81,6 @@
   .section-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 16px 0 10px; font-weight: 300; }
 
   /* COURSE SEARCH */
-  .state-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-  .state-btn { background: var(--rough); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, border-color 0.2s, color 0.2s; }
-  .state-btn:hover { background: var(--rough-hover); }
-  .state-btn.active { border-color: var(--flag); color: var(--flag); background: rgba(200,168,75,0.1); }
-
   .search-wrap { position: relative; margin-bottom: 10px; }
   .search-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); color: var(--white); font-size: 15px; padding: 14px 14px 14px 44px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
   .search-input:focus { border-color: var(--flag); }
@@ -93,16 +88,19 @@
   .search-icon-wrap { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; pointer-events: none; }
   .search-status { font-size: 13px; color: var(--muted); padding: 10px 4px; }
 
-  /* Course result — just name/meta, tap to select, no tees yet */
   .course-result { background: var(--rough); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: background 0.2s, border-color 0.2s; }
   .course-result:hover { background: var(--rough-hover); border-color: rgba(200,168,75,0.4); }
   .course-result.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
   .course-result-info { flex: 1; }
   .course-result-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
   .course-result-meta { font-size: 12px; color: var(--muted); }
-  .course-result-arrow { color: var(--muted); font-size: 18px; }
+  .course-result-arrow { color: var(--muted); font-size: 20px; line-height: 1; }
 
-  /* Selected course bar — shows above tee picker with a Change link */
+  /* ADD COURSE button */
+  .add-course-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: none; border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--radius); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; margin-top: 8px; transition: border-color 0.2s, color 0.2s; }
+  .add-course-btn:hover { border-color: var(--flag); color: var(--flag); }
+
+  /* COURSE CONFIRMED */
   .course-confirmed { background: rgba(200,168,75,0.08); border: 1px solid rgba(200,168,75,0.4); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
   .course-confirmed-info { flex: 1; }
   .course-confirmed-name { font-size: 15px; font-weight: 500; }
@@ -110,11 +108,11 @@
   .course-change-btn { background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: var(--muted); font-size: 12px; padding: 5px 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: border-color 0.2s, color 0.2s; }
   .course-change-btn:hover { border-color: var(--flag); color: var(--flag); }
 
-  /* Tee cards — full width, deliberate tap target */
+  /* TEE CARDS */
   .tee-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; transition: background 0.2s, border-color 0.2s; }
   .tee-card:hover { background: var(--rough-hover); border-color: rgba(200,168,75,0.4); }
   .tee-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
-  .tee-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+  .tee-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); }
   .tee-card-info { flex: 1; }
   .tee-card-name { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
   .tee-card-stats { font-size: 12px; color: var(--muted); }
@@ -122,6 +120,21 @@
   .tee-card.sel .tee-card-check { background: var(--flag); border-color: var(--flag); }
   .tee-chk { display: none; }
   .tee-card.sel .tee-chk { display: block; }
+
+  /* ADD COURSE FORM */
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 11px; color: var(--muted); letter-spacing: 1.2px; text-transform: uppercase; font-weight: 300; margin-bottom: 6px; display: block; }
+  .form-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: 12px; color: var(--white); font-size: 15px; padding: 13px 14px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .form-input:focus { border-color: var(--flag); }
+  .form-input::placeholder { color: var(--muted); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .form-hint { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 300; }
+
+  .tee-color-row { display: flex; gap: 10px; margin-top: 6px; }
+  .tee-color-opt { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: border-color 0.15s; flex-shrink: 0; }
+  .tee-color-opt.active { border-color: var(--flag); }
+  .tee-color-opt[data-color="#ffffff"] { border: 3px solid rgba(255,255,255,0.3); }
+  .tee-color-opt[data-color="#ffffff"].active { border-color: var(--flag); }
 
   /* PLAYERS */
   .player-row { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
@@ -231,18 +244,13 @@
   <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
   <div class="step-lbl">Step 2 of 5 — Choose course</div>
   <div class="body">
-    <div class="state-filters">
-      <button class="state-btn active" onclick="setFilter('all',this)">All</button>
-      <button class="state-btn" onclick="setFilter('CA',this)">🐻 CA</button>
-      <button class="state-btn" onclick="setFilter('AZ',this)">🌵 AZ</button>
-      <button class="state-btn" onclick="setFilter('IL',this)">🦅 IL</button>
-    </div>
     <div class="search-wrap">
       <span class="search-icon-wrap">&#128269;</span>
       <input class="search-input" type="text" id="csearch" placeholder="Search courses..." oninput="onSearch(this.value)"/>
     </div>
     <div id="search-status" class="search-status" style="display:none;"></div>
     <div id="cresults"></div>
+    <button class="add-course-btn" onclick="goTo('add-course')">+ Course not listed? Add it</button>
   </div>
   <div class="bottom-nav">
     <button class="nav-back" onclick="goTo('game')">Back</button>
@@ -250,7 +258,73 @@
   </div>
 </div>
 
-<!-- STEP 3: TEE SELECTION -->
+<!-- ADD COURSE -->
+<div id="s-add-course" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Add course</div></header>
+  <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="step-lbl">Add course to shared database</div>
+  <div class="body">
+    <div class="form-group">
+      <label class="form-label">Course name *</label>
+      <input class="form-input" type="text" id="ac-name" placeholder="e.g. Pebble Beach Golf Links"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">City, State</label>
+      <input class="form-input" type="text" id="ac-city" placeholder="e.g. Pebble Beach, CA"/>
+      <div class="form-hint">Include state abbreviation so it appears in searches</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Total par</label>
+        <input class="form-input" type="number" id="ac-par" placeholder="72" min="27" max="73"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Holes</label>
+        <select class="form-input" id="ac-holes">
+          <option value="18">18 holes</option>
+          <option value="9">9 holes</option>
+        </select>
+      </div>
+    </div>
+    <div class="section-lbl" style="margin-top:4px;">Tee details</div>
+    <div class="form-group">
+      <label class="form-label">Tee name</label>
+      <input class="form-input" type="text" id="ac-tee" placeholder="e.g. Blue, White, Gold..."/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tee color</label>
+      <div class="tee-color-row" id="tee-color-row">
+        <div class="tee-color-opt active" data-color="#222222" style="background:#222222;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#3366cc" style="background:#3366cc;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#ffffff" style="background:#ffffff;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#cc3333" style="background:#cc3333;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#c8a84b" style="background:#c8a84b;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#4a9a4a" style="background:#4a9a4a;" onclick="selTeeColor(this)"></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Course rating</label>
+        <input class="form-input" type="number" id="ac-rating" placeholder="72.0" step="0.1" min="60" max="85"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Slope</label>
+        <input class="form-input" type="number" id="ac-slope" placeholder="113" min="55" max="155"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Yardage</label>
+      <input class="form-input" type="number" id="ac-yards" placeholder="6500" min="1000" max="9000"/>
+    </div>
+    <div id="ac-error" style="display:none;font-size:13px;color:#e05252;padding:8px 0;"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" onclick="goTo('course')">Back</button>
+    <button class="nav-next active-cta" id="btn-ac" onclick="submitCourse()">Save & select →</button>
+  </div>
+</div>
+
+<!-- STEP 3: TEES -->
 <div id="s-tees" class="screen">
   <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">New round</div></header>
   <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div></div>
@@ -309,8 +383,8 @@
 const WORKER_URL = 'https://purestrike-api.antonhirsch17.workers.dev';
 const GK_CACHE = {};
 const G = { game: null, fmt: '1v1', course: null, tee: null, players: [] };
-let stateFilter = 'all';
 let searchTimer = null;
+let selectedTeeColor = '#222222';
 
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -337,14 +411,6 @@ function selFmt(f, el) {
 
 // ── COURSE SEARCH ─────────────────────────────────────────────────
 
-function setFilter(state, el) {
-  stateFilter = state;
-  document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  const q = document.getElementById('csearch').value.trim();
-  if (q.length >= 2) doSearch(q);
-}
-
 function onSearch(val) {
   clearTimeout(searchTimer);
   if (val.trim().length < 2) { document.getElementById('cresults').innerHTML = ''; hideStatus(); return; }
@@ -353,8 +419,7 @@ function onSearch(val) {
 }
 
 async function doSearch(q) {
-  const key = q + '|' + stateFilter;
-  if (GK_CACHE[key]) { renderResults(GK_CACHE[key]); return; }
+  if (GK_CACHE[q]) { renderResults(GK_CACHE[q]); return; }
   showStatus('Searching...');
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
@@ -362,9 +427,8 @@ async function doSearch(q) {
     const res = await fetch(`${WORKER_URL}/course?q=${encodeURIComponent(q)}`, { signal: controller.signal });
     clearTimeout(timeout);
     const data = await res.json();
-    let results = data.results || [];
-    if (stateFilter !== 'all') results = results.filter(c => (c.state || '').toUpperCase() === stateFilter);
-    GK_CACHE[key] = results;
+    const results = data.results || [];
+    GK_CACHE[q] = results;
     renderResults(results);
   } catch(e) {
     clearTimeout(timeout);
@@ -374,14 +438,14 @@ async function doSearch(q) {
 
 function renderResults(courses) {
   const el = document.getElementById('cresults');
-  if (!courses || courses.length === 0) { showStatus('No courses found.'); el.innerHTML = ''; return; }
+  if (!courses || courses.length === 0) { showStatus('No courses found — try a different search or add it below.'); el.innerHTML = ''; return; }
   hideStatus();
   courses.forEach((c, i) => { GK_CACHE['r_' + i] = c; });
   el.innerHTML = courses.map((c, i) => {
     const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : (c.tees?.[0]?.par || 72);
     const meta = [c.city, c.state].filter(Boolean).join(', ');
-    const selected = G.course && G.course.name === c.name && G.course.city === c.city;
-    return `<div class="course-result${selected ? ' sel' : ''}" onclick="pickCourse(${i})">
+    const sel = G.course && G.course.name === c.name;
+    return `<div class="course-result${sel ? ' sel' : ''}" onclick="pickCourse(${i})">
       <div class="course-result-info">
         <div class="course-result-name">${c.name}</div>
         <div class="course-result-meta">${meta}${meta ? ' · ' : ''}Par ${par} · ${c.holes?.length || 18} holes</div>
@@ -394,12 +458,8 @@ function renderResults(courses) {
 function pickCourse(i) {
   const c = GK_CACHE['r_' + i];
   if (!c) return;
-  G.course = c;
-  G.tee = null; // reset tee whenever course changes
-  // Highlight selected in list
-  document.querySelectorAll('.course-result').forEach((el, idx) => {
-    el.classList.toggle('sel', idx === i);
-  });
+  G.course = c; G.tee = null;
+  document.querySelectorAll('.course-result').forEach((el, idx) => el.classList.toggle('sel', idx === i));
   const btn = document.getElementById('btn-c');
   btn.disabled = false; btn.classList.add('active-cta');
 }
@@ -411,6 +471,80 @@ function changeCourse() {
   goTo('course');
 }
 
+function showStatus(m) { const e = document.getElementById('search-status'); e.style.display = 'block'; e.textContent = m; }
+function hideStatus() { document.getElementById('search-status').style.display = 'none'; }
+
+// ── ADD COURSE ────────────────────────────────────────────────────
+
+function selTeeColor(el) {
+  document.querySelectorAll('.tee-color-opt').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  selectedTeeColor = el.dataset.color;
+}
+
+function buildDefaultHoles(count, totalPar) {
+  const par5s = count === 18 ? 2 : 1;
+  const par3s = count === 18 ? 4 : 2;
+  const par4s = count - par5s - par3s;
+  const pars = [...Array(par5s).fill(5), ...Array(par4s).fill(4), ...Array(par3s).fill(3)];
+  const arranged = [pars[0],pars[1],pars[2],pars[3],pars[4],pars[5],pars[6],pars[7],pars[8],
+    ...(count > 9 ? pars.slice(9) : [])];
+  return Array.from({ length: count }, (_, i) => ({ par: arranged[i] || 4, yards: [0], hcp: i + 1 }));
+}
+
+function extractState(city) {
+  const m = (city || '').match(/,\s*([A-Z]{2})$/);
+  return m ? m[1] : '';
+}
+
+async function submitCourse() {
+  const name = document.getElementById('ac-name').value.trim();
+  const city = document.getElementById('ac-city').value.trim();
+  const par = parseInt(document.getElementById('ac-par').value) || 72;
+  const holes = parseInt(document.getElementById('ac-holes').value) || 18;
+  const tee = document.getElementById('ac-tee').value.trim() || 'Blue';
+  const rating = parseFloat(document.getElementById('ac-rating').value) || 72.0;
+  const slope = parseInt(document.getElementById('ac-slope').value) || 113;
+  const yards = parseInt(document.getElementById('ac-yards').value) || 6500;
+  const errEl = document.getElementById('ac-error');
+
+  if (!name) { errEl.style.display = 'block'; errEl.textContent = 'Course name is required.'; return; }
+  errEl.style.display = 'none';
+
+  const btn = document.getElementById('btn-ac');
+  btn.textContent = 'Saving...'; btn.disabled = true;
+
+  const course = {
+    name, city,
+    state: extractState(city),
+    region: 'Community',
+    type: holes <= 9 ? 'executive' : 'regulation',
+    tees: [{ name: tee, color: selectedTeeColor, yards, rating, slope }],
+    holes: buildDefaultHoles(holes, par),
+    holePars: buildDefaultHoles(holes, par).map(h => h.par)
+  };
+
+  try {
+    const res = await fetch(`${WORKER_URL}/course`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(course)
+    });
+    const data = await res.json();
+    if (data.id) course.id = data.id;
+  } catch(e) {
+    course.id = 'local_' + Date.now();
+  }
+
+  btn.textContent = 'Save & select →'; btn.disabled = false;
+
+  // Select this course and go straight to tees
+  G.course = course; G.tee = null;
+  const idx = Object.keys(GK_CACHE).filter(k => k.startsWith('r_')).length;
+  GK_CACHE['r_' + idx] = course;
+  goTo('tees');
+}
+
 // ── TEE SCREEN ────────────────────────────────────────────────────
 
 function buildTeeScreen() {
@@ -419,30 +553,30 @@ function buildTeeScreen() {
   const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : 72;
   const meta = [c.city, c.state].filter(Boolean).join(', ');
   document.getElementById('cc-name').textContent = c.name;
-  document.getElementById('cc-meta').textContent = meta + (meta ? ' · ' : '') + 'Par ' + par;
+  document.getElementById('cc-meta').textContent = [meta, 'Par ' + par].filter(Boolean).join(' · ');
 
   const tees = c.tees || [];
   const list = document.getElementById('tee-list');
 
   if (tees.length === 0) {
-    // No tee data — auto-confirm and skip
     G.tee = { name: 'Standard', rating: null, slope: null };
-    list.innerHTML = '<div style="font-size:14px;color:var(--muted);padding:10px 0;">No tee data available for this course — standard tees will be used.</div>';
+    list.innerHTML = '<div style="font-size:14px;color:var(--muted);padding:10px 0;">No tee data available — standard tees will be used.</div>';
     const btn = document.getElementById('btn-t');
     btn.disabled = false; btn.classList.add('active-cta');
     return;
   }
 
   list.innerHTML = tees.map((t, i) => {
-    const selected = G.tee && G.tee.name === t.name;
-    return `<div class="tee-card${selected ? ' sel' : ''}" id="tee-${i}" onclick="selTee(${i})">
-      <div class="tee-dot" style="background:${t.color || '#888888'}"></div>
+    const sel = G.tee && G.tee.name === t.name;
+    const stats = [
+      t.yards ? t.yards.toLocaleString() + ' yards' : null,
+      t.rating && t.slope ? 'Rating ' + t.rating + ' / Slope ' + t.slope : null
+    ].filter(Boolean).join(' · ');
+    return `<div class="tee-card${sel ? ' sel' : ''}" onclick="selTee(${i})">
+      <div class="tee-dot" style="background:${t.color || '#888'};${t.color === '#ffffff' ? 'border-color:rgba(255,255,255,0.5);' : ''}"></div>
       <div class="tee-card-info">
         <div class="tee-card-name">${t.name} tees</div>
-        <div class="tee-card-stats">${[
-          t.yards ? t.yards.toLocaleString() + ' yards' : null,
-          t.rating && t.slope ? 'Rating ' + t.rating + ' / Slope ' + t.slope : null
-        ].filter(Boolean).join(' · ')}</div>
+        <div class="tee-card-stats">${stats || 'No yardage data'}</div>
       </div>
       <div class="tee-card-check"><svg class="tee-chk" width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>`;
@@ -450,15 +584,11 @@ function buildTeeScreen() {
 }
 
 function selTee(i) {
-  const tees = G.course?.tees || [];
-  G.tee = tees[i];
+  G.tee = G.course?.tees?.[i];
   document.querySelectorAll('.tee-card').forEach((el, idx) => el.classList.toggle('sel', idx === i));
   const btn = document.getElementById('btn-t');
   btn.disabled = false; btn.classList.add('active-cta');
 }
-
-function showStatus(m) { const e = document.getElementById('search-status'); e.style.display = 'block'; e.textContent = m; }
-function hideStatus() { document.getElementById('search-status').style.display = 'none'; }
 
 // ── PLAYERS ───────────────────────────────────────────────────────
 
