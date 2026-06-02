@@ -565,7 +565,7 @@
         <div><div class="rules-label">Tie rule</div><div class="rules-sub">When hole is halved</div></div>
         <div class="rules-opts">
           <button class="rules-opt sel" id="rule-tie-void" onclick="setRule('tie','void',this)">Void</button>
-          <button class="rules-opt" id="rule-tie-split" onclick="setRule('tie','split',this)">Split</button>
+          <button class="rules-opt" id="rule-tie-push" onclick="setRule('tie','push',this)">Push</button>
         </div>
       </div>
       <!-- 4-player format — shown only when 4 players -->
@@ -1242,10 +1242,14 @@ function renderScoringScreen(){
   document.getElementById('sc-hcp').textContent=hole.hcp||'—';
 
   // Carry display
+  // carriedSkins = skins already on the line from previous pushes
+  // current hole adds 1 more, so total at stake = carriedSkins+1
   const carry=RS.carriedSkins;
-  document.getElementById('sc-carry-stat').textContent=carry>0?carry:'—';
+  const atStake=carry+1;
+  document.getElementById('sc-carry-stat').textContent=carry>0?atStake:'1';
   const ballsEl=document.getElementById('sc-carry-balls');
-  ballsEl.innerHTML=carry>0?Array(carry).fill('<div class="carry-ball"></div>').join(''):'';
+  // Show gold balls only when skins are being carried (atStake > 1)
+  ballsEl.innerHTML=atStake>1?Array(atStake).fill('<div class="carry-ball"></div>').join(''):'';
 
   // Back button — disable on hole 1
   document.getElementById('sc-back-btn').style.visibility=h===0?'hidden':'visible';
@@ -1363,22 +1367,22 @@ function submitHole(){
   // Apply skin based on tie rule
   if(winner.type==='tie'){
     if(G_RULES.tie==='void'){
-      RS.carriedSkins=0; // void — skins lost
+      // Void: tied hole cancels the skin entirely — reset carry to 0
+      RS.carriedSkins=0;
       RS.holeResults.push({type:'void',skinValue,hole:h});
     } else {
-      // split — award fraction (track as 0.5 per player in tie)
-      RS.carriedSkins=0;
-      RS.holeResults.push({type:'split',skinValue,hole:h});
+      // Push: tied hole carries ALL skins (current + previously carried) to next hole
+      // skinValue already includes carried skins, so next hole is worth skinValue+1
+      RS.carriedSkins=skinValue; // accumulate — next hole worth skinValue+1
+      RS.holeResults.push({type:'carry',skinValue,hole:h});
     }
   } else {
-    // Award skins — each winning player gets +skinValue
+    // Clear winner — award all carried+current skins to winner(s)
     const winnerIdxs=winner.type==='team'?winner.team:[winner.idx];
     winnerIdxs.forEach(i=>RS.skins[i]+=skinValue);
-    RS.carriedSkins=0;
+    RS.carriedSkins=0; // reset carry after award
     RS.holeResults.push({type:'win',winner,skinValue,hole:h});
   }
-
-  // Carry tracker already set above in tie handling
 
   showHoleResult(h, netScores, winner, skinValue);
 }
@@ -1407,14 +1411,12 @@ function showHoleResult(h, netScores, winner, skinValue){
   // Outcome card
   const outcomeEl=document.getElementById('hr-outcome');
   if(winner.type==='tie'&&G_RULES.tie==='void'){
-    outcomeEl.className='hr-outcome'; 
-    outcomeEl.innerHTML=`<div class="hr-outcome-title">Hole halved — skin voided</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} lost</div>`;
-  } else if(winner.type==='tie'){
-    outcomeEl.className='hr-outcome carry';
-    outcomeEl.innerHTML=`<div class="hr-outcome-title">⬡ ${skinValue} skin${skinValue>1?'s':''} carried to hole ${h+2}</div><div class="hr-outcome-sub">Hole halved — carry continues</div>`;
-  } else if(winner.type==='split'){
     outcomeEl.className='hr-outcome';
-    outcomeEl.innerHTML=`<div class="hr-outcome-title">Hole split</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} divided</div>`;
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">Hole voided</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} cancelled — hole tied</div>`;
+  } else if(winner.type==='tie'){
+    const nextTotal=skinValue+1;
+    outcomeEl.className='hr-outcome carry';
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">⬡ Pushed — ${nextTotal} skin${nextTotal>1?'s':''} on hole ${h+2}</div><div class="hr-outcome-sub">Hole tied · skin carries forward</div>`;
   } else if(winner.type==='team'){
     const names=winner.team.map(i=>G.players[i].name).join(' & ');
     outcomeEl.className='hr-outcome win';
@@ -1478,7 +1480,7 @@ function scoringBack(){
         const idxs=prev.winner.type==='team'?prev.winner.team:[prev.winner.idx];
         idxs.forEach(i=>RS.skins[i]-=1);
       }
-      RS.carriedSkins=prev.type==='carry'?prev.skinValue-1:0;
+      RS.carriedSkins=prev.type==='carry'?(prev.skinValue-1):0;
     }
     RS.currentHole--;
     RS.pendingScores=G.players.map((_,i)=>RS.scores[i][RS.currentHole]||G.course.holes[RS.currentHole].par);
@@ -1516,7 +1518,7 @@ function showEndRound(){
         ${holes.map((_,hi)=>{
           const result=RS.holeResults.find(r=>r.hole===hi);
           const won=result&&result.type==='win'&&(result.winner.type==='solo'?result.winner.idx===pi:result.winner.team?.includes(pi));
-          const tied=result&&(result.type==='void'||result.type==='split'||result.type==='carry');
+          const tied=result&&(result.type==='void'||result.type==='push'||result.type==='carry');
           return `<div class="er-td ${won?'skin-won':tied?'skin-tie':''}">${RS.scores[pi][hi]||'—'}</div>`;
         }).join('')}
         <div class="er-td" style="color:var(--flag);font-weight:600;">${RS.skins[pi]}</div>
@@ -1527,7 +1529,7 @@ function showEndRound(){
   html+=`<div class="sum-block"><div class="sum-lbl">Hole results</div>`;
   RS.holeResults.forEach(r=>{
     const h=r.hole;
-    const desc=r.type==='void'?'Voided':r.type==='split'?'Split':r.type==='carry'?`Carried (+${r.skinValue})`:
+    const desc=r.type==='void'?'Voided':r.type==='push'?'Split':r.type==='carry'?`Carried (+${r.skinValue})`:
       r.winner.type==='team'?G_RULES.team1.map(i=>G.players[i].name).join(' & ')+' win':G.players[r.winner.idx].name+' wins';
     html+=`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--${r.type==='win'?'white':'muted'});">
       <span>Hole ${h+1}</span><span>${desc}</span></div>`;
