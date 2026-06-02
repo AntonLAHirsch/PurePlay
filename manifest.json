@@ -1,0 +1,23 @@
+{
+  "name": "PurePlay",
+  "short_name": "PurePlay",
+  "description": "Golf betting games — Net Skins, Nassau, Stableford",
+  "start_url": "/pureplay/",
+  "scope": "/pureplay/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a2e1a",
+  "theme_color": "#1a2e1a",
+  "icons": [
+    {
+      "src": "https://antonlahirsch.github.io/purestrike/icon.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://antonlahirsch.github.io/purestrike/icon.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

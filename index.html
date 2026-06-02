@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PurePlay">
+<meta name="theme-color" content="#1a2e1a">
+<link rel="manifest" href="/pureplay/manifest.json">
+<link rel="apple-touch-icon" href="https://antonlahirsch.github.io/purestrike/icon.jpeg">
+<title>PurePlay</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fairway: #1a2e1a;
+    --rough: #2d4a2d;
+    --rough-hover: #3a5c3a;
+    --green: #3d7a3d;
+    --flag: #c8a84b;
+    --white: #f5f0e8;
+    --muted: rgba(245,240,232,0.6);
+    --border: rgba(255,255,255,0.15);
+    --danger: #c0392b;
+    --radius: 16px;
+    --safe-bottom: env(safe-area-inset-bottom, 20px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; background: var(--fairway); }
+  body { font-family: 'DM Sans', sans-serif; color: var(--white); }
+
+  .screen { position: absolute; inset: 0; overflow-y: auto; display: none; flex-direction: column; background: var(--fairway); }
+  .screen.active { display: flex; }
+
+  header { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .logo { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+  .logo span { color: var(--flag); }
+  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; font-weight: 300; }
+
+  .steps { display: flex; gap: 6px; padding: 14px 20px 0; flex-shrink: 0; }
+  .step { height: 3px; flex: 1; border-radius: 2px; background: rgba(255,255,255,0.2); }
+  .step.done { background: var(--flag); }
+  .step.cur { background: var(--flag); opacity: 0.5; }
+  .step-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 20px 14px; font-weight: 300; flex-shrink: 0; }
+
+  .body { padding: 0 20px 20px; flex: 1; }
+
+  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; background: var(--rough); border: 1px solid rgba(255,255,255,0.25); border-radius: var(--radius); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 12px; transition: background 0.2s; }
+  .btn:hover { background: var(--rough-hover); }
+  .btn.cta { background: var(--flag); border-color: var(--flag); color: var(--fairway); font-weight: 700; }
+  .btn.cta:hover { opacity: 0.9; }
+
+  .bottom-nav { padding: 14px 20px calc(14px + var(--safe-bottom)); border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; background: var(--fairway); }
+  .nav-back { background: var(--rough); border: 1px solid rgba(255,255,255,0.25); color: var(--white); border-radius: var(--radius); padding: 14px 20px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .nav-back:hover { background: var(--rough-hover); }
+  .nav-next { flex: 1; background: var(--rough); border: 1px solid rgba(255,255,255,0.25); color: var(--white); border-radius: var(--radius); padding: 14px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, opacity 0.2s; }
+  .nav-next:hover:not(:disabled) { background: var(--rough-hover); }
+  .nav-next:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-next.active-cta { background: var(--flag); color: var(--fairway); border-color: var(--flag); }
+  .nav-next.active-cta:hover:not(:disabled) { opacity: 0.9; background: var(--flag); }
+
+  .game-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; margin-bottom: 10px; transition: background 0.2s, border-color 0.2s; }
+  .game-card:hover { background: var(--rough-hover); }
+  .game-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
+  .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .card-name { font-size: 16px; font-weight: 500; flex: 1; }
+  .card-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; background: rgba(255,255,255,0.1); color: var(--muted); letter-spacing: 0.5px; }
+  .card-check { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .game-card.sel .card-check { background: var(--flag); border-color: var(--flag); }
+  .chk-icon { display: none; }
+  .game-card.sel .chk-icon { display: block; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.55; font-weight: 300; }
+
+  .fmt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+  .fmt-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; cursor: pointer; text-align: center; transition: background 0.2s, border-color 0.2s; }
+  .fmt-card:hover { background: var(--rough-hover); }
+  .fmt-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
+  .fmt-title { font-size: 17px; font-weight: 500; margin-bottom: 3px; }
+  .fmt-sub { font-size: 12px; color: var(--muted); }
+  .section-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 16px 0 10px; font-weight: 300; }
+
+  .state-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .state-btn { background: var(--rough); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+  .state-btn:hover { background: var(--rough-hover); }
+  .state-btn.active { border-color: var(--flag); color: var(--flag); background: rgba(200,168,75,0.1); }
+
+  .search-wrap { position: relative; margin-bottom: 10px; }
+  .search-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); color: var(--white); font-size: 15px; padding: 14px 14px 14px 44px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .search-input:focus { border-color: var(--flag); }
+  .search-input::placeholder { color: var(--muted); }
+  .search-icon-wrap { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; pointer-events: none; }
+  .search-status { font-size: 13px; color: var(--muted); padding: 10px 4px; }
+
+  .course-result { background: var(--rough); border: 1px solid var(--border); border-radius: 12px; padding: 14px; cursor: default; margin-bottom: 8px; }
+  .course-result-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
+  .course-result-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .tee-lbl { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; font-weight: 300; }
+  .tee-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; transition: background 0.15s, border-color 0.15s; margin-bottom: 4px; }
+  .tee-row:hover { background: rgba(255,255,255,0.06); border-color: rgba(200,168,75,0.4); }
+  .tee-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .tee-name { font-size: 13px; font-weight: 500; flex: 1; }
+  .tee-stats { font-size: 11px; color: var(--muted); }
+
+  .course-selected { display: none; background: rgba(200,168,75,0.1); border: 1px solid rgba(200,168,75,0.5); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .course-selected.show { display: block; }
+  .course-sel-name { font-size: 15px; font-weight: 500; }
+  .course-sel-meta { font-size: 12px; color: var(--flag); margin-top: 3px; }
+
+  .player-row { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .player-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(200,168,75,0.15); border: 1px solid var(--flag); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--flag); }
+  .player-input { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--white); font-size: 14px; padding: 9px 10px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .player-input:focus { border-color: var(--flag); }
+  .player-input::placeholder { color: var(--muted); }
+  .player-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px; transition: color 0.2s; }
+  .player-remove:hover { color: var(--danger); }
+  .add-player-btn { width: 100%; background: none; border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--radius); color: var(--muted); font-size: 14px; padding: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'DM Sans', sans-serif; margin-top: 4px; transition: border-color 0.2s, color 0.2s; }
+  .add-player-btn:hover { border-color: var(--flag); color: var(--flag); }
+  .note { background: var(--rough); border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 10px; font-weight: 300; }
+
+  .sum-block { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  .sum-lbl { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; font-weight: 300; }
+  .sum-val { font-size: 16px; font-weight: 500; }
+  .sum-player { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .sum-player:last-child { margin-bottom: 0; }
+  .sum-av { width: 30px; height: 30px; border-radius: 50%; background: rgba(200,168,75,0.15); border: 1px solid var(--flag); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--flag); flex-shrink: 0; }
+  .sum-name { font-size: 14px; flex: 1; }
+  .sum-hdcp { font-size: 13px; color: var(--flag); font-weight: 500; }
+
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+  .pill { background: var(--rough); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: var(--muted); }
+
+  /* Update banner */
+  #update-banner { position: fixed; bottom: 80px; left: 12px; right: 12px; z-index: 9999; background: var(--fairway); border: 1.5px solid var(--flag); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
+  #update-banner span { flex: 1; font-size: 13px; color: var(--white); }
+  #update-banner button { background: var(--flag); border: none; border-radius: 8px; color: var(--fairway); font-size: 13px; font-weight: 600; padding: 6px 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+</style>
+
+<!-- Service Worker registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/pureplay/sw.js', { scope: '/pureplay/' })
+        .then(() => {
+          navigator.serviceWorker.addEventListener('message', e => {
+            if (e.data?.type === 'UPDATE_AVAILABLE') showUpdateBanner();
+          });
+        })
+        .catch(err => console.log('SW registration failed:', err));
+    });
+  }
+  function showUpdateBanner() {
+    if (document.getElementById('update-banner')) return;
+    const b = document.createElement('div');
+    b.id = 'update-banner';
+    b.innerHTML = '<span>PurePlay updated — reload for latest version</span><button onclick="location.reload()">Reload</button>';
+    document.body.appendChild(b);
+  }
+</script>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <header>
+    <div class="logo">Pure<span>Play</span></div>
+    <div class="logo-sub">Golf betting games</div>
+  </header>
+  <div style="padding:22px 20px; flex:1; display:flex; flex-direction:column;">
+    <div class="pills">
+      <span class="pill">Net Skins</span>
+      <span class="pill">Nassau</span>
+      <span class="pill">Stableford</span>
+    </div>
+    <div style="font-size:32px; font-weight:600; line-height:1.15; margin-bottom:10px; letter-spacing:-0.5px;">Play more.<br>Keep score.</div>
+    <p style="font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:32px; font-weight:300;">Track golf betting games with your crew. Handicap-adjusted, no cash required.</p>
+    <button class="btn" onclick="goTo('game')">+ Start new round</button>
+    <button class="btn" onclick="alert('Past rounds — coming soon!')">&#8635; View past rounds</button>
+  </div>
+</div>
+
+<!-- STEP 1: GAME -->
+<div id="s-game" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">New round</div></header>
+  <div class="steps"><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="step-lbl">Step 1 of 4 — Select game</div>
+  <div class="body">
+    <div class="game-card" onclick="selGame('skins',this)">
+      <div class="card-top"><div class="card-name">Net Skins</div><div class="card-badge">Any group</div><div class="card-check"><svg class="chk-icon" width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="card-desc">Win holes outright to claim the skin. Ties carry the pot forward. Handicap-adjusted so everyone has a shot.</div>
+    </div>
+    <div class="game-card" onclick="selGame('nassau',this)">
+      <div class="card-top"><div class="card-name">Nassau</div><div class="card-badge">1v1 or 2v2</div><div class="card-check"><svg class="chk-icon" width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="card-desc">Three match play bets — front 9, back 9, full 18. Press mid-round when you're down to double up.</div>
+    </div>
+    <div class="game-card" onclick="selGame('stableford',this)">
+      <div class="card-top"><div class="card-name">Stableford</div><div class="card-badge">Any group</div><div class="card-check"><svg class="chk-icon" width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="card-desc">Points per hole based on score vs par. One blowup hole won't ruin your round.</div>
+    </div>
+    <div id="fmt-wrap" style="display:none;">
+      <div class="section-lbl">Match format</div>
+      <div class="fmt-grid">
+        <div class="fmt-card sel" onclick="selFmt('1v1',this)"><div class="fmt-title">1 v 1</div><div class="fmt-sub">Head to head</div></div>
+        <div class="fmt-card" onclick="selFmt('2v2',this)"><div class="fmt-title">2 v 2</div><div class="fmt-sub">Team match</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" onclick="goTo('home')">Back</button>
+    <button class="nav-next" id="btn-g" disabled onclick="goTo('course')">Select course →</button>
+  </div>
+</div>
+
+<!-- STEP 2: COURSE -->
+<div id="s-course" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">New round</div></header>
+  <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div></div>
+  <div class="step-lbl">Step 2 of 4 — Choose course</div>
+  <div class="body">
+    <div class="state-filters">
+      <button class="state-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="state-btn" onclick="setFilter('CA',this)">🐻 CA</button>
+      <button class="state-btn" onclick="setFilter('AZ',this)">🌵 AZ</button>
+      <button class="state-btn" onclick="setFilter('IL',this)">🦅 IL</button>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon-wrap">&#128269;</span>
+      <input class="search-input" type="text" id="csearch" placeholder="Search courses..." oninput="onSearch(this.value)"/>
+    </div>
+    <div id="search-status" class="search-status" style="display:none;"></div>
+    <div id="cresults"></div>
+    <div class="course-selected" id="csel">
+      <div class="course-sel-name" id="csel-name"></div>
+      <div class="course-sel-meta" id="csel-meta"></div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" onclick="goTo('game')">Back</button>
+    <button class="nav-next" id="btn-c" disabled onclick="goTo('players')">Add players →</button>
+  </div>
+</div>
+
+<!-- STEP 3: PLAYERS -->
+<div id="s-players" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">New round</div></header>
+  <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step cur"></div><div class="step"></div></div>
+  <div class="step-lbl">Step 3 of 4 — Add players</div>
+  <div class="body">
+    <div id="plist"></div>
+    <button class="add-player-btn" id="add-btn" onclick="addP()">+ Add player</button>
+    <div class="note" id="nassau-note" style="display:none;">Nassau needs exactly 2 players (1v1) or 4 players (2v2).</div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" onclick="goTo('course')">Back</button>
+    <button class="nav-next" id="btn-p" disabled onclick="goTo('summary')">Review →</button>
+  </div>
+</div>
+
+<!-- STEP 4: SUMMARY -->
+<div id="s-summary" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Confirm round</div></header>
+  <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step cur"></div></div>
+  <div class="step-lbl">Step 4 of 4 — Confirm & start</div>
+  <div class="body" style="padding-top:8px;">
+    <div class="sum-block"><div class="sum-lbl">Game</div><div class="sum-val" id="sum-g"></div></div>
+    <div class="sum-block"><div class="sum-lbl">Course</div><div class="sum-val" id="sum-c"></div></div>
+    <div class="sum-block"><div class="sum-lbl">Tees</div><div class="sum-val" id="sum-t"></div></div>
+    <div class="sum-block"><div class="sum-lbl">Players</div><div id="sum-p"></div></div>
+    <button class="btn cta" style="margin-top:8px;" onclick="alert('Round started! Scoring UI coming next.')">Tee it up →</button>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" style="width:100%;" onclick="goTo('players')">← Edit players</button>
+  </div>
+</div>
+
+<script>
+const WORKER_URL = 'https://purestrike-api.antonhirsch17.workers.dev';
+const GK_CACHE = {};
+const G = { game: null, fmt: '1v1', course: null, tee: null, players: [] };
+let stateFilter = 'all';
+let searchTimer = null;
+
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  if (id === 'players' && document.querySelectorAll('.player-row').length === 0) addP();
+  if (id === 'summary') buildSum();
+}
+
+function selGame(g, el) {
+  document.querySelectorAll('.game-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel'); G.game = g;
+  const btn = document.getElementById('btn-g');
+  btn.disabled = false; btn.classList.add('active-cta');
+  document.getElementById('fmt-wrap').style.display = g === 'nassau' ? 'block' : 'none';
+}
+
+function selFmt(f, el) {
+  document.querySelectorAll('.fmt-card').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel'); G.fmt = f;
+}
+
+function setFilter(state, el) {
+  stateFilter = state;
+  document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const q = document.getElementById('csearch').value.trim();
+  if (q.length >= 2) doSearch(q);
+}
+
+function onSearch(val) {
+  clearTimeout(searchTimer);
+  if (val.trim().length < 2) { document.getElementById('cresults').innerHTML = ''; hideStatus(); return; }
+  showStatus('Searching...');
+  searchTimer = setTimeout(() => doSearch(val.trim()), 350);
+}
+
+async function doSearch(q) {
+  const key = q + '|' + stateFilter;
+  if (GK_CACHE[key]) { renderResults(GK_CACHE[key]); return; }
+  showStatus('Searching...');
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const res = await fetch(`${WORKER_URL}/course?q=${encodeURIComponent(q)}`, { signal: controller.signal });
+    clearTimeout(timeout);
+    const data = await res.json();
+    let results = data.results || [];
+    if (stateFilter !== 'all') results = results.filter(c => (c.state || '').toUpperCase() === stateFilter);
+    GK_CACHE[key] = results;
+    renderResults(results);
+  } catch(e) {
+    clearTimeout(timeout);
+    showStatus('Could not reach course database — check your connection.');
+  }
+}
+
+function renderResults(courses) {
+  const el = document.getElementById('cresults');
+  if (!courses || courses.length === 0) { showStatus('No courses found.'); el.innerHTML = ''; return; }
+  hideStatus();
+  courses.forEach((c, i) => { GK_CACHE['r_' + i] = c; });
+  el.innerHTML = courses.map((c, i) => {
+    const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : (c.tees?.[0]?.par || 72);
+    const meta = [c.city, c.state].filter(Boolean).join(', ');
+    const teeRows = (c.tees || []).map((t, ti) =>
+      `<div class="tee-row" onclick="pickCourse(${i},${ti})">
+        <div class="tee-dot" style="background:${t.color || '#888'}"></div>
+        <div class="tee-name">${t.name}</div>
+        <div class="tee-stats">${t.yards ? t.yards.toLocaleString() + 'y · ' : ''}${t.rating || ''}/${t.slope || ''}</div>
+      </div>`
+    ).join('');
+    return `<div class="course-result">
+      <div class="course-result-name">${c.name}</div>
+      <div class="course-result-meta">${meta}${meta ? ' · ' : ''}Par ${par} · ${c.holes?.length || 18} holes</div>
+      ${teeRows ? `<div class="tee-lbl">Select tees</div>${teeRows}` : `<div class="tee-row" onclick="pickCourse(${i},0)"><div class="tee-name" style="color:var(--flag)">Select →</div></div>`}
+    </div>`;
+  }).join('');
+}
+
+function pickCourse(ci, ti) {
+  const c = GK_CACHE['r_' + ci];
+  if (!c) return;
+  G.course = c;
+  G.tee = c.tees?.[ti] || null;
+  document.getElementById('cresults').innerHTML = '';
+  document.getElementById('csearch').value = c.name;
+  hideStatus();
+  document.getElementById('csel').classList.add('show');
+  document.getElementById('csel-name').textContent = c.name;
+  const teeName = G.tee ? G.tee.name + ' tees' : '';
+  const meta = [c.city, c.state].filter(Boolean).join(', ');
+  document.getElementById('csel-meta').textContent = [meta, teeName].filter(Boolean).join(' · ');
+  const btn = document.getElementById('btn-c');
+  btn.disabled = false; btn.classList.add('active-cta');
+}
+
+function showStatus(m) { const e = document.getElementById('search-status'); e.style.display = 'block'; e.textContent = m; }
+function hideStatus() { document.getElementById('search-status').style.display = 'none'; }
+
+let pid = 0;
+function addP() {
+  pid++; const id = pid;
+  const div = document.createElement('div');
+  div.className = 'player-row'; div.id = 'pr-' + id;
+  div.innerHTML = `<div class="player-avatar" id="av-${id}">?</div>
+    <div style="flex:1;display:flex;gap:8px;">
+      <input class="player-input" style="flex:2;" type="text" placeholder="Name" id="pn-${id}" oninput="upAv(${id});chkP()"/>
+      <input class="player-input" style="flex:1;min-width:60px;" type="number" placeholder="HCP" min="0" max="54" step="0.1" id="ph-${id}" oninput="chkP()"/>
+    </div>
+    <button class="player-remove" onclick="rmP(${id})">&#x2715;</button>`;
+  document.getElementById('plist').appendChild(div); chkP();
+}
+
+function rmP(id) { const e = document.getElementById('pr-' + id); if (e) e.remove(); chkP(); }
+
+function upAv(id) {
+  const n = (document.getElementById('pn-' + id)?.value || '').trim();
+  const av = document.getElementById('av-' + id); if (!av) return;
+  const p = n.split(' ').filter(Boolean);
+  av.textContent = p.length > 1 ? (p[0][0] + p[1][0]).toUpperCase() : n ? n[0].toUpperCase() : '?';
+}
+
+function chkP() {
+  const rows = document.querySelectorAll('.player-row');
+  const players = [];
+  rows.forEach(r => {
+    const id = r.id.replace('pr-', '');
+    const n = document.getElementById('pn-' + id)?.value.trim();
+    const h = document.getElementById('ph-' + id)?.value;
+    if (n) players.push({ name: n, hdcp: parseFloat(h) || 0 });
+  });
+  G.players = players;
+  const btn = document.getElementById('btn-p');
+  btn.disabled = players.length < 2;
+  if (players.length >= 2) btn.classList.add('active-cta'); else btn.classList.remove('active-cta');
+  document.getElementById('add-btn').style.display = rows.length >= 4 ? 'none' : 'flex';
+  document.getElementById('nassau-note').style.display = G.game === 'nassau' ? 'block' : 'none';
+}
+
+function buildSum() {
+  const labels = { skins: 'Net Skins', nassau: 'Nassau (' + G.fmt + ')', stableford: 'Stableford' };
+  document.getElementById('sum-g').textContent = labels[G.game] || '—';
+  document.getElementById('sum-c').textContent = G.course?.name || '—';
+  document.getElementById('sum-t').textContent = G.tee
+    ? `${G.tee.name}${G.tee.rating ? ' · ' + G.tee.rating + '/' + G.tee.slope : ''}${G.tee.yards ? ' · ' + G.tee.yards.toLocaleString() + 'y' : ''}`
+    : '—';
+  document.getElementById('sum-p').innerHTML = G.players.map(p => {
+    const ini = p.name.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    return `<div class="sum-player"><div class="sum-av">${ini}</div><div class="sum-name">${p.name}</div><div class="sum-hdcp">HCP ${p.hdcp.toFixed(1)}</div></div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
