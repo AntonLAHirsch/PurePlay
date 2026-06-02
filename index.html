@@ -635,13 +635,11 @@ function startHoleEntry(){
   if(aiCourseData?.holes){
     HE.holeCount=aiCourseData.holes.length;
     aiCourseData.holes.forEach(h=>{
-      HE.holes.push({par:h.par, hcp:h.hcp, yards:h.yards||defaultYards(h.par)});
-      HE.usedHcps.add(h.hcp);
+      HE.holes.push({par:h.par, hcp:h.hcp||null, yards:h.yards||defaultYards(h.par)});
     });
   } else {
     for(let i=0;i<HE.holeCount;i++){
-      HE.holes.push({par:4, hcp:i+1, yards:350});
-      HE.usedHcps.add(i+1);
+      HE.holes.push({par:4, hcp:null, yards:350});
     }
   }
 
@@ -677,7 +675,7 @@ function renderHoleEntry(){
   });
 
   // HCP stepper
-  document.getElementById('hcp-val').textContent=hole.hcp;
+  document.getElementById('hcp-val').textContent=hole.hcp||'--';
   document.getElementById('hcp-val').classList.toggle('muted',!hole.hcp);
   document.getElementById('hcp-error').textContent='';
 
@@ -741,30 +739,35 @@ function stepHcp(dir){
   const hole=HE.holes[HE.currentHole];
   const max=HE.holeCount;
 
-  // Build set of HCPs used by OTHER holes (not this one)
+  // Current value — null treated as 0 so first + goes to 1
+  const cur=hole.hcp||0;
+  let next=cur+dir;
+  if(next<1) next=max;
+  if(next>max) next=1;
+
+  // Check if this value is already used by another hole
   const otherHcps=new Set(
     HE.holes.filter((_,i)=>i!==HE.currentHole).map(h=>h.hcp)
   );
 
-  // Walk in direction, skipping values used by other holes
-  let next=hole.hcp+dir;
-  let attempts=0;
-  while(attempts<max){
-    if(next<1)next=max;
-    if(next>max)next=1;
-    if(!otherHcps.has(next)) break;
-    next+=dir;
-    attempts++;
-  }
   if(otherHcps.has(next)){
-    document.getElementById('hcp-error').textContent='All stroke index values are taken.';
-    return;
+    // Skip over taken values in the step direction
+    let attempts=0;
+    while(otherHcps.has(next)&&attempts<max){
+      next+=dir;
+      if(next<1) next=max;
+      if(next>max) next=1;
+      attempts++;
+    }
+    if(otherHcps.has(next)){
+      document.getElementById('hcp-error').textContent='All stroke index values are taken.';
+      return;
+    }
   }
 
-  // Rebuild usedHcps cleanly
   hole.hcp=next;
-  HE.usedHcps=new Set(HE.holes.map(h=>h.hcp));
   document.getElementById('hcp-val').textContent=next;
+  document.getElementById('hcp-val').classList.remove('muted');
   document.getElementById('hcp-error').textContent='';
 }
 
