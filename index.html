@@ -13,43 +13,30 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --fairway: #1a2e1a;
-    --rough: #2d4a2d;
-    --rough-hover: #3a5c3a;
-    --green: #3d7a3d;
-    --flag: #c8a84b;
-    --white: #f5f0e8;
-    --muted: rgba(245,240,232,0.6);
-    --border: rgba(255,255,255,0.15);
-    --danger: #c0392b;
-    --radius: 16px;
+    --fairway: #1a2e1a; --rough: #2d4a2d; --rough-hover: #3a5c3a;
+    --flag: #c8a84b; --white: #f5f0e8; --muted: rgba(245,240,232,0.6);
+    --border: rgba(255,255,255,0.15); --danger: #c0392b; --radius: 16px;
     --safe-bottom: env(safe-area-inset-bottom, 20px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; overflow: hidden; background: var(--fairway); }
   body { font-family: 'DM Sans', sans-serif; color: var(--white); }
-
   .screen { position: absolute; inset: 0; overflow-y: auto; display: none; flex-direction: column; background: var(--fairway); }
   .screen.active { display: flex; }
-
   header { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
   .logo { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
   .logo span { color: var(--flag); }
   .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; font-weight: 300; }
-
   .steps { display: flex; gap: 6px; padding: 14px 20px 0; flex-shrink: 0; }
   .step { height: 3px; flex: 1; border-radius: 2px; background: rgba(255,255,255,0.2); }
   .step.done { background: var(--flag); }
   .step.cur { background: var(--flag); opacity: 0.5; }
   .step-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 20px 14px; font-weight: 300; flex-shrink: 0; }
-
   .body { padding: 0 20px 20px; flex: 1; }
-
   .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; background: var(--rough); border: 1px solid rgba(255,255,255,0.25); border-radius: var(--radius); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 12px; transition: background 0.2s; }
   .btn:hover { background: var(--rough-hover); }
   .btn.cta { background: var(--flag); border-color: var(--flag); color: var(--fairway); font-weight: 700; }
   .btn.cta:hover { opacity: 0.9; }
-
   .bottom-nav { padding: 14px 20px calc(14px + var(--safe-bottom)); border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; background: var(--fairway); }
   .nav-back { background: var(--rough); border: 1px solid rgba(255,255,255,0.25); color: var(--white); border-radius: var(--radius); padding: 14px 20px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
   .nav-back:hover { background: var(--rough-hover); }
@@ -58,8 +45,6 @@
   .nav-next:disabled { opacity: 0.3; cursor: not-allowed; }
   .nav-next.active-cta { background: var(--flag); color: var(--fairway); border-color: var(--flag); }
   .nav-next.active-cta:hover:not(:disabled) { opacity: 0.9; background: var(--flag); }
-
-  /* GAME CARDS */
   .game-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; margin-bottom: 10px; transition: background 0.2s, border-color 0.2s; }
   .game-card:hover { background: var(--rough-hover); }
   .game-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
@@ -68,10 +53,8 @@
   .card-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; background: rgba(255,255,255,0.1); color: var(--muted); letter-spacing: 0.5px; }
   .card-check { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .game-card.sel .card-check { background: var(--flag); border-color: var(--flag); }
-  .chk-icon { display: none; }
-  .game-card.sel .chk-icon { display: block; }
+  .chk-icon { display: none; } .game-card.sel .chk-icon { display: block; }
   .card-desc { font-size: 13px; color: var(--muted); line-height: 1.55; font-weight: 300; }
-
   .fmt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
   .fmt-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; cursor: pointer; text-align: center; transition: background 0.2s, border-color 0.2s; }
   .fmt-card:hover { background: var(--rough-hover); }
@@ -79,36 +62,27 @@
   .fmt-title { font-size: 17px; font-weight: 500; margin-bottom: 3px; }
   .fmt-sub { font-size: 12px; color: var(--muted); }
   .section-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 16px 0 10px; font-weight: 300; }
-
-  /* COURSE SEARCH */
   .search-wrap { position: relative; margin-bottom: 10px; }
   .search-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); color: var(--white); font-size: 15px; padding: 14px 14px 14px 44px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
   .search-input:focus { border-color: var(--flag); }
   .search-input::placeholder { color: var(--muted); }
   .search-icon-wrap { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; pointer-events: none; }
   .search-status { font-size: 13px; color: var(--muted); padding: 10px 4px; }
-
   .course-result { background: var(--rough); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: background 0.2s, border-color 0.2s; }
   .course-result:hover { background: var(--rough-hover); border-color: rgba(200,168,75,0.4); }
   .course-result.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
   .course-result-info { flex: 1; }
   .course-result-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
   .course-result-meta { font-size: 12px; color: var(--muted); }
-  .course-result-arrow { color: var(--muted); font-size: 20px; line-height: 1; }
-
-  /* ADD COURSE button */
+  .course-result-arrow { color: var(--muted); font-size: 20px; }
   .add-course-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: none; border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--radius); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; margin-top: 8px; transition: border-color 0.2s, color 0.2s; }
   .add-course-btn:hover { border-color: var(--flag); color: var(--flag); }
-
-  /* COURSE CONFIRMED */
   .course-confirmed { background: rgba(200,168,75,0.08); border: 1px solid rgba(200,168,75,0.4); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
   .course-confirmed-info { flex: 1; }
   .course-confirmed-name { font-size: 15px; font-weight: 500; }
   .course-confirmed-meta { font-size: 12px; color: var(--flag); margin-top: 2px; }
   .course-change-btn { background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: var(--muted); font-size: 12px; padding: 5px 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: border-color 0.2s, color 0.2s; }
   .course-change-btn:hover { border-color: var(--flag); color: var(--flag); }
-
-  /* TEE CARDS */
   .tee-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; transition: background 0.2s, border-color 0.2s; }
   .tee-card:hover { background: var(--rough-hover); border-color: rgba(200,168,75,0.4); }
   .tee-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
@@ -118,10 +92,7 @@
   .tee-card-stats { font-size: 12px; color: var(--muted); }
   .tee-card-check { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .tee-card.sel .tee-card-check { background: var(--flag); border-color: var(--flag); }
-  .tee-chk { display: none; }
-  .tee-card.sel .tee-chk { display: block; }
-
-  /* ADD COURSE FORM */
+  .tee-chk { display: none; } .tee-card.sel .tee-chk { display: block; }
   .form-group { margin-bottom: 14px; }
   .form-label { font-size: 11px; color: var(--muted); letter-spacing: 1.2px; text-transform: uppercase; font-weight: 300; margin-bottom: 6px; display: block; }
   .form-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: 12px; color: var(--white); font-size: 15px; padding: 13px 14px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
@@ -129,14 +100,26 @@
   .form-input::placeholder { color: var(--muted); }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .form-hint { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 300; }
-
-  .tee-color-row { display: flex; gap: 10px; margin-top: 6px; }
+  .tee-color-row { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
   .tee-color-opt { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: border-color 0.15s; flex-shrink: 0; }
   .tee-color-opt.active { border-color: var(--flag); }
-  .tee-color-opt[data-color="#ffffff"] { border: 3px solid rgba(255,255,255,0.3); }
-  .tee-color-opt[data-color="#ffffff"].active { border-color: var(--flag); }
 
-  /* PLAYERS */
+  /* AI lookup states */
+  .ai-lookup-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .ai-lookup-card.success { border-color: rgba(74,154,74,0.6); background: rgba(74,154,74,0.08); }
+  .ai-lookup-card.fail { border-color: rgba(255,255,255,0.2); }
+  .ai-status { font-size: 14px; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .ai-status.loading { color: var(--flag); }
+  .ai-status.success { color: #4a9a4a; }
+  .ai-status.fail { color: var(--muted); }
+  .ai-holes-preview { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 10px; }
+  .ai-hole-cell { background: rgba(0,0,0,0.2); border-radius: 6px; padding: 4px 2px; text-align: center; }
+  .ai-hole-num { font-size: 9px; color: var(--muted); }
+  .ai-hole-par { font-size: 13px; font-weight: 600; color: var(--white); }
+  .ai-hole-hcp { font-size: 9px; color: var(--flag); }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(200,168,75,0.3); border-top-color: var(--flag); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   .player-row { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .player-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(200,168,75,0.15); border: 1px solid var(--flag); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--flag); }
   .player-input { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--white); font-size: 14px; padding: 9px 10px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
@@ -147,8 +130,6 @@
   .add-player-btn { width: 100%; background: none; border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--radius); color: var(--muted); font-size: 14px; padding: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'DM Sans', sans-serif; margin-top: 4px; transition: border-color 0.2s, color 0.2s; }
   .add-player-btn:hover { border-color: var(--flag); color: var(--flag); }
   .note { background: var(--rough); border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 10px; font-weight: 300; }
-
-  /* SUMMARY */
   .sum-block { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
   .sum-lbl { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; font-weight: 300; }
   .sum-val { font-size: 16px; font-weight: 500; }
@@ -157,30 +138,23 @@
   .sum-av { width: 30px; height: 30px; border-radius: 50%; background: rgba(200,168,75,0.15); border: 1px solid var(--flag); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--flag); flex-shrink: 0; }
   .sum-name { font-size: 14px; flex: 1; }
   .sum-hdcp { font-size: 13px; color: var(--flag); font-weight: 500; }
-
   .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
   .pill { background: var(--rough); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: var(--muted); }
-
-  #update-banner { position: fixed; bottom: 80px; left: 12px; right: 12px; z-index: 9999; background: var(--fairway); border: 1.5px solid var(--flag); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; }
-  #update-banner span { flex: 1; font-size: 13px; }
-  #update-banner button { background: var(--flag); border: none; border-radius: 8px; color: var(--fairway); font-size: 13px; font-weight: 600; padding: 6px 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 </style>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/pureplay/sw.js', { scope: '/pureplay/' })
-        .then(() => {
-          navigator.serviceWorker.addEventListener('message', e => {
-            if (e.data?.type === 'UPDATE_AVAILABLE') showUpdateBanner();
-          });
-        }).catch(err => console.log('SW failed:', err));
+        .then(() => { navigator.serviceWorker.addEventListener('message', e => { if (e.data?.type === 'UPDATE_AVAILABLE') showUpdateBanner(); }); })
+        .catch(err => console.log('SW failed:', err));
     });
   }
   function showUpdateBanner() {
     if (document.getElementById('update-banner')) return;
     const b = document.createElement('div');
     b.id = 'update-banner';
-    b.innerHTML = '<span>PurePlay updated — reload for the latest</span><button onclick="location.reload()">Reload</button>';
+    b.style.cssText = 'position:fixed;bottom:80px;left:12px;right:12px;z-index:9999;background:#1a2e1a;border:1.5px solid #c8a84b;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;';
+    b.innerHTML = '<span style="flex:1;font-size:13px;font-family:DM Sans,sans-serif;">PurePlay updated — reload for the latest</span><button onclick="location.reload()" style="background:#c8a84b;border:none;border-radius:8px;color:#1a2e1a;font-size:13px;font-weight:600;padding:6px 14px;cursor:pointer;font-family:DM Sans,sans-serif;">Reload</button>';
     document.body.appendChild(b);
   }
 </script>
@@ -189,18 +163,11 @@
 
 <!-- HOME -->
 <div id="s-home" class="screen active">
-  <header>
-    <div class="logo">Pure<span>Play</span></div>
-    <div class="logo-sub">Golf betting games</div>
-  </header>
-  <div style="padding:22px 20px; flex:1; display:flex; flex-direction:column;">
-    <div class="pills">
-      <span class="pill">Net Skins</span>
-      <span class="pill">Nassau</span>
-      <span class="pill">Stableford</span>
-    </div>
-    <div style="font-size:32px; font-weight:600; line-height:1.15; margin-bottom:10px; letter-spacing:-0.5px;">Play more.<br>Keep score.</div>
-    <p style="font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:32px; font-weight:300;">Track golf betting games with your crew. Handicap-adjusted, no cash required.</p>
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Golf betting games</div></header>
+  <div style="padding:22px 20px;flex:1;display:flex;flex-direction:column;">
+    <div class="pills"><span class="pill">Net Skins</span><span class="pill">Nassau</span><span class="pill">Stableford</span></div>
+    <div style="font-size:32px;font-weight:600;line-height:1.15;margin-bottom:10px;letter-spacing:-0.5px;">Play more.<br>Keep score.</div>
+    <p style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:32px;font-weight:300;">Track golf betting games with your crew. Handicap-adjusted, no cash required.</p>
     <button class="btn" onclick="goTo('game')">+ Start new round</button>
     <button class="btn" onclick="alert('Past rounds — coming soon!')">&#8635; View past rounds</button>
   </div>
@@ -250,7 +217,7 @@
     </div>
     <div id="search-status" class="search-status" style="display:none;"></div>
     <div id="cresults"></div>
-    <button class="add-course-btn" onclick="goTo('add-course')">+ Course not listed? Add it</button>
+    <button class="add-course-btn" id="add-course-btn" onclick="startAddCourse()">+ Course not listed? Add it</button>
   </div>
   <div class="bottom-nav">
     <button class="nav-back" onclick="goTo('game')">Back</button>
@@ -264,6 +231,8 @@
   <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
   <div class="step-lbl">Add course to shared database</div>
   <div class="body">
+
+    <!-- 1. Name + City -->
     <div class="form-group">
       <label class="form-label">Course name *</label>
       <input class="form-input" type="text" id="ac-name" placeholder="e.g. Pebble Beach Golf Links"/>
@@ -271,51 +240,62 @@
     <div class="form-group">
       <label class="form-label">City, State</label>
       <input class="form-input" type="text" id="ac-city" placeholder="e.g. Pebble Beach, CA"/>
-      <div class="form-hint">Include state abbreviation so it appears in searches</div>
+      <div class="form-hint">Include the 2-letter state so others can find it</div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Total par</label>
-        <input class="form-input" type="number" id="ac-par" placeholder="72" min="27" max="73"/>
+
+    <!-- 2. AI Lookup trigger -->
+    <button class="btn" id="btn-lookup" onclick="runAILookup()" style="margin-bottom:14px;">
+      ✦ Look up scorecard
+    </button>
+
+    <!-- 3. AI result panel — hidden until lookup runs -->
+    <div id="ai-result" style="display:none;"></div>
+
+    <!-- 4. Manual fields — always shown, pre-filled by AI if known -->
+    <div id="manual-fields">
+      <div class="section-lbl">Course details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Total par</label>
+          <input class="form-input" type="number" id="ac-par" placeholder="72" min="27" max="73"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Holes</label>
+          <select class="form-input" id="ac-holes"><option value="18">18 holes</option><option value="9">9 holes</option></select>
+        </div>
       </div>
+      <div class="section-lbl">Tee details</div>
       <div class="form-group">
-        <label class="form-label">Holes</label>
-        <select class="form-input" id="ac-holes">
-          <option value="18">18 holes</option>
-          <option value="9">9 holes</option>
-        </select>
-      </div>
-    </div>
-    <div class="section-lbl" style="margin-top:4px;">Tee details</div>
-    <div class="form-group">
-      <label class="form-label">Tee name</label>
-      <input class="form-input" type="text" id="ac-tee" placeholder="e.g. Blue, White, Gold..."/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Tee color</label>
-      <div class="tee-color-row" id="tee-color-row">
-        <div class="tee-color-opt active" data-color="#222222" style="background:#222222;" onclick="selTeeColor(this)"></div>
-        <div class="tee-color-opt" data-color="#3366cc" style="background:#3366cc;" onclick="selTeeColor(this)"></div>
-        <div class="tee-color-opt" data-color="#ffffff" style="background:#ffffff;" onclick="selTeeColor(this)"></div>
-        <div class="tee-color-opt" data-color="#cc3333" style="background:#cc3333;" onclick="selTeeColor(this)"></div>
-        <div class="tee-color-opt" data-color="#c8a84b" style="background:#c8a84b;" onclick="selTeeColor(this)"></div>
-        <div class="tee-color-opt" data-color="#4a9a4a" style="background:#4a9a4a;" onclick="selTeeColor(this)"></div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Course rating</label>
-        <input class="form-input" type="number" id="ac-rating" placeholder="72.0" step="0.1" min="60" max="85"/>
+        <label class="form-label">Tee name</label>
+        <input class="form-input" type="text" id="ac-tee" placeholder="e.g. Blue, White, Gold..."/>
       </div>
       <div class="form-group">
-        <label class="form-label">Slope</label>
-        <input class="form-input" type="number" id="ac-slope" placeholder="113" min="55" max="155"/>
+        <label class="form-label">Tee color</label>
+        <div class="tee-color-row">
+          <div class="tee-color-opt active" data-color="#222222" style="background:#222222;" onclick="selTeeColor(this)"></div>
+          <div class="tee-color-opt" data-color="#3366cc" style="background:#3366cc;" onclick="selTeeColor(this)"></div>
+          <div class="tee-color-opt" data-color="#ffffff" style="background:#ffffff;border:3px solid rgba(255,255,255,0.4);" onclick="selTeeColor(this)"></div>
+          <div class="tee-color-opt" data-color="#cc3333" style="background:#cc3333;" onclick="selTeeColor(this)"></div>
+          <div class="tee-color-opt" data-color="#c8a84b" style="background:#c8a84b;" onclick="selTeeColor(this)"></div>
+          <div class="tee-color-opt" data-color="#4a9a4a" style="background:#4a9a4a;" onclick="selTeeColor(this)"></div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Course rating</label>
+          <input class="form-input" type="number" id="ac-rating" placeholder="72.0" step="0.1" min="60" max="85"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Slope</label>
+          <input class="form-input" type="number" id="ac-slope" placeholder="113" min="55" max="155"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Yardage</label>
+        <input class="form-input" type="number" id="ac-yards" placeholder="6500" min="1000" max="9000"/>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Yardage</label>
-      <input class="form-input" type="number" id="ac-yards" placeholder="6500" min="1000" max="9000"/>
-    </div>
+
     <div id="ac-error" style="display:none;font-size:13px;color:#e05252;padding:8px 0;"></div>
   </div>
   <div class="bottom-nav">
@@ -385,7 +365,9 @@ const GK_CACHE = {};
 const G = { game: null, fmt: '1v1', course: null, tee: null, players: [] };
 let searchTimer = null;
 let selectedTeeColor = '#222222';
+let aiCourseData = null; // stores full AI-returned course if lookup succeeded
 
+// ── NAV ───────────────────────────────────────────────────────────
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s-' + id).classList.add('active');
@@ -395,7 +377,6 @@ function goTo(id) {
 }
 
 // ── GAME ──────────────────────────────────────────────────────────
-
 function selGame(g, el) {
   document.querySelectorAll('.game-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel'); G.game = g;
@@ -403,21 +384,18 @@ function selGame(g, el) {
   btn.disabled = false; btn.classList.add('active-cta');
   document.getElementById('fmt-wrap').style.display = g === 'nassau' ? 'block' : 'none';
 }
-
 function selFmt(f, el) {
   document.querySelectorAll('.fmt-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel'); G.fmt = f;
 }
 
 // ── COURSE SEARCH ─────────────────────────────────────────────────
-
 function onSearch(val) {
   clearTimeout(searchTimer);
   if (val.trim().length < 2) { document.getElementById('cresults').innerHTML = ''; hideStatus(); return; }
   showStatus('Searching...');
   searchTimer = setTimeout(() => doSearch(val.trim()), 350);
 }
-
 async function doSearch(q) {
   if (GK_CACHE[q]) { renderResults(GK_CACHE[q]); return; }
   showStatus('Searching...');
@@ -435,17 +413,18 @@ async function doSearch(q) {
     showStatus('Could not reach course database — check your connection.');
   }
 }
-
 function renderResults(courses) {
   const el = document.getElementById('cresults');
-  if (!courses || courses.length === 0) { showStatus('No courses found — try a different search or add it below.'); el.innerHTML = ''; return; }
+  if (!courses || courses.length === 0) {
+    showStatus('No courses found — try a different search or add it below.');
+    el.innerHTML = ''; return;
+  }
   hideStatus();
   courses.forEach((c, i) => { GK_CACHE['r_' + i] = c; });
   el.innerHTML = courses.map((c, i) => {
-    const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : (c.tees?.[0]?.par || 72);
+    const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : 72;
     const meta = [c.city, c.state].filter(Boolean).join(', ');
-    const sel = G.course && G.course.name === c.name;
-    return `<div class="course-result${sel ? ' sel' : ''}" onclick="pickCourse(${i})">
+    return `<div class="course-result" onclick="pickCourse(${i})">
       <div class="course-result-info">
         <div class="course-result-name">${c.name}</div>
         <div class="course-result-meta">${meta}${meta ? ' · ' : ''}Par ${par} · ${c.holes?.length || 18} holes</div>
@@ -454,27 +433,32 @@ function renderResults(courses) {
     </div>`;
   }).join('');
 }
-
 function pickCourse(i) {
-  const c = GK_CACHE['r_' + i];
-  if (!c) return;
+  const c = GK_CACHE['r_' + i]; if (!c) return;
   G.course = c; G.tee = null;
   document.querySelectorAll('.course-result').forEach((el, idx) => el.classList.toggle('sel', idx === i));
   const btn = document.getElementById('btn-c');
   btn.disabled = false; btn.classList.add('active-cta');
 }
-
 function changeCourse() {
   G.course = null; G.tee = null;
   document.getElementById('btn-c').disabled = true;
   document.getElementById('btn-c').classList.remove('active-cta');
   goTo('course');
 }
-
 function showStatus(m) { const e = document.getElementById('search-status'); e.style.display = 'block'; e.textContent = m; }
 function hideStatus() { document.getElementById('search-status').style.display = 'none'; }
 
 // ── ADD COURSE ────────────────────────────────────────────────────
+function startAddCourse() {
+  // Pre-fill name from search box if user typed something
+  const q = document.getElementById('csearch').value.trim();
+  if (q) document.getElementById('ac-name').value = q;
+  aiCourseData = null;
+  document.getElementById('ai-result').style.display = 'none';
+  document.getElementById('ai-result').innerHTML = '';
+  goTo('add-course');
+}
 
 function selTeeColor(el) {
   document.querySelectorAll('.tee-color-opt').forEach(o => o.classList.remove('active'));
@@ -482,46 +466,156 @@ function selTeeColor(el) {
   selectedTeeColor = el.dataset.color;
 }
 
-function buildDefaultHoles(count, totalPar) {
-  const par5s = count === 18 ? 2 : 1;
-  const par3s = count === 18 ? 4 : 2;
-  const par4s = count - par5s - par3s;
-  const pars = [...Array(par5s).fill(5), ...Array(par4s).fill(4), ...Array(par3s).fill(3)];
-  const arranged = [pars[0],pars[1],pars[2],pars[3],pars[4],pars[5],pars[6],pars[7],pars[8],
-    ...(count > 9 ? pars.slice(9) : [])];
-  return Array.from({ length: count }, (_, i) => ({ par: arranged[i] || 4, yards: [0], hcp: i + 1 }));
+// ── AI LOOKUP ─────────────────────────────────────────────────────
+async function runAILookup() {
+  const name = document.getElementById('ac-name').value.trim();
+  const city = document.getElementById('ac-city').value.trim();
+  if (!name) { document.getElementById('ac-error').style.display = 'block'; document.getElementById('ac-error').textContent = 'Enter a course name first.'; return; }
+  document.getElementById('ac-error').style.display = 'none';
+
+  const resultEl = document.getElementById('ai-result');
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = `<div class="ai-lookup-card">
+    <div class="ai-status loading"><span class="spinner"></span> Looking up scorecard for "${name}"…</div>
+  </div>`;
+
+  const btn = document.getElementById('btn-lookup');
+  btn.disabled = true; btn.textContent = 'Looking up…';
+
+  const result = await lookupCourseAI(name, city);
+
+  btn.disabled = false; btn.textContent = '✦ Look up scorecard';
+
+  if (result) {
+    aiCourseData = result;
+    // Pre-fill manual fields with AI data
+    const totalPar = result.holes.reduce((s, h) => s + h.par, 0);
+    document.getElementById('ac-par').value = totalPar;
+    document.getElementById('ac-holes').value = result.holes.length <= 9 ? '9' : '18';
+    if (result.tees && result.tees.length > 0) {
+      const t = result.tees[0];
+      document.getElementById('ac-tee').value = t.name || '';
+      document.getElementById('ac-rating').value = t.rating || '';
+      document.getElementById('ac-slope').value = t.slope || '';
+      document.getElementById('ac-yards').value = t.yards || '';
+      // Match tee color
+      const colorOpt = document.querySelector(`.tee-color-opt[data-color="${t.color}"]`);
+      if (colorOpt) { document.querySelectorAll('.tee-color-opt').forEach(o => o.classList.remove('active')); colorOpt.classList.add('active'); selectedTeeColor = t.color; }
+    }
+    // Show hole preview
+    const holesHtml = result.holes.map(h =>
+      `<div class="ai-hole-cell">
+        <div class="ai-hole-num">${h.hole}</div>
+        <div class="ai-hole-par">${h.par}</div>
+        <div class="ai-hole-hcp">${h.hcp}</div>
+      </div>`
+    ).join('');
+    resultEl.innerHTML = `<div class="ai-lookup-card success">
+      <div class="ai-status success">✓ Scorecard found — ${result.holes.length} holes, Par ${totalPar}</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Hole · Par · Stroke index</div>
+      <div class="ai-holes-preview">${holesHtml}</div>
+      ${result.tees?.length > 1 ? `<div style="font-size:12px;color:var(--muted);margin-top:10px;">${result.tees.length} tee sets found — select which one you're playing below</div>` : ''}
+    </div>`;
+  } else {
+    aiCourseData = null;
+    resultEl.innerHTML = `<div class="ai-lookup-card fail">
+      <div class="ai-status fail">Scorecard not found — fill in the details below and we'll save it for everyone</div>
+    </div>`;
+  }
 }
 
-function extractState(city) {
-  const m = (city || '').match(/,\s*([A-Z]{2})$/);
-  return m ? m[1] : '';
+async function lookupCourseAI(name, city) {
+  const prompt = `You are a golf course database. Return ONLY a valid JSON object (no markdown, no explanation) for the golf course named "${name}"${city ? ' in ' + city : ''}.
+
+JSON structure:
+{
+  "name": "Full official course name",
+  "city": "City, ST",
+  "state": "ST",
+  "holes": [
+    { "hole": 1, "par": 4, "hcp": 7 },
+    ... all 18 holes ...
+  ],
+  "tees": [
+    { "name": "Black", "color": "#222222", "yards": 7200, "rating": 74.5, "slope": 138 },
+    { "name": "Blue",  "color": "#3366cc", "yards": 6700, "rating": 72.1, "slope": 132 },
+    { "name": "White", "color": "#ffffff", "yards": 6200, "rating": 69.8, "slope": 125 },
+    { "name": "Red",   "color": "#cc3333", "yards": 5600, "rating": 71.2, "slope": 120 }
+  ]
 }
+
+Rules:
+- holes must have all 18 entries (or 9 for a 9-hole course)
+- hcp is the real stroke index for that hole (1=hardest, 18=easiest)
+- Include all real tee sets with accurate yardage, rating, slope
+- Use only these tee colors: #222222 (Black), #3366cc (Blue), #ffffff (White), #cc3333 (Red), #c8a84b (Gold/Yellow), #4a9a4a (Green)
+- If you do NOT know this specific course, return exactly: {"unknown":true}
+- Return ONLY the JSON`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1200,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content?.[0]?.text || '').trim().replace(/```json|```/g, '').trim();
+    const json = JSON.parse(text);
+    if (json.unknown || !json.holes || json.holes.length < 9) return null;
+    return json;
+  } catch(e) {
+    console.warn('AI lookup error:', e);
+    return null;
+  }
+}
+
+function buildDefaultHoles(count, totalPar) {
+  const par5s = count === 18 ? 2 : 1, par3s = count === 18 ? 4 : 2, par4s = count - par5s - par3s;
+  const pars = [...Array(par5s).fill(5), ...Array(par4s).fill(4), ...Array(par3s).fill(3)];
+  const arr = [pars[0],pars[1],pars[2],pars[3],pars[4],pars[5],pars[6],pars[7],pars[8],...(count>9?pars.slice(9):[])];
+  return Array.from({ length: count }, (_, i) => ({ hole: i+1, par: arr[i]||4, yards:[0], hcp: i+1 }));
+}
+
+function extractState(city) { const m=(city||'').match(/,\s*([A-Z]{2})$/); return m?m[1]:''; }
 
 async function submitCourse() {
   const name = document.getElementById('ac-name').value.trim();
   const city = document.getElementById('ac-city').value.trim();
   const par = parseInt(document.getElementById('ac-par').value) || 72;
-  const holes = parseInt(document.getElementById('ac-holes').value) || 18;
+  const holeCount = parseInt(document.getElementById('ac-holes').value) || 18;
   const tee = document.getElementById('ac-tee').value.trim() || 'Blue';
   const rating = parseFloat(document.getElementById('ac-rating').value) || 72.0;
   const slope = parseInt(document.getElementById('ac-slope').value) || 113;
   const yards = parseInt(document.getElementById('ac-yards').value) || 6500;
   const errEl = document.getElementById('ac-error');
 
-  if (!name) { errEl.style.display = 'block'; errEl.textContent = 'Course name is required.'; return; }
+  if (!name) { errEl.style.display='block'; errEl.textContent='Course name is required.'; return; }
   errEl.style.display = 'none';
 
   const btn = document.getElementById('btn-ac');
   btn.textContent = 'Saving...'; btn.disabled = true;
 
+  // Use AI holes if available, otherwise synthetic
+  const holes = aiCourseData?.holes
+    ? aiCourseData.holes.map(h => ({ hole: h.hole, par: h.par, yards: [0], hcp: h.hcp }))
+    : buildDefaultHoles(holeCount, par);
+
+  // Use all AI tees if available, otherwise just the one the user entered
+  const tees = aiCourseData?.tees && aiCourseData.tees.length > 0
+    ? aiCourseData.tees
+    : [{ name: tee, color: selectedTeeColor, yards, rating, slope }];
+
   const course = {
     name, city,
     state: extractState(city),
     region: 'Community',
-    type: holes <= 9 ? 'executive' : 'regulation',
-    tees: [{ name: tee, color: selectedTeeColor, yards, rating, slope }],
-    holes: buildDefaultHoles(holes, par),
-    holePars: buildDefaultHoles(holes, par).map(h => h.par)
+    type: holeCount <= 9 ? 'executive' : 'regulation',
+    tees, holes,
+    holePars: holes.map(h => h.par)
   };
 
   try {
@@ -537,67 +631,51 @@ async function submitCourse() {
   }
 
   btn.textContent = 'Save & select →'; btn.disabled = false;
-
-  // Select this course and go straight to tees
   G.course = course; G.tee = null;
-  const idx = Object.keys(GK_CACHE).filter(k => k.startsWith('r_')).length;
-  GK_CACHE['r_' + idx] = course;
   goTo('tees');
 }
 
 // ── TEE SCREEN ────────────────────────────────────────────────────
-
 function buildTeeScreen() {
   if (!G.course) return;
   const c = G.course;
-  const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : 72;
+  const par = c.holes ? c.holes.reduce((s,h) => s+h.par, 0) : 72;
   const meta = [c.city, c.state].filter(Boolean).join(', ');
   document.getElementById('cc-name').textContent = c.name;
-  document.getElementById('cc-meta').textContent = [meta, 'Par ' + par].filter(Boolean).join(' · ');
-
+  document.getElementById('cc-meta').textContent = [meta, 'Par '+par].filter(Boolean).join(' · ');
   const tees = c.tees || [];
   const list = document.getElementById('tee-list');
-
-  if (tees.length === 0) {
-    G.tee = { name: 'Standard', rating: null, slope: null };
-    list.innerHTML = '<div style="font-size:14px;color:var(--muted);padding:10px 0;">No tee data available — standard tees will be used.</div>';
-    const btn = document.getElementById('btn-t');
-    btn.disabled = false; btn.classList.add('active-cta');
+  if (!tees.length) {
+    G.tee = { name:'Standard', rating:null, slope:null };
+    list.innerHTML = '<div style="font-size:14px;color:var(--muted);padding:10px 0;">No tee data — standard tees will be used.</div>';
+    const b = document.getElementById('btn-t'); b.disabled=false; b.classList.add('active-cta');
     return;
   }
-
-  list.innerHTML = tees.map((t, i) => {
+  list.innerHTML = tees.map((t,i) => {
     const sel = G.tee && G.tee.name === t.name;
-    const stats = [
-      t.yards ? t.yards.toLocaleString() + ' yards' : null,
-      t.rating && t.slope ? 'Rating ' + t.rating + ' / Slope ' + t.slope : null
-    ].filter(Boolean).join(' · ');
-    return `<div class="tee-card${sel ? ' sel' : ''}" onclick="selTee(${i})">
-      <div class="tee-dot" style="background:${t.color || '#888'};${t.color === '#ffffff' ? 'border-color:rgba(255,255,255,0.5);' : ''}"></div>
+    const stats = [t.yards?t.yards.toLocaleString()+' yards':null, t.rating&&t.slope?'Rating '+t.rating+' / Slope '+t.slope:null].filter(Boolean).join(' · ');
+    return `<div class="tee-card${sel?' sel':''}" onclick="selTee(${i})">
+      <div class="tee-dot" style="background:${t.color||'#888'};"></div>
       <div class="tee-card-info">
         <div class="tee-card-name">${t.name} tees</div>
-        <div class="tee-card-stats">${stats || 'No yardage data'}</div>
+        <div class="tee-card-stats">${stats||'No yardage data'}</div>
       </div>
       <div class="tee-card-check"><svg class="tee-chk" width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>`;
   }).join('');
 }
-
 function selTee(i) {
   G.tee = G.course?.tees?.[i];
-  document.querySelectorAll('.tee-card').forEach((el, idx) => el.classList.toggle('sel', idx === i));
-  const btn = document.getElementById('btn-t');
-  btn.disabled = false; btn.classList.add('active-cta');
+  document.querySelectorAll('.tee-card').forEach((el,idx) => el.classList.toggle('sel', idx===i));
+  const b = document.getElementById('btn-t'); b.disabled=false; b.classList.add('active-cta');
 }
 
 // ── PLAYERS ───────────────────────────────────────────────────────
-
 let pid = 0;
 function addP() {
-  pid++; const id = pid;
-  const div = document.createElement('div');
-  div.className = 'player-row'; div.id = 'pr-' + id;
-  div.innerHTML = `<div class="player-avatar" id="av-${id}">?</div>
+  pid++; const id=pid;
+  const div=document.createElement('div'); div.className='player-row'; div.id='pr-'+id;
+  div.innerHTML=`<div class="player-avatar" id="av-${id}">?</div>
     <div style="flex:1;display:flex;gap:8px;">
       <input class="player-input" style="flex:2;" type="text" placeholder="Name" id="pn-${id}" oninput="upAv(${id});chkP()"/>
       <input class="player-input" style="flex:1;min-width:60px;" type="number" placeholder="HCP" min="0" max="54" step="0.1" id="ph-${id}" oninput="chkP()"/>
@@ -605,44 +683,38 @@ function addP() {
     <button class="player-remove" onclick="rmP(${id})">&#x2715;</button>`;
   document.getElementById('plist').appendChild(div); chkP();
 }
-
-function rmP(id) { const e = document.getElementById('pr-' + id); if (e) e.remove(); chkP(); }
-
+function rmP(id) { const e=document.getElementById('pr-'+id); if(e)e.remove(); chkP(); }
 function upAv(id) {
-  const n = (document.getElementById('pn-' + id)?.value || '').trim();
-  const av = document.getElementById('av-' + id); if (!av) return;
-  const p = n.split(' ').filter(Boolean);
-  av.textContent = p.length > 1 ? (p[0][0] + p[1][0]).toUpperCase() : n ? n[0].toUpperCase() : '?';
+  const n=(document.getElementById('pn-'+id)?.value||'').trim();
+  const av=document.getElementById('av-'+id); if(!av)return;
+  const p=n.split(' ').filter(Boolean);
+  av.textContent=p.length>1?(p[0][0]+p[1][0]).toUpperCase():n?n[0].toUpperCase():'?';
 }
-
 function chkP() {
-  const rows = document.querySelectorAll('.player-row');
-  const players = [];
-  rows.forEach(r => {
-    const id = r.id.replace('pr-', '');
-    const n = document.getElementById('pn-' + id)?.value.trim();
-    const h = document.getElementById('ph-' + id)?.value;
-    if (n) players.push({ name: n, hdcp: parseFloat(h) || 0 });
+  const rows=document.querySelectorAll('.player-row'); const players=[];
+  rows.forEach(r=>{
+    const id=r.id.replace('pr-','');
+    const n=document.getElementById('pn-'+id)?.value.trim();
+    const h=document.getElementById('ph-'+id)?.value;
+    if(n)players.push({name:n,hdcp:parseFloat(h)||0});
   });
-  G.players = players;
-  const btn = document.getElementById('btn-p');
-  btn.disabled = players.length < 2;
-  if (players.length >= 2) btn.classList.add('active-cta'); else btn.classList.remove('active-cta');
-  document.getElementById('add-btn').style.display = rows.length >= 4 ? 'none' : 'flex';
-  document.getElementById('nassau-note').style.display = G.game === 'nassau' ? 'block' : 'none';
+  G.players=players;
+  const btn=document.getElementById('btn-p');
+  btn.disabled=players.length<2;
+  if(players.length>=2)btn.classList.add('active-cta'); else btn.classList.remove('active-cta');
+  document.getElementById('add-btn').style.display=rows.length>=4?'none':'flex';
+  document.getElementById('nassau-note').style.display=G.game==='nassau'?'block':'none';
 }
 
 // ── SUMMARY ───────────────────────────────────────────────────────
-
 function buildSum() {
-  const labels = { skins: 'Net Skins', nassau: 'Nassau (' + G.fmt + ')', stableford: 'Stableford' };
-  document.getElementById('sum-g').textContent = labels[G.game] || '—';
-  document.getElementById('sum-c').textContent = G.course?.name || '—';
-  document.getElementById('sum-t').textContent = G.tee
-    ? `${G.tee.name}${G.tee.rating ? ' · Rating ' + G.tee.rating + ' / Slope ' + G.tee.slope : ''}${G.tee.yards ? ' · ' + G.tee.yards.toLocaleString() + 'y' : ''}`
-    : '—';
-  document.getElementById('sum-p').innerHTML = G.players.map(p => {
-    const ini = p.name.split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  const labels={skins:'Net Skins',nassau:'Nassau ('+G.fmt+')',stableford:'Stableford'};
+  document.getElementById('sum-g').textContent=labels[G.game]||'—';
+  document.getElementById('sum-c').textContent=G.course?.name||'—';
+  document.getElementById('sum-t').textContent=G.tee
+    ?`${G.tee.name}${G.tee.rating?' · Rating '+G.tee.rating+' / Slope '+G.tee.slope:''}${G.tee.yards?' · '+G.tee.yards.toLocaleString()+'y':''}`:'—';
+  document.getElementById('sum-p').innerHTML=G.players.map(p=>{
+    const ini=p.name.split(' ').filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2);
     return `<div class="sum-player"><div class="sum-av">${ini}</div><div class="sum-name">${p.name}</div><div class="sum-hdcp">HCP ${p.hdcp.toFixed(1)}</div></div>`;
   }).join('');
 }
