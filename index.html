@@ -739,30 +739,26 @@ function stepHcp(dir){
   const hole=HE.holes[HE.currentHole];
   const max=HE.holeCount;
 
-  // Current value — null treated as 0 so first + goes to 1
-  const cur=hole.hcp||0;
-  let next=cur+dir;
-  if(next<1) next=max;
-  if(next>max) next=1;
+  // Values assigned to OTHER holes (ignore null/unset)
+  const taken=HE.holes
+    .filter((_,i)=>i!==HE.currentHole)
+    .map(h=>h.hcp)
+    .filter(v=>v!==null);
 
-  // Check if this value is already used by another hole
-  const otherHcps=new Set(
-    HE.holes.filter((_,i)=>i!==HE.currentHole).map(h=>h.hcp)
-  );
+  // Start from current (null=0 so first + tap lands on 1)
+  let next=(hole.hcp||0)+dir;
 
-  if(otherHcps.has(next)){
-    // Skip over taken values in the step direction
-    let attempts=0;
-    while(otherHcps.has(next)&&attempts<max){
-      next+=dir;
-      if(next<1) next=max;
-      if(next>max) next=1;
-      attempts++;
-    }
-    if(otherHcps.has(next)){
-      document.getElementById('hcp-error').textContent='All stroke index values are taken.';
-      return;
-    }
+  // Try every value in range until we find one not taken
+  for(let i=0;i<max;i++){
+    if(next<1) next=max;
+    if(next>max) next=1;
+    if(!taken.includes(next)) break;
+    next+=dir;
+  }
+
+  if(taken.includes(next)){
+    document.getElementById('hcp-error').textContent='All values taken.';
+    return;
   }
 
   hole.hcp=next;
