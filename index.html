@@ -13,148 +13,208 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --fairway: #1a2e1a; --rough: #2d4a2d; --rough-hover: #3a5c3a;
-    --flag: #c8a84b; --white: #f5f0e8; --muted: rgba(245,240,232,0.6);
-    --border: rgba(255,255,255,0.15); --danger: #c0392b; --radius: 16px;
-    --safe-bottom: env(safe-area-inset-bottom, 20px);
+    --fairway:#1a2e1a; --rough:#2d4a2d; --rough-hover:#3a5c3a;
+    --flag:#c8a84b; --white:#f5f0e8; --muted:rgba(245,240,232,0.6);
+    --border:rgba(255,255,255,0.15); --danger:#c0392b; --radius:16px;
+    --safe-bottom:env(safe-area-inset-bottom,20px);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overflow: hidden; background: var(--fairway); }
-  body { font-family: 'DM Sans', sans-serif; color: var(--white); }
-  .screen { position: absolute; inset: 0; overflow-y: auto; display: none; flex-direction: column; background: var(--fairway); }
-  .screen.active { display: flex; }
-  header { padding: 18px 20px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .logo { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
-  .logo span { color: var(--flag); }
-  .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; font-weight: 300; }
-  .steps { display: flex; gap: 6px; padding: 14px 20px 0; flex-shrink: 0; }
-  .step { height: 3px; flex: 1; border-radius: 2px; background: rgba(255,255,255,0.2); }
-  .step.done { background: var(--flag); }
-  .step.cur { background: var(--flag); opacity: 0.5; }
-  .step-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 20px 14px; font-weight: 300; flex-shrink: 0; }
-  .body { padding: 0 20px 20px; flex: 1; }
-  .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 16px 20px; background: var(--rough); border: 1px solid rgba(255,255,255,0.25); border-radius: var(--radius); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; margin-bottom: 12px; transition: background 0.2s; }
-  .btn:hover { background: var(--rough-hover); }
-  .btn.cta { background: var(--flag); border-color: var(--flag); color: var(--fairway); font-weight: 700; }
-  .btn.cta:hover { opacity: 0.9; }
-  .bottom-nav { padding: 14px 20px calc(14px + var(--safe-bottom)); border-top: 1px solid var(--border); display: flex; gap: 10px; flex-shrink: 0; background: var(--fairway); }
-  .nav-back { background: var(--rough); border: 1px solid rgba(255,255,255,0.25); color: var(--white); border-radius: var(--radius); padding: 14px 20px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
-  .nav-back:hover { background: var(--rough-hover); }
-  .nav-next { flex: 1; background: var(--rough); border: 1px solid rgba(255,255,255,0.25); color: var(--white); border-radius: var(--radius); padding: 14px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, opacity 0.2s; }
-  .nav-next:hover:not(:disabled) { background: var(--rough-hover); }
-  .nav-next:disabled { opacity: 0.3; cursor: not-allowed; }
-  .nav-next.active-cta { background: var(--flag); color: var(--fairway); border-color: var(--flag); }
-  .nav-next.active-cta:hover:not(:disabled) { opacity: 0.9; background: var(--flag); }
-  .game-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; margin-bottom: 10px; transition: background 0.2s, border-color 0.2s; }
-  .game-card:hover { background: var(--rough-hover); }
-  .game-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
-  .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .card-name { font-size: 16px; font-weight: 500; flex: 1; }
-  .card-badge { font-size: 10px; padding: 3px 9px; border-radius: 20px; background: rgba(255,255,255,0.1); color: var(--muted); letter-spacing: 0.5px; }
-  .card-check { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .game-card.sel .card-check { background: var(--flag); border-color: var(--flag); }
-  .chk-icon { display: none; } .game-card.sel .chk-icon { display: block; }
-  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.55; font-weight: 300; }
-  .fmt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
-  .fmt-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; cursor: pointer; text-align: center; transition: background 0.2s, border-color 0.2s; }
-  .fmt-card:hover { background: var(--rough-hover); }
-  .fmt-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
-  .fmt-title { font-size: 17px; font-weight: 500; margin-bottom: 3px; }
-  .fmt-sub { font-size: 12px; color: var(--muted); }
-  .section-lbl { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 16px 0 10px; font-weight: 300; }
-  .search-wrap { position: relative; margin-bottom: 10px; }
-  .search-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); color: var(--white); font-size: 15px; padding: 14px 14px 14px 44px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
-  .search-input:focus { border-color: var(--flag); }
-  .search-input::placeholder { color: var(--muted); }
-  .search-icon-wrap { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; pointer-events: none; }
-  .search-status { font-size: 13px; color: var(--muted); padding: 10px 4px; }
-  .course-result { background: var(--rough); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; cursor: pointer; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: background 0.2s, border-color 0.2s; }
-  .course-result:hover { background: var(--rough-hover); border-color: rgba(200,168,75,0.4); }
-  .course-result.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
-  .course-result-info { flex: 1; }
-  .course-result-name { font-size: 15px; font-weight: 500; margin-bottom: 3px; }
-  .course-result-meta { font-size: 12px; color: var(--muted); }
-  .course-result-arrow { color: var(--muted); font-size: 20px; }
-  .add-course-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: none; border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--radius); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; margin-top: 8px; transition: border-color 0.2s, color 0.2s; }
-  .add-course-btn:hover { border-color: var(--flag); color: var(--flag); }
-  .course-confirmed { background: rgba(200,168,75,0.08); border: 1px solid rgba(200,168,75,0.4); border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-  .course-confirmed-info { flex: 1; }
-  .course-confirmed-name { font-size: 15px; font-weight: 500; }
-  .course-confirmed-meta { font-size: 12px; color: var(--flag); margin-top: 2px; }
-  .course-change-btn { background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: var(--muted); font-size: 12px; padding: 5px 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: border-color 0.2s, color 0.2s; }
-  .course-change-btn:hover { border-color: var(--flag); color: var(--flag); }
-  .tee-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; transition: background 0.2s, border-color 0.2s; }
-  .tee-card:hover { background: var(--rough-hover); border-color: rgba(200,168,75,0.4); }
-  .tee-card.sel { border-color: var(--flag); background: rgba(200,168,75,0.1); }
-  .tee-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); }
-  .tee-card-info { flex: 1; }
-  .tee-card-name { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
-  .tee-card-stats { font-size: 12px; color: var(--muted); }
-  .tee-card-check { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .tee-card.sel .tee-card-check { background: var(--flag); border-color: var(--flag); }
-  .tee-chk { display: none; } .tee-card.sel .tee-chk { display: block; }
-  .form-group { margin-bottom: 14px; }
-  .form-label { font-size: 11px; color: var(--muted); letter-spacing: 1.2px; text-transform: uppercase; font-weight: 300; margin-bottom: 6px; display: block; }
-  .form-input { width: 100%; background: var(--rough); border: 1px solid var(--border); border-radius: 12px; color: var(--white); font-size: 15px; padding: 13px 14px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
-  .form-input:focus { border-color: var(--flag); }
-  .form-input::placeholder { color: var(--muted); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .form-hint { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 300; }
-  .tee-color-row { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
-  .tee-color-opt { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: border-color 0.15s; flex-shrink: 0; }
-  .tee-color-opt.active { border-color: var(--flag); }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;overflow:hidden;background:var(--fairway);}
+  body{font-family:'DM Sans',sans-serif;color:var(--white);}
+  .screen{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column;background:var(--fairway);}
+  .screen.active{display:flex;}
+  header{padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .logo{font-size:22px;font-weight:600;letter-spacing:-0.3px;}
+  .logo span{color:var(--flag);}
+  .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;font-weight:300;}
+  .steps{display:flex;gap:6px;padding:14px 20px 0;flex-shrink:0;}
+  .step{height:3px;flex:1;border-radius:2px;background:rgba(255,255,255,0.2);}
+  .step.done{background:var(--flag);}
+  .step.cur{background:var(--flag);opacity:0.5;}
+  .step-lbl{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;padding:8px 20px 14px;font-weight:300;flex-shrink:0;}
+  .body{padding:0 20px 20px;flex:1;}
 
-  /* AI lookup states */
-  .ai-lookup-card { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
-  .ai-lookup-card.success { border-color: rgba(74,154,74,0.6); background: rgba(74,154,74,0.08); }
-  .ai-lookup-card.fail { border-color: rgba(255,255,255,0.2); }
-  .ai-status { font-size: 14px; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .ai-status.loading { color: var(--flag); }
-  .ai-status.success { color: #4a9a4a; }
-  .ai-status.fail { color: var(--muted); }
-  .ai-holes-preview { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 10px; }
-  .ai-hole-cell { background: rgba(0,0,0,0.2); border-radius: 6px; padding: 4px 2px; text-align: center; }
-  .ai-hole-num { font-size: 9px; color: var(--muted); }
-  .ai-hole-par { font-size: 13px; font-weight: 600; color: var(--white); }
-  .ai-hole-hcp { font-size: 9px; color: var(--flag); }
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(200,168,75,0.3); border-top-color: var(--flag); border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  /* BUTTONS */
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 20px;background:var(--rough);border:1px solid rgba(255,255,255,0.25);border-radius:var(--radius);color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:12px;transition:background 0.2s;}
+  .btn:hover{background:var(--rough-hover);}
+  .btn.cta{background:var(--flag);border-color:var(--flag);color:var(--fairway);font-weight:700;}
+  .btn.cta:hover{opacity:0.9;}
+  .bottom-nav{padding:14px 20px calc(14px + var(--safe-bottom));border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;background:var(--fairway);}
+  .nav-back{background:var(--rough);border:1px solid rgba(255,255,255,0.25);color:var(--white);border-radius:var(--radius);padding:14px 20px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s;}
+  .nav-back:hover{background:var(--rough-hover);}
+  .nav-next{flex:1;background:var(--rough);border:1px solid rgba(255,255,255,0.25);color:var(--white);border-radius:var(--radius);padding:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s,opacity 0.2s;}
+  .nav-next:hover:not(:disabled){background:var(--rough-hover);}
+  .nav-next:disabled{opacity:0.3;cursor:not-allowed;}
+  .nav-next.active-cta{background:var(--flag);color:var(--fairway);border-color:var(--flag);}
+  .nav-next.active-cta:hover:not(:disabled){opacity:0.9;background:var(--flag);}
 
-  .player-row { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .player-avatar { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(200,168,75,0.15); border: 1px solid var(--flag); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--flag); }
-  .player-input { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px; color: var(--white); font-size: 14px; padding: 9px 10px; font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
-  .player-input:focus { border-color: var(--flag); }
-  .player-input::placeholder { color: var(--muted); }
-  .player-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 4px; transition: color 0.2s; }
-  .player-remove:hover { color: var(--danger); }
-  .add-player-btn { width: 100%; background: none; border: 1px dashed rgba(255,255,255,0.2); border-radius: var(--radius); color: var(--muted); font-size: 14px; padding: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'DM Sans', sans-serif; margin-top: 4px; transition: border-color 0.2s, color 0.2s; }
-  .add-player-btn:hover { border-color: var(--flag); color: var(--flag); }
-  .note { background: var(--rough); border-radius: 10px; padding: 10px 14px; font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 10px; font-weight: 300; }
-  .sum-block { background: var(--rough); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
-  .sum-lbl { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; font-weight: 300; }
-  .sum-val { font-size: 16px; font-weight: 500; }
-  .sum-player { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .sum-player:last-child { margin-bottom: 0; }
-  .sum-av { width: 30px; height: 30px; border-radius: 50%; background: rgba(200,168,75,0.15); border: 1px solid var(--flag); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--flag); flex-shrink: 0; }
-  .sum-name { font-size: 14px; flex: 1; }
-  .sum-hdcp { font-size: 13px; color: var(--flag); font-weight: 500; }
-  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
-  .pill { background: var(--rough); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 12px; color: var(--muted); }
+  /* GAME CARDS */
+  .game-card{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;margin-bottom:10px;transition:background 0.2s,border-color 0.2s;}
+  .game-card:hover{background:var(--rough-hover);}
+  .game-card.sel{border-color:var(--flag);background:rgba(200,168,75,0.1);}
+  .card-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .card-name{font-size:16px;font-weight:500;flex:1;}
+  .card-badge{font-size:10px;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.1);color:var(--muted);letter-spacing:0.5px;}
+  .card-check{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .game-card.sel .card-check{background:var(--flag);border-color:var(--flag);}
+  .chk-icon{display:none;} .game-card.sel .chk-icon{display:block;}
+  .card-desc{font-size:13px;color:var(--muted);line-height:1.55;font-weight:300;}
+  .fmt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+  .fmt-card{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;transition:background 0.2s,border-color 0.2s;}
+  .fmt-card:hover{background:var(--rough-hover);}
+  .fmt-card.sel{border-color:var(--flag);background:rgba(200,168,75,0.1);}
+  .fmt-title{font-size:17px;font-weight:500;margin-bottom:3px;}
+  .fmt-sub{font-size:12px;color:var(--muted);}
+  .section-lbl{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin:16px 0 10px;font-weight:300;}
+
+  /* COURSE SEARCH */
+  .search-wrap{position:relative;margin-bottom:10px;}
+  .search-input{width:100%;background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);color:var(--white);font-size:15px;padding:14px 14px 14px 44px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;}
+  .search-input:focus{border-color:var(--flag);}
+  .search-input::placeholder{color:var(--muted);}
+  .search-icon-wrap{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:18px;pointer-events:none;}
+  .search-status{font-size:13px;color:var(--muted);padding:10px 4px;}
+  .course-result{background:var(--rough);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:background 0.2s,border-color 0.2s;}
+  .course-result:hover{background:var(--rough-hover);border-color:rgba(200,168,75,0.4);}
+  .course-result.sel{border-color:var(--flag);background:rgba(200,168,75,0.1);}
+  .course-result-info{flex:1;}
+  .course-result-name{font-size:15px;font-weight:500;margin-bottom:3px;}
+  .course-result-meta{font-size:12px;color:var(--muted);}
+  .course-result-arrow{color:var(--muted);font-size:20px;}
+  .add-course-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:none;border:1px dashed rgba(255,255,255,0.2);border-radius:var(--radius);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;margin-top:8px;transition:border-color 0.2s,color 0.2s;}
+  .add-course-btn:hover{border-color:var(--flag);color:var(--flag);}
+  .course-confirmed{background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.4);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+  .course-confirmed-info{flex:1;}
+  .course-confirmed-name{font-size:15px;font-weight:500;}
+  .course-confirmed-meta{font-size:12px;color:var(--flag);margin-top:2px;}
+  .course-change-btn{background:none;border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:var(--muted);font-size:12px;padding:5px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:border-color 0.2s,color 0.2s;}
+  .course-change-btn:hover{border-color:var(--flag);color:var(--flag);}
+
+  /* TEE CARDS */
+  .tee-card{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;gap:14px;transition:background 0.2s,border-color 0.2s;}
+  .tee-card:hover{background:var(--rough-hover);border-color:rgba(200,168,75,0.4);}
+  .tee-card.sel{border-color:var(--flag);background:rgba(200,168,75,0.1);}
+  .tee-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.2);}
+  .tee-card-info{flex:1;}
+  .tee-card-name{font-size:16px;font-weight:500;margin-bottom:3px;}
+  .tee-card-stats{font-size:12px;color:var(--muted);}
+  .tee-card-check{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .tee-card.sel .tee-card-check{background:var(--flag);border-color:var(--flag);}
+  .tee-chk{display:none;} .tee-card.sel .tee-chk{display:block;}
+
+  /* FORM */
+  .form-group{margin-bottom:14px;}
+  .form-label{font-size:11px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;font-weight:300;margin-bottom:6px;display:block;}
+  .form-input{width:100%;background:var(--rough);border:1px solid var(--border);border-radius:12px;color:var(--white);font-size:15px;padding:13px 14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;}
+  .form-input:focus{border-color:var(--flag);}
+  .form-input::placeholder{color:var(--muted);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .form-hint{font-size:11px;color:var(--muted);margin-top:4px;font-weight:300;}
+  .tee-color-row{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;}
+  .tee-color-opt{width:36px;height:36px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:border-color 0.15s;flex-shrink:0;}
+  .tee-color-opt.active{border-color:var(--flag);}
+
+  /* HOLE COUNT PICKER */
+  .hole-count-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+  .hole-count-card{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:20px 14px;cursor:pointer;text-align:center;transition:background 0.2s,border-color 0.2s;}
+  .hole-count-card:hover{background:var(--rough-hover);}
+  .hole-count-card.sel{border-color:var(--flag);background:rgba(200,168,75,0.1);}
+  .hole-count-num{font-size:32px;font-weight:600;color:var(--white);margin-bottom:4px;}
+  .hole-count-lbl{font-size:12px;color:var(--muted);}
+
+  /* HOLE ENTRY */
+  .hole-progress{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap;}
+  .hole-pip{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--muted);transition:all 0.2s;cursor:pointer;}
+  .hole-pip.done{background:rgba(200,168,75,0.2);border-color:var(--flag);color:var(--flag);}
+  .hole-pip.cur{background:var(--flag);border-color:var(--flag);color:var(--fairway);}
+
+  .hole-entry-card{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+  .hole-entry-title{font-size:28px;font-weight:600;margin-bottom:4px;}
+  .hole-entry-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+
+  .entry-section{margin-bottom:20px;}
+  .entry-label{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-weight:300;margin-bottom:10px;}
+
+  /* Par buttons */
+  .par-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .par-btn{background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:22px;font-weight:600;padding:16px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;text-align:center;}
+  .par-btn:hover{background:rgba(255,255,255,0.08);}
+  .par-btn.sel{background:rgba(200,168,75,0.15);border-color:var(--flag);color:var(--flag);}
+
+  /* Stepper */
+  .stepper{display:flex;align-items:center;gap:0;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .stepper-btn{background:none;border:none;color:var(--white);font-size:22px;font-weight:300;padding:14px 20px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.15s;flex-shrink:0;line-height:1;}
+  .stepper-btn:hover{background:rgba(255,255,255,0.08);}
+  .stepper-btn:active{background:rgba(255,255,255,0.14);}
+  .stepper-val{flex:1;text-align:center;font-size:22px;font-weight:600;color:var(--white);font-family:'DM Sans',sans-serif;padding:14px 0;}
+  .stepper-val.muted{color:var(--muted);}
+  .stepper-error{font-size:11px;color:var(--danger);margin-top:6px;min-height:16px;}
+
+  /* Yardage digits */
+  .yard-digits{display:flex;gap:6px;align-items:center;}
+  .yard-digit-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+  .yard-digit-btn{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:6px 8px;transition:color 0.15s;}
+  .yard-digit-btn:hover{color:var(--white);}
+  .yard-digit-btn:active{color:var(--flag);}
+  .yard-digit{width:40px;height:52px;background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:var(--white);}
+  .yard-digit.active-col{border-color:var(--flag);}
+  .yard-sep{font-size:22px;font-weight:300;color:var(--muted);padding-bottom:4px;}
+
+  /* Review grid */
+  .review-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-bottom:8px;}
+  .review-cell{background:var(--rough);border:1px solid var(--border);border-radius:8px;padding:6px 2px;text-align:center;cursor:pointer;transition:border-color 0.15s;}
+  .review-cell:hover{border-color:var(--flag);}
+  .review-cell-num{font-size:9px;color:var(--muted);}
+  .review-cell-par{font-size:14px;font-weight:600;color:var(--white);}
+  .review-cell-hcp{font-size:9px;color:var(--flag);}
+  .review-cell-yds{font-size:9px;color:var(--muted);}
+
+  /* AI states */
+  .ai-lookup-card{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
+  .ai-lookup-card.success{border-color:rgba(74,154,74,0.6);background:rgba(74,154,74,0.08);}
+  .ai-status{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+  .ai-status.loading{color:var(--flag);}
+  .ai-status.success{color:#4a9a4a;}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(200,168,75,0.3);border-top-color:var(--flag);border-radius:50%;animation:spin 0.7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* PLAYERS */
+  .player-row{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:13px;display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .player-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;background:rgba(200,168,75,0.15);border:1px solid var(--flag);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--flag);}
+  .player-input{background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:14px;padding:9px 10px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s;}
+  .player-input:focus{border-color:var(--flag);}
+  .player-input::placeholder{color:var(--muted);}
+  .player-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;padding:4px;transition:color 0.2s;}
+  .player-remove:hover{color:var(--danger);}
+  .add-player-btn{width:100%;background:none;border:1px dashed rgba(255,255,255,0.2);border-radius:var(--radius);color:var(--muted);font-size:14px;padding:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Sans',sans-serif;margin-top:4px;transition:border-color 0.2s,color 0.2s;}
+  .add-player-btn:hover{border-color:var(--flag);color:var(--flag);}
+  .note{background:var(--rough);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px;font-weight:300;}
+
+  /* SUMMARY */
+  .sum-block{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
+  .sum-lbl{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;font-weight:300;}
+  .sum-val{font-size:16px;font-weight:500;}
+  .sum-player{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .sum-player:last-child{margin-bottom:0;}
+  .sum-av{width:30px;height:30px;border-radius:50%;background:rgba(200,168,75,0.15);border:1px solid var(--flag);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--flag);flex-shrink:0;}
+  .sum-name{font-size:14px;flex:1;}
+  .sum-hdcp{font-size:13px;color:var(--flag);font-weight:500;}
+  .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .pill{background:var(--rough);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--muted);}
 </style>
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/pureplay/sw.js', { scope: '/pureplay/' })
-        .then(() => { navigator.serviceWorker.addEventListener('message', e => { if (e.data?.type === 'UPDATE_AVAILABLE') showUpdateBanner(); }); })
-        .catch(err => console.log('SW failed:', err));
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('/pureplay/sw.js',{scope:'/pureplay/'})
+        .then(()=>{navigator.serviceWorker.addEventListener('message',e=>{if(e.data?.type==='UPDATE_AVAILABLE')showBanner();});})
+        .catch(e=>console.log('SW:',e));
     });
   }
-  function showUpdateBanner() {
-    if (document.getElementById('update-banner')) return;
-    const b = document.createElement('div');
-    b.id = 'update-banner';
-    b.style.cssText = 'position:fixed;bottom:80px;left:12px;right:12px;z-index:9999;background:#1a2e1a;border:1.5px solid #c8a84b;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;';
-    b.innerHTML = '<span style="flex:1;font-size:13px;font-family:DM Sans,sans-serif;">PurePlay updated — reload for the latest</span><button onclick="location.reload()" style="background:#c8a84b;border:none;border-radius:8px;color:#1a2e1a;font-size:13px;font-weight:600;padding:6px 14px;cursor:pointer;font-family:DM Sans,sans-serif;">Reload</button>';
+  function showBanner(){
+    if(document.getElementById('upd'))return;
+    const b=document.createElement('div');b.id='upd';
+    b.style.cssText='position:fixed;bottom:80px;left:12px;right:12px;z-index:9999;background:#1a2e1a;border:1.5px solid #c8a84b;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;';
+    b.innerHTML='<span style="flex:1;font-size:13px;font-family:DM Sans,sans-serif;">PurePlay updated</span><button onclick="location.reload()" style="background:#c8a84b;border:none;border-radius:8px;color:#1a2e1a;font-size:13px;font-weight:600;padding:6px 14px;cursor:pointer;font-family:DM Sans,sans-serif;">Reload</button>';
     document.body.appendChild(b);
   }
 </script>
@@ -217,7 +277,7 @@
     </div>
     <div id="search-status" class="search-status" style="display:none;"></div>
     <div id="cresults"></div>
-    <button class="add-course-btn" id="add-course-btn" onclick="startAddCourse()">+ Course not listed? Add it</button>
+    <button class="add-course-btn" onclick="startAddCourse()">+ Course not listed? Add it</button>
   </div>
   <div class="bottom-nav">
     <button class="nav-back" onclick="goTo('game')">Back</button>
@@ -225,86 +285,127 @@
   </div>
 </div>
 
-<!-- ADD COURSE -->
+<!-- ADD COURSE: details -->
 <div id="s-add-course" class="screen">
   <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Add course</div></header>
   <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
-  <div class="step-lbl">Add course to shared database</div>
+  <div class="step-lbl">Course details</div>
   <div class="body">
-
-    <!-- 1. Name + City -->
     <div class="form-group">
       <label class="form-label">Course name *</label>
-      <input class="form-input" type="text" id="ac-name" placeholder="e.g. Pebble Beach Golf Links"/>
+      <input class="form-input" type="text" id="ac-name" placeholder="e.g. Pottawatomie Golf Course"/>
     </div>
     <div class="form-group">
       <label class="form-label">City, State</label>
-      <input class="form-input" type="text" id="ac-city" placeholder="e.g. Pebble Beach, CA"/>
+      <input class="form-input" type="text" id="ac-city" placeholder="e.g. St. Charles, IL"/>
       <div class="form-hint">Include the 2-letter state so others can find it</div>
     </div>
-
-    <!-- 2. AI Lookup trigger -->
-    <button class="btn" id="btn-lookup" onclick="runAILookup()" style="margin-bottom:14px;">
-      ✦ Look up scorecard
-    </button>
-
-    <!-- 3. AI result panel — hidden until lookup runs -->
-    <div id="ai-result" style="display:none;"></div>
-
-    <!-- 4. Manual fields — always shown, pre-filled by AI if known -->
-    <div id="manual-fields">
-      <div class="section-lbl">Course details</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Total par</label>
-          <input class="form-input" type="number" id="ac-par" placeholder="72" min="27" max="73"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Holes</label>
-          <select class="form-input" id="ac-holes"><option value="18">18 holes</option><option value="9">9 holes</option></select>
-        </div>
-      </div>
-      <div class="section-lbl">Tee details</div>
-      <div class="form-group">
-        <label class="form-label">Tee name</label>
-        <input class="form-input" type="text" id="ac-tee" placeholder="e.g. Blue, White, Gold..."/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tee color</label>
-        <div class="tee-color-row">
-          <div class="tee-color-opt active" data-color="#222222" style="background:#222222;" onclick="selTeeColor(this)"></div>
-          <div class="tee-color-opt" data-color="#3366cc" style="background:#3366cc;" onclick="selTeeColor(this)"></div>
-          <div class="tee-color-opt" data-color="#ffffff" style="background:#ffffff;border:3px solid rgba(255,255,255,0.4);" onclick="selTeeColor(this)"></div>
-          <div class="tee-color-opt" data-color="#cc3333" style="background:#cc3333;" onclick="selTeeColor(this)"></div>
-          <div class="tee-color-opt" data-color="#c8a84b" style="background:#c8a84b;" onclick="selTeeColor(this)"></div>
-          <div class="tee-color-opt" data-color="#4a9a4a" style="background:#4a9a4a;" onclick="selTeeColor(this)"></div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Course rating</label>
-          <input class="form-input" type="number" id="ac-rating" placeholder="72.0" step="0.1" min="60" max="85"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Slope</label>
-          <input class="form-input" type="number" id="ac-slope" placeholder="113" min="55" max="155"/>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Yardage</label>
-        <input class="form-input" type="number" id="ac-yards" placeholder="6500" min="1000" max="9000"/>
+    <button class="btn" id="btn-lookup" onclick="runAILookup()">✦ Look up scorecard</button>
+    <div id="ai-result" style="display:none;margin-bottom:14px;"></div>
+    <div class="section-lbl">How many holes?</div>
+    <div class="hole-count-grid">
+      <div class="hole-count-card sel" id="hc-9" onclick="selHoleCount(9,this)"><div class="hole-count-num">9</div><div class="hole-count-lbl">holes</div></div>
+      <div class="hole-count-card" id="hc-18" onclick="selHoleCount(18,this)"><div class="hole-count-num">18</div><div class="hole-count-lbl">holes</div></div>
+    </div>
+    <div class="section-lbl" style="margin-top:18px;">Tee details</div>
+    <div class="form-group">
+      <label class="form-label">Tee color</label>
+      <div class="tee-color-row">
+        <div class="tee-color-opt" data-color="#222222" style="background:#222222;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt active" data-color="#3366cc" style="background:#3366cc;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#ffffff" style="background:#ffffff;border-color:rgba(255,255,255,0.4)!important;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#cc3333" style="background:#cc3333;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#c8a84b" style="background:#c8a84b;" onclick="selTeeColor(this)"></div>
+        <div class="tee-color-opt" data-color="#4a9a4a" style="background:#4a9a4a;" onclick="selTeeColor(this)"></div>
       </div>
     </div>
-
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Course rating</label>
+        <input class="form-input" type="number" id="ac-rating" placeholder="69.8" step="0.1" min="60" max="85"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Slope</label>
+        <input class="form-input" type="number" id="ac-slope" placeholder="113" min="55" max="155"/>
+      </div>
+    </div>
     <div id="ac-error" style="display:none;font-size:13px;color:#e05252;padding:8px 0;"></div>
   </div>
   <div class="bottom-nav">
     <button class="nav-back" onclick="goTo('course')">Back</button>
-    <button class="nav-next active-cta" id="btn-ac" onclick="submitCourse()">Save & select →</button>
+    <button class="nav-next active-cta" onclick="startHoleEntry()">Enter holes →</button>
   </div>
 </div>
 
-<!-- STEP 3: TEES -->
+<!-- HOLE ENTRY -->
+<div id="s-holes" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Add course</div></header>
+  <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="step-lbl" id="hole-step-lbl">Hole 1 of 9</div>
+  <div class="body">
+    <!-- Progress pips -->
+    <div class="hole-progress" id="hole-progress"></div>
+
+    <!-- Hole card -->
+    <div class="hole-entry-card">
+      <div class="hole-entry-title" id="hole-title">Hole 1</div>
+      <div class="hole-entry-sub" id="hole-sub"></div>
+
+      <!-- Par -->
+      <div class="entry-section">
+        <div class="entry-label">Par</div>
+        <div class="par-btns">
+          <button class="par-btn" id="par-3" onclick="selPar(3)">3</button>
+          <button class="par-btn sel" id="par-4" onclick="selPar(4)">4</button>
+          <button class="par-btn" id="par-5" onclick="selPar(5)">5</button>
+        </div>
+      </div>
+
+      <!-- Stroke index -->
+      <div class="entry-section">
+        <div class="entry-label">Hole handicap (stroke index)</div>
+        <div class="stepper">
+          <button class="stepper-btn" onclick="stepHcp(-1)">−</button>
+          <div class="stepper-val" id="hcp-val">1</div>
+          <button class="stepper-btn" onclick="stepHcp(1)">+</button>
+        </div>
+        <div class="stepper-error" id="hcp-error"></div>
+      </div>
+
+      <!-- Yardage -->
+      <div class="entry-section">
+        <div class="entry-label">Yardage</div>
+        <div class="yard-digits" id="yard-digits">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" id="hole-back-btn" onclick="holePrev()">Back</button>
+    <button class="nav-next active-cta" id="hole-next-btn" onclick="holeNext()">Next hole →</button>
+  </div>
+</div>
+
+<!-- HOLE REVIEW -->
+<div id="s-hole-review" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Add course</div></header>
+  <div class="steps"><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <div class="step-lbl">Review scorecard</div>
+  <div class="body">
+    <div style="font-size:15px;font-weight:500;margin-bottom:4px;" id="rev-course-name"></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px;" id="rev-course-meta"></div>
+    <div class="section-lbl">Tap any hole to edit</div>
+    <div class="review-grid" id="review-grid"></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px;" id="rev-totals"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" onclick="goTo('holes')">Back</button>
+    <button class="nav-next active-cta" id="btn-save-course" onclick="saveCourse()">Save & tee it up →</button>
+  </div>
+</div>
+
+<!-- STEP 3: TEES (from KV results) -->
 <div id="s-tees" class="screen">
   <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">New round</div></header>
   <div class="steps"><div class="step done"></div><div class="step done"></div><div class="step cur"></div><div class="step"></div><div class="step"></div></div>
@@ -360,338 +461,453 @@
 </div>
 
 <script>
-const WORKER_URL = 'https://purestrike-api.antonhirsch17.workers.dev';
-const GK_CACHE = {};
-const G = { game: null, fmt: '1v1', course: null, tee: null, players: [] };
-let searchTimer = null;
-let selectedTeeColor = '#222222';
-let aiCourseData = null; // stores full AI-returned course if lookup succeeded
+const WORKER_URL='https://purestrike-api.antonhirsch17.workers.dev';
+const GK_CACHE={};
+const G={game:null,fmt:'1v1',course:null,tee:null,players:[]};
+let searchTimer=null;
+let selectedTeeColor='#3366cc';
+let aiCourseData=null;
+
+// ── hole entry state ──────────────────────────────────────────────
+let HE = {
+  holeCount: 9,
+  currentHole: 0,   // 0-indexed
+  holes: [],         // [{par, hcp, yards}]
+  usedHcps: new Set()
+};
 
 // ── NAV ───────────────────────────────────────────────────────────
-function goTo(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('s-' + id).classList.add('active');
-  if (id === 'tees') buildTeeScreen();
-  if (id === 'players' && document.querySelectorAll('.player-row').length === 0) addP();
-  if (id === 'summary') buildSum();
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  if(id==='tees') buildTeeScreen();
+  if(id==='players'&&document.querySelectorAll('.player-row').length===0) addP();
+  if(id==='summary') buildSum();
+  if(id==='holes') renderHoleEntry();
+  if(id==='hole-review') buildReview();
 }
 
 // ── GAME ──────────────────────────────────────────────────────────
-function selGame(g, el) {
-  document.querySelectorAll('.game-card').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel'); G.game = g;
-  const btn = document.getElementById('btn-g');
-  btn.disabled = false; btn.classList.add('active-cta');
-  document.getElementById('fmt-wrap').style.display = g === 'nassau' ? 'block' : 'none';
+function selGame(g,el){
+  document.querySelectorAll('.game-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); G.game=g;
+  const btn=document.getElementById('btn-g'); btn.disabled=false; btn.classList.add('active-cta');
+  document.getElementById('fmt-wrap').style.display=g==='nassau'?'block':'none';
 }
-function selFmt(f, el) {
-  document.querySelectorAll('.fmt-card').forEach(c => c.classList.remove('sel'));
-  el.classList.add('sel'); G.fmt = f;
+function selFmt(f,el){
+  document.querySelectorAll('.fmt-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); G.fmt=f;
 }
 
 // ── COURSE SEARCH ─────────────────────────────────────────────────
-function onSearch(val) {
+function onSearch(val){
   clearTimeout(searchTimer);
-  if (val.trim().length < 2) { document.getElementById('cresults').innerHTML = ''; hideStatus(); return; }
+  if(val.trim().length<2){document.getElementById('cresults').innerHTML='';hideStatus();return;}
   showStatus('Searching...');
-  searchTimer = setTimeout(() => doSearch(val.trim()), 350);
+  searchTimer=setTimeout(()=>doSearch(val.trim()),350);
 }
-async function doSearch(q) {
-  if (GK_CACHE[q]) { renderResults(GK_CACHE[q]); return; }
+async function doSearch(q){
+  if(GK_CACHE[q]){renderResults(GK_CACHE[q]);return;}
   showStatus('Searching...');
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-  try {
-    const res = await fetch(`${WORKER_URL}/course?q=${encodeURIComponent(q)}`, { signal: controller.signal });
-    clearTimeout(timeout);
-    const data = await res.json();
-    const results = data.results || [];
-    GK_CACHE[q] = results;
+  const ctrl=new AbortController();
+  const t=setTimeout(()=>ctrl.abort(),8000);
+  try{
+    const res=await fetch(`${WORKER_URL}/course?q=${encodeURIComponent(q)}`,{signal:ctrl.signal});
+    clearTimeout(t);
+    if(!res.ok){showStatus('Course database error — try again or add it manually.');return;}
+    const data=await res.json();
+    const results=data.results||[];
+    GK_CACHE[q]=results;
     renderResults(results);
-  } catch(e) {
-    clearTimeout(timeout);
-    showStatus('Could not reach course database — check your connection.');
+  }catch(e){
+    clearTimeout(t);
+    showStatus(e.name==='AbortError'?'Search timed out.':'Could not reach course database — check connection.');
   }
 }
-function renderResults(courses) {
-  const el = document.getElementById('cresults');
-  if (!courses || courses.length === 0) {
-    showStatus('No courses found — try a different search or add it below.');
-    el.innerHTML = ''; return;
-  }
+function renderResults(courses){
+  const el=document.getElementById('cresults');
+  if(!courses||!courses.length){showStatus('No courses found — add it below.');el.innerHTML='';return;}
   hideStatus();
-  courses.forEach((c, i) => { GK_CACHE['r_' + i] = c; });
-  el.innerHTML = courses.map((c, i) => {
-    const par = c.holes ? c.holes.reduce((s, h) => s + h.par, 0) : 72;
-    const meta = [c.city, c.state].filter(Boolean).join(', ');
+  courses.forEach((c,i)=>{GK_CACHE['r_'+i]=c;});
+  el.innerHTML=courses.map((c,i)=>{
+    const par=c.holes?c.holes.reduce((s,h)=>s+h.par,0):72;
+    const meta=[c.city,c.state].filter(Boolean).join(', ');
     return `<div class="course-result" onclick="pickCourse(${i})">
       <div class="course-result-info">
         <div class="course-result-name">${c.name}</div>
-        <div class="course-result-meta">${meta}${meta ? ' · ' : ''}Par ${par} · ${c.holes?.length || 18} holes</div>
+        <div class="course-result-meta">${meta}${meta?' · ':''}Par ${par} · ${c.holes?.length||18} holes</div>
       </div>
       <div class="course-result-arrow">›</div>
     </div>`;
   }).join('');
 }
-function pickCourse(i) {
-  const c = GK_CACHE['r_' + i]; if (!c) return;
-  G.course = c; G.tee = null;
-  document.querySelectorAll('.course-result').forEach((el, idx) => el.classList.toggle('sel', idx === i));
-  const btn = document.getElementById('btn-c');
-  btn.disabled = false; btn.classList.add('active-cta');
+function pickCourse(i){
+  const c=GK_CACHE['r_'+i]; if(!c)return;
+  G.course=c; G.tee=null;
+  document.querySelectorAll('.course-result').forEach((el,idx)=>el.classList.toggle('sel',idx===i));
+  const btn=document.getElementById('btn-c'); btn.disabled=false; btn.classList.add('active-cta');
 }
-function changeCourse() {
-  G.course = null; G.tee = null;
-  document.getElementById('btn-c').disabled = true;
+function changeCourse(){
+  G.course=null; G.tee=null;
+  document.getElementById('btn-c').disabled=true;
   document.getElementById('btn-c').classList.remove('active-cta');
   goTo('course');
 }
-function showStatus(m) { const e = document.getElementById('search-status'); e.style.display = 'block'; e.textContent = m; }
-function hideStatus() { document.getElementById('search-status').style.display = 'none'; }
+function showStatus(m){const e=document.getElementById('search-status');e.style.display='block';e.textContent=m;}
+function hideStatus(){document.getElementById('search-status').style.display='none';}
 
-// ── ADD COURSE ────────────────────────────────────────────────────
-function startAddCourse() {
-  // Pre-fill name from search box if user typed something
-  const q = document.getElementById('csearch').value.trim();
-  if (q) document.getElementById('ac-name').value = q;
-  aiCourseData = null;
-  document.getElementById('ai-result').style.display = 'none';
-  document.getElementById('ai-result').innerHTML = '';
+// ── ADD COURSE DETAILS ────────────────────────────────────────────
+function startAddCourse(){
+  const q=document.getElementById('csearch').value.trim();
+  if(q) document.getElementById('ac-name').value=q;
+  aiCourseData=null;
+  document.getElementById('ai-result').style.display='none';
+  document.getElementById('ai-result').innerHTML='';
   goTo('add-course');
 }
 
-function selTeeColor(el) {
-  document.querySelectorAll('.tee-color-opt').forEach(o => o.classList.remove('active'));
-  el.classList.add('active');
-  selectedTeeColor = el.dataset.color;
+function selHoleCount(n,el){
+  HE.holeCount=n;
+  document.querySelectorAll('.hole-count-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function selTeeColor(el){
+  document.querySelectorAll('.tee-color-opt').forEach(o=>o.classList.remove('active'));
+  el.classList.add('active'); selectedTeeColor=el.dataset.color;
 }
 
 // ── AI LOOKUP ─────────────────────────────────────────────────────
-async function runAILookup() {
-  const name = document.getElementById('ac-name').value.trim();
-  const city = document.getElementById('ac-city').value.trim();
-  if (!name) { document.getElementById('ac-error').style.display = 'block'; document.getElementById('ac-error').textContent = 'Enter a course name first.'; return; }
-  document.getElementById('ac-error').style.display = 'none';
-
-  const resultEl = document.getElementById('ai-result');
-  resultEl.style.display = 'block';
-  resultEl.innerHTML = `<div class="ai-lookup-card">
-    <div class="ai-status loading"><span class="spinner"></span> Looking up scorecard for "${name}"…</div>
-  </div>`;
-
-  const btn = document.getElementById('btn-lookup');
-  btn.disabled = true; btn.textContent = 'Looking up…';
-
-  const result = await lookupCourseAI(name, city);
-
-  btn.disabled = false; btn.textContent = '✦ Look up scorecard';
-
-  if (result) {
-    aiCourseData = result;
-    // Pre-fill manual fields with AI data
-    const totalPar = result.holes.reduce((s, h) => s + h.par, 0);
-    document.getElementById('ac-par').value = totalPar;
-    document.getElementById('ac-holes').value = result.holes.length <= 9 ? '9' : '18';
-    if (result.tees && result.tees.length > 0) {
-      const t = result.tees[0];
-      document.getElementById('ac-tee').value = t.name || '';
-      document.getElementById('ac-rating').value = t.rating || '';
-      document.getElementById('ac-slope').value = t.slope || '';
-      document.getElementById('ac-yards').value = t.yards || '';
-      // Match tee color
-      const colorOpt = document.querySelector(`.tee-color-opt[data-color="${t.color}"]`);
-      if (colorOpt) { document.querySelectorAll('.tee-color-opt').forEach(o => o.classList.remove('active')); colorOpt.classList.add('active'); selectedTeeColor = t.color; }
+async function runAILookup(){
+  const name=document.getElementById('ac-name').value.trim();
+  const city=document.getElementById('ac-city').value.trim();
+  if(!name){document.getElementById('ac-error').style.display='block';document.getElementById('ac-error').textContent='Enter a course name first.';return;}
+  document.getElementById('ac-error').style.display='none';
+  const resultEl=document.getElementById('ai-result');
+  resultEl.style.display='block';
+  resultEl.innerHTML=`<div class="ai-lookup-card"><div class="ai-status loading"><span class="spinner"></span> Looking up "${name}"…</div></div>`;
+  const btn=document.getElementById('btn-lookup'); btn.disabled=true; btn.textContent='Looking up…';
+  const result=await lookupCourseAI(name,city);
+  btn.disabled=false; btn.textContent='✦ Look up scorecard';
+  if(result){
+    aiCourseData=result;
+    const par=result.holes.reduce((s,h)=>s+h.par,0);
+    HE.holeCount=result.holes.length<=9?9:18;
+    document.getElementById(HE.holeCount===9?'hc-9':'hc-18').click();
+    if(result.tees?.[0]){
+      document.getElementById('ac-rating').value=result.tees[0].rating||'';
+      document.getElementById('ac-slope').value=result.tees[0].slope||'';
+      const co=document.querySelector(`.tee-color-opt[data-color="${result.tees[0].color}"]`);
+      if(co){document.querySelectorAll('.tee-color-opt').forEach(o=>o.classList.remove('active'));co.classList.add('active');selectedTeeColor=result.tees[0].color;}
     }
-    // Show hole preview
-    const holesHtml = result.holes.map(h =>
-      `<div class="ai-hole-cell">
-        <div class="ai-hole-num">${h.hole}</div>
-        <div class="ai-hole-par">${h.par}</div>
-        <div class="ai-hole-hcp">${h.hcp}</div>
-      </div>`
-    ).join('');
-    resultEl.innerHTML = `<div class="ai-lookup-card success">
-      <div class="ai-status success">✓ Scorecard found — ${result.holes.length} holes, Par ${totalPar}</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Hole · Par · Stroke index</div>
-      <div class="ai-holes-preview">${holesHtml}</div>
-      ${result.tees?.length > 1 ? `<div style="font-size:12px;color:var(--muted);margin-top:10px;">${result.tees.length} tee sets found — select which one you're playing below</div>` : ''}
-    </div>`;
+    resultEl.innerHTML=`<div class="ai-lookup-card success"><div class="ai-status success">✓ Scorecard found — Par ${par}, ${result.holes.length} holes. You can still edit holes below.</div></div>`;
   } else {
-    aiCourseData = null;
-    resultEl.innerHTML = `<div class="ai-lookup-card fail">
-      <div class="ai-status fail">Scorecard not found — fill in the details below and we'll save it for everyone</div>
-    </div>`;
+    aiCourseData=null;
+    resultEl.innerHTML=`<div class="ai-lookup-card"><div class="ai-status">Scorecard not found — enter hole details manually below.</div></div>`;
   }
 }
 
-async function lookupCourseAI(name, city) {
-  const prompt = `You are a golf course database. Return ONLY a valid JSON object (no markdown, no explanation) for the golf course named "${name}"${city ? ' in ' + city : ''}.
-
-JSON structure:
-{
-  "name": "Full official course name",
-  "city": "City, ST",
-  "state": "ST",
-  "holes": [
-    { "hole": 1, "par": 4, "hcp": 7 },
-    ... all 18 holes ...
-  ],
-  "tees": [
-    { "name": "Black", "color": "#222222", "yards": 7200, "rating": 74.5, "slope": 138 },
-    { "name": "Blue",  "color": "#3366cc", "yards": 6700, "rating": 72.1, "slope": 132 },
-    { "name": "White", "color": "#ffffff", "yards": 6200, "rating": 69.8, "slope": 125 },
-    { "name": "Red",   "color": "#cc3333", "yards": 5600, "rating": 71.2, "slope": 120 }
-  ]
-}
-
-Rules:
-- holes must have all 18 entries (or 9 for a 9-hole course)
-- hcp is the real stroke index for that hole (1=hardest, 18=easiest)
-- Include all real tee sets with accurate yardage, rating, slope
-- Use only these tee colors: #222222 (Black), #3366cc (Blue), #ffffff (White), #cc3333 (Red), #c8a84b (Gold/Yellow), #4a9a4a (Green)
-- If you do NOT know this specific course, return exactly: {"unknown":true}
-- Return ONLY the JSON`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1200,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const text = (data.content?.[0]?.text || '').trim().replace(/```json|```/g, '').trim();
-    const json = JSON.parse(text);
-    if (json.unknown || !json.holes || json.holes.length < 9) return null;
+async function lookupCourseAI(name,city){
+  const prompt=`You are a golf course database. Return ONLY valid JSON for the course "${name}"${city?' in '+city:''}.
+Structure: {"name":"...","city":"City, ST","state":"ST","holes":[{"hole":1,"par":4,"hcp":7},...],"tees":[{"name":"Blue","color":"#3366cc","yards":6400,"rating":70.5,"slope":120},...]}
+Rules: holes array must have all 18 (or 9 for 9-hole) entries. hcp is real stroke index (1=hardest). Include all real tees. Use colors: #222222 #3366cc #ffffff #cc3333 #c8a84b #4a9a4a. If unknown return {"unknown":true}. Return ONLY JSON.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const text=(data.content?.[0]?.text||'').trim().replace(/```json|```/g,'').trim();
+    const json=JSON.parse(text);
+    if(json.unknown||!json.holes||json.holes.length<9)return null;
     return json;
-  } catch(e) {
-    console.warn('AI lookup error:', e);
-    return null;
-  }
+  }catch(e){return null;}
 }
 
-function buildDefaultHoles(count, totalPar) {
-  const par5s = count === 18 ? 2 : 1, par3s = count === 18 ? 4 : 2, par4s = count - par5s - par3s;
-  const pars = [...Array(par5s).fill(5), ...Array(par4s).fill(4), ...Array(par3s).fill(3)];
-  const arr = [pars[0],pars[1],pars[2],pars[3],pars[4],pars[5],pars[6],pars[7],pars[8],...(count>9?pars.slice(9):[])];
-  return Array.from({ length: count }, (_, i) => ({ hole: i+1, par: arr[i]||4, yards:[0], hcp: i+1 }));
-}
+// ── HOLE ENTRY ────────────────────────────────────────────────────
+function startHoleEntry(){
+  const name=document.getElementById('ac-name').value.trim();
+  if(!name){document.getElementById('ac-error').style.display='block';document.getElementById('ac-error').textContent='Course name is required.';return;}
+  document.getElementById('ac-error').style.display='none';
 
-function extractState(city) { const m=(city||'').match(/,\s*([A-Z]{2})$/); return m?m[1]:''; }
+  // Pre-populate holes from AI if available, else defaults
+  HE.holes=[];
+  HE.usedHcps=new Set();
+  HE.currentHole=0;
 
-async function submitCourse() {
-  const name = document.getElementById('ac-name').value.trim();
-  const city = document.getElementById('ac-city').value.trim();
-  const par = parseInt(document.getElementById('ac-par').value) || 72;
-  const holeCount = parseInt(document.getElementById('ac-holes').value) || 18;
-  const tee = document.getElementById('ac-tee').value.trim() || 'Blue';
-  const rating = parseFloat(document.getElementById('ac-rating').value) || 72.0;
-  const slope = parseInt(document.getElementById('ac-slope').value) || 113;
-  const yards = parseInt(document.getElementById('ac-yards').value) || 6500;
-  const errEl = document.getElementById('ac-error');
-
-  if (!name) { errEl.style.display='block'; errEl.textContent='Course name is required.'; return; }
-  errEl.style.display = 'none';
-
-  const btn = document.getElementById('btn-ac');
-  btn.textContent = 'Saving...'; btn.disabled = true;
-
-  // Use AI holes if available, otherwise synthetic
-  const holes = aiCourseData?.holes
-    ? aiCourseData.holes.map(h => ({ hole: h.hole, par: h.par, yards: [0], hcp: h.hcp }))
-    : buildDefaultHoles(holeCount, par);
-
-  // Use all AI tees if available, otherwise just the one the user entered
-  const tees = aiCourseData?.tees && aiCourseData.tees.length > 0
-    ? aiCourseData.tees
-    : [{ name: tee, color: selectedTeeColor, yards, rating, slope }];
-
-  const course = {
-    name, city,
-    state: extractState(city),
-    region: 'Community',
-    type: holeCount <= 9 ? 'executive' : 'regulation',
-    tees, holes,
-    holePars: holes.map(h => h.par)
-  };
-
-  try {
-    const res = await fetch(`${WORKER_URL}/course`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(course)
+  if(aiCourseData?.holes){
+    HE.holeCount=aiCourseData.holes.length;
+    aiCourseData.holes.forEach(h=>{
+      HE.holes.push({par:h.par, hcp:h.hcp, yards:h.yards||defaultYards(h.par)});
+      HE.usedHcps.add(h.hcp);
     });
-    const data = await res.json();
-    if (data.id) course.id = data.id;
-  } catch(e) {
-    course.id = 'local_' + Date.now();
+  } else {
+    for(let i=0;i<HE.holeCount;i++){
+      HE.holes.push({par:4, hcp:i+1, yards:350});
+      HE.usedHcps.add(i+1);
+    }
   }
 
-  btn.textContent = 'Save & select →'; btn.disabled = false;
-  G.course = course; G.tee = null;
-  goTo('tees');
+  goTo('holes');
 }
 
-// ── TEE SCREEN ────────────────────────────────────────────────────
-function buildTeeScreen() {
-  if (!G.course) return;
-  const c = G.course;
-  const par = c.holes ? c.holes.reduce((s,h) => s+h.par, 0) : 72;
-  const meta = [c.city, c.state].filter(Boolean).join(', ');
-  document.getElementById('cc-name').textContent = c.name;
-  document.getElementById('cc-meta').textContent = [meta, 'Par '+par].filter(Boolean).join(' · ');
-  const tees = c.tees || [];
-  const list = document.getElementById('tee-list');
-  if (!tees.length) {
-    G.tee = { name:'Standard', rating:null, slope:null };
-    list.innerHTML = '<div style="font-size:14px;color:var(--muted);padding:10px 0;">No tee data — standard tees will be used.</div>';
-    const b = document.getElementById('btn-t'); b.disabled=false; b.classList.add('active-cta');
+function defaultYards(par){return par===3?160:par===5?490:350;}
+
+function renderHoleEntry(){
+  const h=HE.currentHole;
+  const total=HE.holeCount;
+  const hole=HE.holes[h];
+
+  // Step label
+  document.getElementById('hole-step-lbl').textContent=`Hole ${h+1} of ${total}`;
+  document.getElementById('hole-title').textContent=`Hole ${h+1}`;
+
+  // Sub — show par/hcp/yds of surrounding holes for context
+  const prevDone = h>0 ? `← Hole ${h} · Par ${HE.holes[h-1].par} · HCP ${HE.holes[h-1].hcp}` : '';
+  document.getElementById('hole-sub').textContent=prevDone;
+
+  // Progress pips
+  const prog=document.getElementById('hole-progress');
+  prog.innerHTML=Array.from({length:total},(_,i)=>{
+    const cls=i<h?'done':i===h?'cur':'';
+    return `<div class="hole-pip ${cls}" onclick="jumpToHole(${i})">${i+1}</div>`;
+  }).join('');
+
+  // Par
+  [3,4,5].forEach(p=>{
+    const btn=document.getElementById('par-'+p);
+    btn.classList.toggle('sel',hole.par===p);
+  });
+
+  // HCP stepper
+  document.getElementById('hcp-val').textContent=hole.hcp;
+  document.getElementById('hcp-val').classList.toggle('muted',!hole.hcp);
+  document.getElementById('hcp-error').textContent='';
+
+  // Yardage digits
+  renderYardDigits(hole.yards);
+
+  // Back button
+  const backBtn=document.getElementById('hole-back-btn');
+  backBtn.textContent=h===0?'Back':'← Prev hole';
+
+  // Next button
+  const nextBtn=document.getElementById('hole-next-btn');
+  nextBtn.textContent=h===total-1?'Review scorecard →':'Next hole →';
+}
+
+// 3-digit yardage: hundreds, tens, ones — stepper per digit
+// Default starts at 350 so range 100–699 covers realistic yardage
+let yardDigits=[3,5,0]; // hundreds, tens, ones
+
+function renderYardDigits(yards){
+  yardDigits=[Math.floor(yards/100)%10, Math.floor(yards/10)%10, yards%10];
+  const wrap=document.getElementById('yard-digits');
+  wrap.innerHTML=`
+    <div class="yard-digit-wrap">
+      <button class="yard-digit-btn" onclick="stepDigit(0,1)">▲</button>
+      <div class="yard-digit" id="yd-0">${yardDigits[0]}</div>
+      <button class="yard-digit-btn" onclick="stepDigit(0,-1)">▼</button>
+    </div>
+    <div class="yard-sep" style="padding-bottom:8px;"></div>
+    <div class="yard-digit-wrap">
+      <button class="yard-digit-btn" onclick="stepDigit(1,1)">▲</button>
+      <div class="yard-digit" id="yd-1">${yardDigits[1]}</div>
+      <button class="yard-digit-btn" onclick="stepDigit(1,-1)">▼</button>
+    </div>
+    <div class="yard-digit-wrap">
+      <button class="yard-digit-btn" onclick="stepDigit(2,1)">▲</button>
+      <div class="yard-digit" id="yd-2">${yardDigits[2]}</div>
+      <button class="yard-digit-btn" onclick="stepDigit(2,-1)">▼</button>
+    </div>
+    <div style="margin-left:10px;font-size:14px;color:var(--muted);align-self:center;">yards</div>`;
+}
+
+function stepDigit(pos,dir){
+  yardDigits[pos]=(yardDigits[pos]+dir+10)%10;
+  document.getElementById('yd-'+pos).textContent=yardDigits[pos];
+  HE.holes[HE.currentHole].yards=yardDigits[0]*100+yardDigits[1]*10+yardDigits[2];
+}
+
+function selPar(p){
+  HE.holes[HE.currentHole].par=p;
+  [3,4,5].forEach(n=>document.getElementById('par-'+n).classList.toggle('sel',n===p));
+  // Adjust yardage default if switching par and current yardage looks like the old default
+  const y=HE.holes[HE.currentHole].yards;
+  if(y===160||y===350||y===490){
+    HE.holes[HE.currentHole].yards=defaultYards(p);
+    renderYardDigits(HE.holes[HE.currentHole].yards);
+  }
+}
+
+function stepHcp(dir){
+  const hole=HE.holes[HE.currentHole];
+  const max=HE.holeCount;
+  let next=hole.hcp+dir;
+  if(next<1)next=max;
+  if(next>max)next=1;
+  // Skip used values (excluding current hole's own value)
+  let attempts=0;
+  while(HE.usedHcps.has(next)&&next!==hole.hcp&&attempts<max){
+    next+=dir;
+    if(next<1)next=max;
+    if(next>max)next=1;
+    attempts++;
+  }
+  if(HE.usedHcps.has(next)&&next!==hole.hcp){
+    document.getElementById('hcp-error').textContent='All stroke index values are taken.';
     return;
   }
-  list.innerHTML = tees.map((t,i) => {
-    const sel = G.tee && G.tee.name === t.name;
-    const stats = [t.yards?t.yards.toLocaleString()+' yards':null, t.rating&&t.slope?'Rating '+t.rating+' / Slope '+t.slope:null].filter(Boolean).join(' · ');
+  HE.usedHcps.delete(hole.hcp);
+  hole.hcp=next;
+  HE.usedHcps.add(next);
+  document.getElementById('hcp-val').textContent=next;
+  document.getElementById('hcp-error').textContent='';
+}
+
+function jumpToHole(i){
+  HE.currentHole=i;
+  renderHoleEntry();
+}
+
+function holePrev(){
+  if(HE.currentHole===0){goTo('add-course');return;}
+  HE.currentHole--;
+  renderHoleEntry();
+}
+
+function holeNext(){
+  // Save current yardage
+  HE.holes[HE.currentHole].yards=yardDigits[0]*100+yardDigits[1]*10+yardDigits[2];
+  if(HE.currentHole===HE.holeCount-1){
+    goTo('hole-review'); return;
+  }
+  HE.currentHole++;
+  renderHoleEntry();
+}
+
+// ── HOLE REVIEW ───────────────────────────────────────────────────
+function buildReview(){
+  const name=document.getElementById('ac-name').value.trim();
+  const city=document.getElementById('ac-city').value.trim();
+  document.getElementById('rev-course-name').textContent=name;
+  const rating=document.getElementById('ac-rating').value;
+  const slope=document.getElementById('ac-slope').value;
+  document.getElementById('rev-course-meta').textContent=[city,rating?'Rating '+rating:null,slope?'Slope '+slope:null].filter(Boolean).join(' · ');
+
+  const grid=document.getElementById('review-grid');
+  grid.innerHTML=HE.holes.map((h,i)=>`
+    <div class="review-cell" onclick="editHole(${i})">
+      <div class="review-cell-num">${i+1}</div>
+      <div class="review-cell-par">${h.par}</div>
+      <div class="review-cell-hcp">HCP ${h.hcp}</div>
+      <div class="review-cell-yds">${h.yards}y</div>
+    </div>`).join('');
+
+  const totalPar=HE.holes.reduce((s,h)=>s+h.par,0);
+  const totalYards=HE.holes.reduce((s,h)=>s+h.yards,0);
+  document.getElementById('rev-totals').textContent=`Par ${totalPar} · ${totalYards.toLocaleString()} yards total`;
+}
+
+function editHole(i){
+  HE.currentHole=i;
+  goTo('holes');
+}
+
+// ── SAVE COURSE ───────────────────────────────────────────────────
+async function saveCourse(){
+  const name=document.getElementById('ac-name').value.trim();
+  const city=document.getElementById('ac-city').value.trim();
+  const rating=parseFloat(document.getElementById('ac-rating').value)||69.8;
+  const slope=parseInt(document.getElementById('ac-slope').value)||113;
+  const totalYards=HE.holes.reduce((s,h)=>s+h.yards,0);
+
+  // Build tee name from color
+  const colorNames={'#222222':'Black','#3366cc':'Blue','#ffffff':'White','#cc3333':'Red','#c8a84b':'Gold','#4a9a4a':'Green'};
+  const teeName=colorNames[selectedTeeColor]||'Blue';
+
+  const holes=HE.holes.map((h,i)=>({hole:i+1,par:h.par,yards:[h.yards],hcp:h.hcp}));
+
+  const course={
+    name, city,
+    state:extractState(city),
+    region:'Community',
+    type:HE.holeCount<=9?'executive':'regulation',
+    tees:[{name:teeName,color:selectedTeeColor,yards:totalYards,rating,slope}],
+    holes,
+    holePars:holes.map(h=>h.par)
+  };
+
+  const btn=document.getElementById('btn-save-course');
+  btn.textContent='Saving…'; btn.disabled=true;
+
+  try{
+    const res=await fetch(`${WORKER_URL}/course`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(course)});
+    const data=await res.json();
+    if(data.id)course.id=data.id;
+  }catch(e){
+    course.id='local_'+Date.now();
+  }
+
+  btn.textContent='Save & tee it up →'; btn.disabled=false;
+
+  // Set as selected course, auto-select the only tee
+  G.course=course; G.tee=course.tees[0];
+  goTo('players');
+}
+
+function extractState(city){const m=(city||'').match(/,\s*([A-Z]{2})$/);return m?m[1]:'';}
+
+// ── TEE SCREEN (KV courses) ───────────────────────────────────────
+function buildTeeScreen(){
+  if(!G.course)return;
+  const c=G.course;
+  const par=c.holes?c.holes.reduce((s,h)=>s+h.par,0):72;
+  const meta=[c.city,c.state].filter(Boolean).join(', ');
+  document.getElementById('cc-name').textContent=c.name;
+  document.getElementById('cc-meta').textContent=[meta,'Par '+par].filter(Boolean).join(' · ');
+  const tees=c.tees||[];
+  const list=document.getElementById('tee-list');
+  if(!tees.length){
+    G.tee={name:'Standard',rating:null,slope:null};
+    list.innerHTML='<div style="font-size:14px;color:var(--muted);padding:10px 0;">No tee data — standard tees will be used.</div>';
+    const b=document.getElementById('btn-t');b.disabled=false;b.classList.add('active-cta');return;
+  }
+  list.innerHTML=tees.map((t,i)=>{
+    const sel=G.tee&&G.tee.name===t.name;
+    const stats=[t.yards?t.yards.toLocaleString()+' yards':null,t.rating&&t.slope?'Rating '+t.rating+' / Slope '+t.slope:null].filter(Boolean).join(' · ');
     return `<div class="tee-card${sel?' sel':''}" onclick="selTee(${i})">
       <div class="tee-dot" style="background:${t.color||'#888'};"></div>
-      <div class="tee-card-info">
-        <div class="tee-card-name">${t.name} tees</div>
-        <div class="tee-card-stats">${stats||'No yardage data'}</div>
-      </div>
+      <div class="tee-card-info"><div class="tee-card-name">${t.name} tees</div><div class="tee-card-stats">${stats||'No yardage data'}</div></div>
       <div class="tee-card-check"><svg class="tee-chk" width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="#1a2e1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>`;
   }).join('');
 }
-function selTee(i) {
-  G.tee = G.course?.tees?.[i];
-  document.querySelectorAll('.tee-card').forEach((el,idx) => el.classList.toggle('sel', idx===i));
-  const b = document.getElementById('btn-t'); b.disabled=false; b.classList.add('active-cta');
+function selTee(i){
+  G.tee=G.course?.tees?.[i];
+  document.querySelectorAll('.tee-card').forEach((el,idx)=>el.classList.toggle('sel',idx===i));
+  const b=document.getElementById('btn-t');b.disabled=false;b.classList.add('active-cta');
 }
 
 // ── PLAYERS ───────────────────────────────────────────────────────
-let pid = 0;
-function addP() {
-  pid++; const id=pid;
-  const div=document.createElement('div'); div.className='player-row'; div.id='pr-'+id;
+let pid=0;
+function addP(){
+  pid++;const id=pid;
+  const div=document.createElement('div');div.className='player-row';div.id='pr-'+id;
   div.innerHTML=`<div class="player-avatar" id="av-${id}">?</div>
     <div style="flex:1;display:flex;gap:8px;">
       <input class="player-input" style="flex:2;" type="text" placeholder="Name" id="pn-${id}" oninput="upAv(${id});chkP()"/>
       <input class="player-input" style="flex:1;min-width:60px;" type="number" placeholder="HCP" min="0" max="54" step="0.1" id="ph-${id}" oninput="chkP()"/>
     </div>
     <button class="player-remove" onclick="rmP(${id})">&#x2715;</button>`;
-  document.getElementById('plist').appendChild(div); chkP();
+  document.getElementById('plist').appendChild(div);chkP();
 }
-function rmP(id) { const e=document.getElementById('pr-'+id); if(e)e.remove(); chkP(); }
-function upAv(id) {
+function rmP(id){const e=document.getElementById('pr-'+id);if(e)e.remove();chkP();}
+function upAv(id){
   const n=(document.getElementById('pn-'+id)?.value||'').trim();
-  const av=document.getElementById('av-'+id); if(!av)return;
+  const av=document.getElementById('av-'+id);if(!av)return;
   const p=n.split(' ').filter(Boolean);
   av.textContent=p.length>1?(p[0][0]+p[1][0]).toUpperCase():n?n[0].toUpperCase():'?';
 }
-function chkP() {
-  const rows=document.querySelectorAll('.player-row'); const players=[];
+function chkP(){
+  const rows=document.querySelectorAll('.player-row');const players=[];
   rows.forEach(r=>{
     const id=r.id.replace('pr-','');
     const n=document.getElementById('pn-'+id)?.value.trim();
@@ -701,13 +917,13 @@ function chkP() {
   G.players=players;
   const btn=document.getElementById('btn-p');
   btn.disabled=players.length<2;
-  if(players.length>=2)btn.classList.add('active-cta'); else btn.classList.remove('active-cta');
+  if(players.length>=2)btn.classList.add('active-cta');else btn.classList.remove('active-cta');
   document.getElementById('add-btn').style.display=rows.length>=4?'none':'flex';
   document.getElementById('nassau-note').style.display=G.game==='nassau'?'block':'none';
 }
 
 // ── SUMMARY ───────────────────────────────────────────────────────
-function buildSum() {
+function buildSum(){
   const labels={skins:'Net Skins',nassau:'Nassau ('+G.fmt+')',stableford:'Stableford'};
   document.getElementById('sum-g').textContent=labels[G.game]||'—';
   document.getElementById('sum-c').textContent=G.course?.name||'—';
