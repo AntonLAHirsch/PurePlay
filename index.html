@@ -740,24 +740,30 @@ function selPar(p){
 function stepHcp(dir){
   const hole=HE.holes[HE.currentHole];
   const max=HE.holeCount;
+
+  // Build set of HCPs used by OTHER holes (not this one)
+  const otherHcps=new Set(
+    HE.holes.filter((_,i)=>i!==HE.currentHole).map(h=>h.hcp)
+  );
+
+  // Walk in direction, skipping values used by other holes
   let next=hole.hcp+dir;
-  if(next<1)next=max;
-  if(next>max)next=1;
-  // Skip used values (excluding current hole's own value)
   let attempts=0;
-  while(HE.usedHcps.has(next)&&next!==hole.hcp&&attempts<max){
-    next+=dir;
+  while(attempts<max){
     if(next<1)next=max;
     if(next>max)next=1;
+    if(!otherHcps.has(next)) break;
+    next+=dir;
     attempts++;
   }
-  if(HE.usedHcps.has(next)&&next!==hole.hcp){
+  if(otherHcps.has(next)){
     document.getElementById('hcp-error').textContent='All stroke index values are taken.';
     return;
   }
-  HE.usedHcps.delete(hole.hcp);
+
+  // Rebuild usedHcps cleanly
   hole.hcp=next;
-  HE.usedHcps.add(next);
+  HE.usedHcps=new Set(HE.holes.map(h=>h.hcp));
   document.getElementById('hcp-val').textContent=next;
   document.getElementById('hcp-error').textContent='';
 }
