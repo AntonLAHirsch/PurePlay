@@ -199,6 +199,103 @@
   .sum-av{width:30px;height:30px;border-radius:50%;background:rgba(200,168,75,0.15);border:1px solid var(--flag);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--flag);flex-shrink:0;}
   .sum-name{font-size:14px;flex:1;}
   .sum-hdcp{font-size:13px;color:var(--flag);font-weight:500;}
+
+  /* RULES SECTION */
+  .rules-block{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
+  .rules-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .rules-row:last-child{margin-bottom:0;}
+  .rules-label{font-size:13px;font-weight:500;color:var(--white);}
+  .rules-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+  .rules-opts{display:flex;gap:6px;}
+  .rules-opt{background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:12px;font-weight:500;padding:7px 13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;white-space:nowrap;}
+  .rules-opt.sel{background:rgba(200,168,75,0.15);border-color:var(--flag);color:var(--flag);}
+  .team-assign{margin-top:10px;}
+  .team-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .team-label{font-size:12px;color:var(--flag);font-weight:500;min-width:55px;}
+  .team-players{display:flex;gap:6px;flex-wrap:wrap;}
+  .team-player-btn{background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:12px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+  .team-player-btn.sel{background:rgba(200,168,75,0.15);border-color:var(--flag);color:var(--flag);}
+
+  /* SCORING HEADER */
+  .scoring-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;flex-shrink:0;}
+  .scoring-nav-btn{width:44px;height:44px;background:var(--rough);border:1px solid var(--border);border-radius:50%;color:var(--white);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+  .scoring-nav-btn:hover{background:var(--rough-hover);}
+  .scoring-hole-info{text-align:center;}
+  .scoring-hole-label{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+  .scoring-hole-num{font-size:52px;font-weight:600;line-height:1;color:var(--white);}
+
+  /* STATS BAR */
+  .scoring-stats-bar{display:flex;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-shrink:0;}
+  .scoring-stat{flex:1;text-align:center;padding:10px 4px;border-right:1px solid var(--border);}
+  .scoring-stat:last-child{border-right:none;}
+  .scoring-stat span{font-size:18px;font-weight:600;color:var(--white);}
+  .scoring-stat-lbl{font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+  /* CARRY BALLS */
+  .scoring-carry-balls{display:flex;justify-content:center;gap:6px;padding:10px 20px 0;flex-shrink:0;min-height:28px;}
+  .carry-ball{width:18px;height:18px;border-radius:50%;background:var(--flag);border:1px solid rgba(200,168,75,0.5);box-shadow:inset -2px -2px 4px rgba(0,0,0,0.3),inset 1px 1px 3px rgba(255,255,255,0.15);}
+
+  /* PLAYER SCORE ROWS */
+  .score-player-row{padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;}
+  .score-player-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .score-player-name{font-size:16px;font-weight:500;flex:1;}
+  .stroke-ball{width:16px;height:16px;border-radius:50%;background:var(--white);border:1px solid rgba(255,255,255,0.4);box-shadow:inset -2px -2px 3px rgba(0,0,0,0.2),inset 1px 1px 2px rgba(255,255,255,0.6);flex-shrink:0;}
+  .stroke-ball.hidden{visibility:hidden;}
+  .score-controls{display:flex;align-items:center;justify-content:center;gap:20px;}
+  .score-adj-btn{width:54px;height:54px;border-radius:50%;background:var(--rough);border:1px solid var(--border);color:var(--white);font-size:28px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;}
+  .score-adj-btn:hover{background:var(--rough-hover);}
+  .score-adj-btn:active{background:rgba(200,168,75,0.2);}
+  .score-display-wrap{text-align:center;}
+  .score-big{font-size:64px;font-weight:600;color:var(--white);line-height:1;}
+  .score-par-lbl{font-size:13px;color:var(--muted);margin-top:2px;}
+  .score-rel-badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;margin-top:4px;}
+  .score-rel-badge.eagle{background:rgba(74,144,217,0.2);color:#4a90d9;}
+  .score-rel-badge.birdie{background:rgba(74,144,217,0.15);color:#4a90d9;}
+  .score-rel-badge.par{background:rgba(255,255,255,0.08);color:var(--muted);}
+  .score-rel-badge.bogey{background:rgba(224,130,50,0.15);color:#e08232;}
+  .score-rel-badge.double{background:rgba(192,57,43,0.15);color:#c0392b;}
+
+  /* STANDING */
+  .scoring-standing{padding:12px 20px;flex-shrink:0;}
+  .standing-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);}
+  .standing-row:last-child{border-bottom:none;}
+  .standing-name{font-size:14px;font-weight:500;flex:1;}
+  .standing-skins{font-size:14px;color:var(--flag);font-weight:600;}
+  .standing-clinch{font-size:11px;color:var(--flag);background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.3);border-radius:20px;padding:2px 8px;margin-left:6px;white-space:nowrap;}
+
+  /* HOLE RESULT */
+  .hr-player-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+  .hr-player-row:last-child{border-bottom:none;}
+  .hr-name{font-size:15px;font-weight:500;flex:1;}
+  .hr-scores{text-align:right;}
+  .hr-gross{font-size:15px;color:var(--white);}
+  .hr-net{font-size:12px;color:var(--flag);margin-top:1px;}
+  .hr-outcome{margin:16px 0;padding:14px 16px;border-radius:var(--radius);text-align:center;background:var(--rough);border:1px solid var(--border);}
+  .hr-outcome.win{border-color:var(--flag);background:rgba(200,168,75,0.1);}
+  .hr-outcome.carry{border-color:rgba(200,168,75,0.3);background:rgba(200,168,75,0.06);}
+  .hr-outcome-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:4px;}
+  .hr-outcome-sub{font-size:13px;color:var(--muted);}
+  .hr-standings{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;}
+  .hr-standing-row{display:flex;align-items:center;gap:8px;padding:5px 0;}
+  .hr-standing-name{font-size:14px;flex:1;}
+  .hr-standing-skins{color:var(--flag);font-weight:600;font-size:14px;}
+  .hr-clinch-badge{font-size:10px;color:var(--flag);background:rgba(200,168,75,0.12);border:1px solid rgba(200,168,75,0.3);border-radius:20px;padding:2px 7px;}
+
+  /* END ROUND */
+  .er-winner{background:rgba(200,168,75,0.1);border:1px solid rgba(200,168,75,0.4);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;}
+  .er-winner-label{font-size:11px;color:var(--flag);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+  .er-winner-name{font-size:28px;font-weight:600;color:var(--white);}
+  .er-winner-skins{font-size:15px;color:var(--flag);margin-top:4px;}
+  .er-table{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
+  .er-table-head{display:grid;grid-template-columns:1fr repeat(var(--cols),32px) 40px;gap:0;background:rgba(0,0,0,0.2);padding:8px 12px;}
+  .er-table-row{display:grid;grid-template-columns:1fr repeat(var(--cols),32px) 40px;gap:0;padding:10px 12px;border-top:1px solid var(--border);}
+  .er-th{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;text-align:center;}
+  .er-th:first-child{text-align:left;}
+  .er-td{font-size:13px;color:var(--white);text-align:center;}
+  .er-td:first-child{text-align:left;font-weight:500;}
+  .er-td.skin-won{color:var(--flag);font-weight:600;}
+  .er-td.skin-tie{color:var(--muted);}
+  .scoring-bottom{padding:12px 20px calc(12px + var(--safe-bottom));flex-shrink:0;}
   .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
   .pill{background:var(--rough);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--muted);}
 </style>
@@ -453,10 +550,100 @@
     <div class="sum-block"><div class="sum-lbl">Course</div><div class="sum-val" id="sum-c"></div></div>
     <div class="sum-block"><div class="sum-lbl">Tees</div><div class="sum-val" id="sum-t"></div></div>
     <div class="sum-block"><div class="sum-lbl">Players</div><div id="sum-p"></div></div>
-    <button class="btn cta" style="margin-top:8px;" onclick="alert('Round started! Scoring UI coming next.')">Tee it up →</button>
+
+    <!-- RULES -->
+    <div class="section-lbl">Rules</div>
+    <div class="rules-block">
+      <div class="rules-row">
+        <div><div class="rules-label">Handicap</div><div class="rules-sub">Stroke allocation method</div></div>
+        <div class="rules-opts">
+          <button class="rules-opt sel" id="rule-hdcp-full" onclick="setRule('hdcp','full',this)">Full</button>
+          <button class="rules-opt" id="rule-hdcp-mod" onclick="setRule('hdcp','mod',this)">Modified 85%</button>
+        </div>
+      </div>
+      <div class="rules-row">
+        <div><div class="rules-label">Tie rule</div><div class="rules-sub">When hole is halved</div></div>
+        <div class="rules-opts">
+          <button class="rules-opt sel" id="rule-tie-void" onclick="setRule('tie','void',this)">Void</button>
+          <button class="rules-opt" id="rule-tie-split" onclick="setRule('tie','split',this)">Split</button>
+        </div>
+      </div>
+      <!-- 4-player format — shown only when 4 players -->
+      <div class="rules-row" id="rule-format-row" style="display:none;">
+        <div><div class="rules-label">Format</div><div class="rules-sub">4 player match style</div></div>
+        <div class="rules-opts">
+          <button class="rules-opt sel" id="rule-fmt-ffa" onclick="setRule('fmt','ffa',this)">Free-for-all</button>
+          <button class="rules-opt" id="rule-fmt-2v2" onclick="setRule('fmt','2v2',this)">2 v 2</button>
+        </div>
+      </div>
+      <!-- Team assignment — shown only when 2v2 -->
+      <div id="rule-teams-wrap" style="display:none;">
+        <div style="font-size:11px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;margin-top:4px;">Select Team 1</div>
+        <div id="rule-team-btns" class="team-players"></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:10px;" id="rule-team-preview"></div>
+      </div>
+    </div>
+
+    <button class="btn cta" style="margin-top:8px;" onclick="startRound()">Tee it up →</button>
   </div>
   <div class="bottom-nav">
     <button class="nav-back" style="width:100%;" onclick="goTo('players')">← Edit players</button>
+  </div>
+</div>
+
+<!-- SKINS SCORING -->
+<div id="s-scoring" class="screen">
+  <div class="scoring-header">
+    <button class="scoring-nav-btn" id="sc-back-btn" onclick="scoringBack()">‹</button>
+    <div class="scoring-hole-info">
+      <div class="scoring-hole-label">HOLE</div>
+      <div class="scoring-hole-num" id="sc-hole-num">1</div>
+    </div>
+    <button class="scoring-nav-btn" id="sc-fwd-btn" style="visibility:hidden;">›</button>
+  </div>
+  <div class="scoring-stats-bar">
+    <div class="scoring-stat"><span id="sc-par">4</span><div class="scoring-stat-lbl">PAR</div></div>
+    <div class="scoring-stat"><span id="sc-yards">—</span><div class="scoring-stat-lbl">YARDS</div></div>
+    <div class="scoring-stat"><span id="sc-hcp">—</span><div class="scoring-stat-lbl">HANDICAP</div></div>
+    <div class="scoring-stat"><span id="sc-carry-stat">—</span><div class="scoring-stat-lbl">CARRY</div></div>
+  </div>
+  <div class="scoring-carry-balls" id="sc-carry-balls"></div>
+  <div id="sc-players" style="flex:1;overflow-y:auto;"></div>
+  <div class="scoring-standing" id="sc-standing"></div>
+  <div class="scoring-bottom">
+    <button class="btn cta" onclick="submitHole()">Record hole →</button>
+  </div>
+</div>
+
+<!-- HOLE RESULT -->
+<div id="s-hole-result" class="screen">
+  <div class="scoring-header">
+    <div style="width:44px;"></div>
+    <div class="scoring-hole-info">
+      <div class="scoring-hole-label">RESULT</div>
+      <div class="scoring-hole-num" id="hr-hole-num">1</div>
+    </div>
+    <div style="width:44px;"></div>
+  </div>
+  <div class="body" style="padding-top:8px;">
+    <div id="hr-result-rows"></div>
+    <div id="hr-outcome" class="hr-outcome"></div>
+    <div class="section-lbl" style="margin-top:16px;">Standings</div>
+    <div id="hr-standings" class="hr-standings"></div>
+  </div>
+  <div class="scoring-bottom">
+    <button class="btn cta" id="hr-next-btn" onclick="nextHole()">Next hole →</button>
+  </div>
+</div>
+
+<!-- END OF ROUND -->
+<div id="s-end-round" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Round complete</div></header>
+  <div class="body" style="padding-top:16px;">
+    <div id="er-content"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" style="width:100%;" onclick="goTo('home')">← Back to home</button>
   </div>
 </div>
 
@@ -928,6 +1115,47 @@ function chkP(){
 }
 
 // ── SUMMARY ───────────────────────────────────────────────────────
+const G_RULES={hdcp:'full', tie:'void', fmt:'ffa', team1:[]};
+
+function setRule(type,val,el){
+  const group=el.closest('.rules-row,.rules-block').querySelectorAll('.rules-opt[id^="rule-'+type+'"]');
+  group.forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  G_RULES[type]=val;
+  if(type==='fmt'){
+    document.getElementById('rule-teams-wrap').style.display=val==='2v2'?'block':'none';
+    if(val==='2v2') buildTeamPicker();
+  }
+}
+
+function buildTeamPicker(){
+  G_RULES.team1=[];
+  const wrap=document.getElementById('rule-team-btns');
+  wrap.innerHTML=G.players.map((p,i)=>
+    `<button class="team-player-btn" id="tp-${i}" onclick="toggleTeam1(${i})">${p.name}</button>`
+  ).join('');
+  updateTeamPreview();
+}
+
+function toggleTeam1(i){
+  const btn=document.getElementById('tp-'+i);
+  if(G_RULES.team1.includes(i)){
+    G_RULES.team1=G_RULES.team1.filter(x=>x!==i);
+    btn.classList.remove('sel');
+  } else if(G_RULES.team1.length<2){
+    G_RULES.team1.push(i);
+    btn.classList.add('sel');
+  }
+  updateTeamPreview();
+}
+
+function updateTeamPreview(){
+  const t1=G_RULES.team1.map(i=>G.players[i].name);
+  const t2=G.players.map((_,i)=>i).filter(i=>!G_RULES.team1.includes(i)).map(i=>G.players[i].name);
+  document.getElementById('rule-team-preview').textContent=
+    t1.length===2?`Team 1: ${t1.join(' & ')} — Team 2: ${t2.join(' & ')}`:`Select 2 players for Team 1`;
+}
+
 function buildSum(){
   const labels={skins:'Net Skins',nassau:'Nassau ('+G.fmt+')',stableford:'Stableford'};
   document.getElementById('sum-g').textContent=labels[G.game]||'—';
@@ -938,7 +1166,378 @@ function buildSum(){
     const ini=p.name.split(' ').filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2);
     return `<div class="sum-player"><div class="sum-av">${ini}</div><div class="sum-name">${p.name}</div><div class="sum-hdcp">HCP ${p.hdcp.toFixed(1)}</div></div>`;
   }).join('');
+  // Show format rule only for 4 players
+  document.getElementById('rule-format-row').style.display=G.players.length===4?'flex':'none';
+  document.getElementById('rule-teams-wrap').style.display='none';
 }
+
+// ── HANDICAP ENGINE ───────────────────────────────────────────────
+// Course handicap = round(index × slope/113 + (rating - par))
+// Then apply full or 85% modifier
+// Returns strokes per hole for a player as array indexed by hole
+
+function calcCourseHdcp(playerHdcp, tee, coursePar){
+  const slope=tee?.slope||113;
+  const rating=tee?.rating||coursePar;
+  const raw=playerHdcp*(slope/113)+(rating-coursePar);
+  const modifier=G_RULES.hdcp==='mod'?0.85:1.0;
+  return Math.round(raw*modifier);
+}
+
+// Returns array[holeIndex] = strokes player gets on that hole (0 or 1, occasionally 2)
+function strokesPerHole(courseHdcp, holes){
+  return holes.map(h=>{
+    if(courseHdcp<=0) return 0;
+    if(courseHdcp>=holes.length) return Math.floor(courseHdcp/holes.length)+(h.hcp<=(courseHdcp%holes.length)?1:0);
+    return h.hcp<=courseHdcp?1:0;
+  });
+}
+
+// ── ROUND STATE ───────────────────────────────────────────────────
+let RS={
+  currentHole:0,
+  carriedSkins:0,
+  scores:[],       // scores[playerIdx][holeIdx] = gross score
+  skins:[],        // skins[playerIdx] = total skins won
+  holeResults:[],  // holeResults[holeIdx] = {winner:idx or 'carry' or 'void', skinValue}
+  strokeMatrix:[],  // strokeMatrix[playerIdx][holeIdx] = strokes given
+  pendingScores:[], // current hole scores being entered
+};
+
+function startRound(){
+  if(G_RULES.fmt==='2v2'&&G_RULES.team1.length!==2){
+    alert('Please select 2 players for Team 1 first.');return;
+  }
+  const holes=G.course.holes;
+  const tee=G.tee;
+  const coursePar=holes.reduce((s,h)=>s+h.par,0);
+
+  RS.currentHole=0;
+  RS.carriedSkins=0;
+  RS.scores=G.players.map(()=>Array(holes.length).fill(null));
+  RS.skins=G.players.map(()=>0);
+  RS.holeResults=[];
+  RS.pendingScores=G.players.map((_,i)=>holes[0].par); // default to par
+
+  // Calculate stroke matrix for all players across all holes
+  RS.strokeMatrix=G.players.map(p=>{
+    const ch=calcCourseHdcp(p.hdcp,tee,coursePar);
+    return strokesPerHole(ch,holes);
+  });
+
+  renderScoringScreen();
+  goTo('scoring');
+}
+
+// ── SCORING SCREEN ────────────────────────────────────────────────
+function renderScoringScreen(){
+  const h=RS.currentHole;
+  const hole=G.course.holes[h];
+  const holes=G.course.holes;
+  const totalHoles=holes.length;
+
+  document.getElementById('sc-hole-num').textContent=h+1;
+  document.getElementById('sc-par').textContent=hole.par;
+  document.getElementById('sc-yards').textContent=Array.isArray(hole.yards)?hole.yards[0]:hole.yards||'—';
+  document.getElementById('sc-hcp').textContent=hole.hcp||'—';
+
+  // Carry display
+  const carry=RS.carriedSkins;
+  document.getElementById('sc-carry-stat').textContent=carry>0?carry:'—';
+  const ballsEl=document.getElementById('sc-carry-balls');
+  ballsEl.innerHTML=carry>0?Array(carry).fill('<div class="carry-ball"></div>').join(''):'';
+
+  // Back button — disable on hole 1
+  document.getElementById('sc-back-btn').style.visibility=h===0?'hidden':'visible';
+
+  // Player score inputs
+  const playersEl=document.getElementById('sc-players');
+  playersEl.innerHTML=G.players.map((p,i)=>{
+    const strokes=RS.strokeMatrix[i][h];
+    const score=RS.pendingScores[i];
+    const rel=score-hole.par;
+    const relLabel=rel<=-2?'Eagle':rel===-1?'Birdie':rel===0?'Par':rel===1?'Bogey':rel===2?'Double':'+'+(rel);
+    const relCls=rel<=-2?'eagle':rel===-1?'birdie':rel===0?'par':rel===1?'bogey':'double';
+    return `<div class="score-player-row">
+      <div class="score-player-top">
+        <div class="score-player-name">${p.name}</div>
+        ${strokes>0?`<div class="stroke-ball" title="Receives ${strokes} stroke${strokes>1?'s':''}"></div>`:`<div class="stroke-ball hidden"></div>`}
+        ${strokes>1?`<div class="stroke-ball" style="margin-left:-8px;"></div>`:''}
+      </div>
+      <div class="score-controls">
+        <button class="score-adj-btn" onclick="adjustScore(${i},-1)">−</button>
+        <div class="score-display-wrap">
+          <div class="score-big" id="score-${i}">${score}</div>
+          <div class="score-par-lbl">Par ${hole.par}</div>
+          <div class="score-rel-badge ${relCls}" id="score-rel-${i}">${relLabel}</div>
+        </div>
+        <button class="score-adj-btn" onclick="adjustScore(${i},1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Standing
+  renderStanding();
+}
+
+function adjustScore(playerIdx,dir){
+  const h=RS.currentHole;
+  const hole=G.course.holes[h];
+  const min=1;
+  const max=hole.par+8;
+  RS.pendingScores[playerIdx]=Math.max(min,Math.min(max,RS.pendingScores[playerIdx]+dir));
+  const score=RS.pendingScores[playerIdx];
+  document.getElementById('score-'+playerIdx).textContent=score;
+  const rel=score-hole.par;
+  const relLabel=rel<=-2?'Eagle':rel===-1?'Birdie':rel===0?'Par':rel===1?'Bogey':rel===2?'Double':'+'+(rel);
+  const relCls=rel<=-2?'eagle':rel===-1?'birdie':rel===0?'par':rel===1?'bogey':'double';
+  const badge=document.getElementById('score-rel-'+playerIdx);
+  badge.textContent=relLabel; badge.className='score-rel-badge '+relCls;
+}
+
+function renderStanding(){
+  const el=document.getElementById('sc-standing');
+  const h=RS.currentHole;
+  const holesLeft=G.course.holes.length-h; // including current
+
+  // Build standing rows
+  let rows;
+  if(G_RULES.fmt==='2v2'&&G_RULES.team1.length===2){
+    const t2=G.players.map((_,i)=>i).filter(i=>!G_RULES.team1.includes(i));
+    const t1skins=G_RULES.team1.reduce((s,i)=>s+RS.skins[i],0);
+    const t2skins=t2.reduce((s,i)=>s+RS.skins[i],0);
+    const t1names=G_RULES.team1.map(i=>G.players[i].name).join(' & ');
+    const t2names=t2.map(i=>G.players[i].name).join(' & ');
+    const t1clinch=canClinch(t1skins,t2skins,holesLeft);
+    const t2clinch=canClinch(t2skins,t1skins,holesLeft);
+    rows=`<div class="standing-row"><div class="standing-name">${t1names}</div>${t1clinch?'<span class="standing-clinch">win clinches</span>':''}<div class="standing-skins">${t1skins} 🏌</div></div>
+    <div class="standing-row"><div class="standing-name">${t2names}</div>${t2clinch?'<span class="standing-clinch">win clinches</span>':''}<div class="standing-skins">${t2skins} 🏌</div></div>`;
+  } else {
+    const sorted=[...G.players.map((p,i)=>({name:p.name,skins:RS.skins[i],idx:i}))]
+      .sort((a,b)=>b.skins-a.skins);
+    const maxOther=i=>Math.max(...G.players.map((_,j)=>j!==i?RS.skins[j]:0));
+    rows=sorted.map(p=>{
+      const clinch=canClinch(p.skins,maxOther(p.idx),holesLeft);
+      return `<div class="standing-row"><div class="standing-name">${p.name}</div>${clinch?'<span class="standing-clinch">win clinches</span>':''}<div class="standing-skins">${p.skins} 🏌</div></div>`;
+    }).join('');
+  }
+  el.innerHTML=`<div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">${G.course.holes.length-h} holes remaining</div>`+rows;
+}
+
+// Clinch: winning this hole makes you uncatchable
+// You clinch if: yourSkins+1 > bestOpponentSkins + (holesLeft-1)
+function canClinch(mySkins, bestOpponentSkins, holesLeft){
+  if(holesLeft<=0) return false;
+  return (mySkins+1) > (bestOpponentSkins+(holesLeft-1));
+}
+
+// ── SUBMIT HOLE ───────────────────────────────────────────────────
+function submitHole(){
+  const h=RS.currentHole;
+  const hole=G.course.holes[h];
+
+  // Save gross scores
+  G.players.forEach((_,i)=>{RS.scores[i][h]=RS.pendingScores[i];});
+
+  // Calculate net scores
+  const netScores=G.players.map((_,i)=>RS.scores[i][h]-RS.strokeMatrix[i][h]);
+
+  // Determine hole winner based on format
+  let winner=null; // playerIdx, array of idxs (split), 'carry', or 'void'
+  const skinValue=RS.carriedSkins+1;
+
+  if(G_RULES.fmt==='2v2'&&G_RULES.team1.length===2){
+    const t2=G.players.map((_,i)=>i).filter(i=>!G_RULES.team1.includes(i));
+    const t1net=Math.min(...G_RULES.team1.map(i=>netScores[i]));
+    const t2net=Math.min(...t2.map(i=>netScores[i]));
+    if(t1net<t2net) winner={type:'team',team:G_RULES.team1,net:t1net};
+    else if(t2net<t1net) winner={type:'team',team:t2,net:t2net};
+    else winner={type:'tie'};
+  } else {
+    const minNet=Math.min(...netScores);
+    const winners=netScores.reduce((a,n,i)=>n===minNet?[...a,i]:a,[]);
+    if(winners.length===1) winner={type:'solo',idx:winners[0],net:minNet};
+    else winner={type:'tie'};
+  }
+
+  // Apply skin based on tie rule
+  if(winner.type==='tie'){
+    if(G_RULES.tie==='void'){
+      RS.carriedSkins=0; // void — skins lost
+      RS.holeResults.push({type:'void',skinValue,hole:h});
+    } else {
+      // split — award fraction (track as 0.5 per player in tie)
+      RS.carriedSkins=0;
+      RS.holeResults.push({type:'split',skinValue,hole:h});
+    }
+  } else {
+    // Award skins — each winning player gets +skinValue
+    const winnerIdxs=winner.type==='team'?winner.team:[winner.idx];
+    winnerIdxs.forEach(i=>RS.skins[i]+=skinValue);
+    RS.carriedSkins=0;
+    RS.holeResults.push({type:'win',winner,skinValue,hole:h});
+  }
+
+  // Carry tracker already set above in tie handling
+
+  showHoleResult(h, netScores, winner, skinValue);
+}
+
+function showHoleResult(h, netScores, winner, skinValue){
+  const hole=G.course.holes[h];
+  document.getElementById('hr-hole-num').textContent=h+1;
+
+  // Player result rows
+  document.getElementById('hr-result-rows').innerHTML=`
+    <div style="background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;">
+      ${G.players.map((p,i)=>{
+        const gross=RS.scores[i][h];
+        const strokes=RS.strokeMatrix[i][h];
+        const net=netScores[i];
+        return `<div class="hr-player-row">
+          <div class="hr-name">${p.name}${strokes>0?` <span style="font-size:11px;color:var(--muted);">(${strokes} stroke)</span>`:''}</div>
+          <div class="hr-scores">
+            <div class="hr-gross">${gross}</div>
+            <div class="hr-net">net ${net}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  // Outcome card
+  const outcomeEl=document.getElementById('hr-outcome');
+  if(winner.type==='tie'&&G_RULES.tie==='void'){
+    outcomeEl.className='hr-outcome'; 
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">Hole halved — skin voided</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} lost</div>`;
+  } else if(winner.type==='tie'){
+    outcomeEl.className='hr-outcome carry';
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">⬡ ${skinValue} skin${skinValue>1?'s':''} carried to hole ${h+2}</div><div class="hr-outcome-sub">Hole halved — carry continues</div>`;
+  } else if(winner.type==='split'){
+    outcomeEl.className='hr-outcome';
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">Hole split</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} divided</div>`;
+  } else if(winner.type==='team'){
+    const names=winner.team.map(i=>G.players[i].name).join(' & ');
+    outcomeEl.className='hr-outcome win';
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">⛳ ${names} win the skin${skinValue>1?'s':''}</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} awarded · net ${winner.net}</div>`;
+  } else {
+    const name=G.players[winner.idx].name;
+    outcomeEl.className='hr-outcome win';
+    outcomeEl.innerHTML=`<div class="hr-outcome-title">⛳ ${name} wins the skin${skinValue>1?'s':''}</div><div class="hr-outcome-sub">${skinValue} skin${skinValue>1?'s':''} awarded · net ${winner.net}</div>`;
+  }
+
+  // Standings
+  const holesLeft=G.course.holes.length-(h+1);
+  let standingRows;
+  if(G_RULES.fmt==='2v2'&&G_RULES.team1.length===2){
+    const t2=G.players.map((_,i)=>i).filter(i=>!G_RULES.team1.includes(i));
+    const t1s=G_RULES.team1.reduce((s,i)=>s+RS.skins[i],0)/G_RULES.team1.length;
+    const t2s=t2.reduce((s,i)=>s+RS.skins[i],0)/t2.length;
+    const t1names=G_RULES.team1.map(i=>G.players[i].name).join(' & ');
+    const t2names=t2.map(i=>G.players[i].name).join(' & ');
+    standingRows=[{name:t1names,skins:Math.round(t1s),clinch:canClinch(Math.round(t1s),Math.round(t2s),holesLeft)},
+                  {name:t2names,skins:Math.round(t2s),clinch:canClinch(Math.round(t2s),Math.round(t1s),holesLeft)}]
+      .sort((a,b)=>b.skins-a.skins);
+  } else {
+    standingRows=G.players.map((p,i)=>({
+      name:p.name, skins:RS.skins[i],
+      clinch:canClinch(RS.skins[i],Math.max(...G.players.map((_,j)=>j!==i?RS.skins[j]:0)),holesLeft)
+    })).sort((a,b)=>b.skins-a.skins);
+  }
+  document.getElementById('hr-standings').innerHTML=standingRows.map(r=>
+    `<div class="hr-standing-row">
+      <div class="hr-standing-name">${r.name}</div>
+      ${r.clinch?'<span class="hr-clinch-badge">win clinches</span>':''}
+      <div class="hr-standing-skins">${r.skins} skin${r.skins!==1?'s':''}</div>
+    </div>`
+  ).join('');
+
+  // Next button label
+  const isLast=h===G.course.holes.length-1;
+  document.getElementById('hr-next-btn').textContent=isLast?'View results →':'Next hole →';
+
+  goTo('hole-result');
+}
+
+function nextHole(){
+  const isLast=RS.currentHole===G.course.holes.length-1;
+  if(isLast){showEndRound();return;}
+  RS.currentHole++;
+  RS.pendingScores=G.players.map(()=>G.course.holes[RS.currentHole].par);
+  renderScoringScreen();
+  goTo('scoring');
+}
+
+function scoringBack(){
+  if(RS.currentHole===0) return;
+  // Confirmation before editing previous hole
+  if(confirm(`Go back and edit hole ${RS.currentHole}?`)){
+    // Undo the last hole result
+    const prev=RS.holeResults.pop();
+    if(prev){
+      if(prev.type==='win'){
+        const idxs=prev.winner.type==='team'?prev.winner.team:[prev.winner.idx];
+        idxs.forEach(i=>RS.skins[i]-=1);
+      }
+      RS.carriedSkins=prev.type==='carry'?prev.skinValue-1:0;
+    }
+    RS.currentHole--;
+    RS.pendingScores=G.players.map((_,i)=>RS.scores[i][RS.currentHole]||G.course.holes[RS.currentHole].par);
+    renderScoringScreen();
+    goTo('scoring');
+  }
+}
+
+function showEndRound(){
+  const holes=G.course.holes;
+  const n=holes.length;
+
+  // Winner(s)
+  const maxSkins=Math.max(...RS.skins);
+  const winners=G.players.filter((_,i)=>RS.skins[i]===maxSkins).map(p=>p.name);
+  const isTie=winners.length>1;
+
+  let html=`<div class="er-winner">
+    <div class="er-winner-label">${isTie?'Tie':'Winner'}</div>
+    <div class="er-winner-name">${winners.join(' & ')}</div>
+    <div class="er-winner-skins">${maxSkins} skin${maxSkins!==1?'s':''}</div>
+  </div>`;
+
+  // Scorecard table
+  const cols=n;
+  html+=`<div class="er-table" style="--cols:${cols};">
+    <div class="er-table-head">
+      <div class="er-th">Player</div>
+      ${holes.map((_,i)=>`<div class="er-th">${i+1}</div>`).join('')}
+      <div class="er-th">Skins</div>
+    </div>
+    ${G.players.map((p,pi)=>`
+      <div class="er-table-row">
+        <div class="er-td">${p.name}</div>
+        ${holes.map((_,hi)=>{
+          const result=RS.holeResults.find(r=>r.hole===hi);
+          const won=result&&result.type==='win'&&(result.winner.type==='solo'?result.winner.idx===pi:result.winner.team?.includes(pi));
+          const tied=result&&(result.type==='void'||result.type==='split'||result.type==='carry');
+          return `<div class="er-td ${won?'skin-won':tied?'skin-tie':''}">${RS.scores[pi][hi]||'—'}</div>`;
+        }).join('')}
+        <div class="er-td" style="color:var(--flag);font-weight:600;">${RS.skins[pi]}</div>
+      </div>`).join('')}
+  </div>`;
+
+  // Hole results summary
+  html+=`<div class="sum-block"><div class="sum-lbl">Hole results</div>`;
+  RS.holeResults.forEach(r=>{
+    const h=r.hole;
+    const desc=r.type==='void'?'Voided':r.type==='split'?'Split':r.type==='carry'?`Carried (+${r.skinValue})`:
+      r.winner.type==='team'?G_RULES.team1.map(i=>G.players[i].name).join(' & ')+' win':G.players[r.winner.idx].name+' wins';
+    html+=`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--${r.type==='win'?'white':'muted'});">
+      <span>Hole ${h+1}</span><span>${desc}</span></div>`;
+  });
+  html+='</div>';
+
+  document.getElementById('er-content').innerHTML=html;
+  goTo('end-round');
+}
+
 </script>
 </body>
 </html>
