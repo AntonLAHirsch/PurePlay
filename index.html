@@ -296,6 +296,35 @@
   .er-td.skin-won{color:var(--flag);font-weight:600;}
   .er-td.skin-tie{color:var(--muted);}
   .scoring-bottom{padding:12px 20px calc(12px + var(--safe-bottom));flex-shrink:0;}
+
+  /* NASSAU BETS STRIP */
+  .bet-chip{background:var(--rough);border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+  .bet-chip.front{border-left:3px solid #4a90d9;}
+  .bet-chip.back{border-left:3px solid #4a9a4a;}
+  .bet-chip.total{border-left:3px solid var(--flag);}
+  .bet-chip.press{border-left:3px solid #e08232;}
+  .bet-chip-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;min-width:48px;}
+  .bet-chip-status{font-size:15px;font-weight:600;color:var(--white);flex:1;}
+  .bet-chip-status.up{color:#4a9a4a;}
+  .bet-chip-status.down{color:#c0392b;}
+  .bet-chip-status.sq{color:var(--muted);}
+  .bet-chip-badge{font-size:10px;padding:2px 7px;border-radius:20px;border:1px solid;white-space:nowrap;}
+  .bet-chip-badge.dormie{color:var(--flag);border-color:rgba(200,168,75,0.4);background:rgba(200,168,75,0.1);}
+  .bet-chip-badge.won{color:#4a9a4a;border-color:rgba(74,154,74,0.4);background:rgba(74,154,74,0.1);}
+  .bet-chip-badge.lost{color:#c0392b;border-color:rgba(192,57,43,0.3);background:rgba(192,57,43,0.08);}
+
+  /* NASSAU END ROUND */
+  .ner-bet-row{background:var(--rough);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;}
+  .ner-bet-color{width:4px;height:40px;border-radius:2px;flex-shrink:0;}
+  .ner-bet-info{flex:1;}
+  .ner-bet-name{font-size:13px;color:var(--muted);margin-bottom:3px;}
+  .ner-bet-result{font-size:16px;font-weight:600;color:var(--white);}
+  .ner-bet-score{font-size:13px;font-weight:600;color:var(--flag);}
+  .ner-summary{background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-top:12px;}
+  .ner-summary-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);}
+  .ner-summary-row:last-child{border-bottom:none;}
+  .ner-summary-name{font-size:15px;font-weight:500;}
+  .ner-summary-bets{font-size:15px;color:var(--flag);font-weight:600;}
   .pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
   .pill{background:var(--rough);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--muted);}
 </style>
@@ -561,11 +590,20 @@
           <button class="rules-opt" id="rule-hdcp-mod" onclick="setRule('hdcp','mod',this)">Modified 85%</button>
         </div>
       </div>
-      <div class="rules-row">
-        <div><div class="rules-label">Tie rule</div><div class="rules-sub">When hole is halved</div></div>
+      <!-- Skins only: tie rule -->
+      <div class="rules-row" id="rule-tie-row">
+        <div><div class="rules-label">Tied hole</div><div class="rules-sub">Skins: what happens to the skin</div></div>
         <div class="rules-opts">
           <button class="rules-opt sel" id="rule-tie-void" onclick="setRule('tie','void',this)">Void</button>
           <button class="rules-opt" id="rule-tie-push" onclick="setRule('tie','push',this)">Push</button>
+        </div>
+      </div>
+      <!-- Nassau only: auto-press -->
+      <div class="rules-row" id="rule-press-row" style="display:none;">
+        <div><div class="rules-label">Auto-press</div><div class="rules-sub">New bet triggers when 2 down</div></div>
+        <div class="rules-opts">
+          <button class="rules-opt sel" id="rule-press-off" onclick="setRule('autopress','off',this)">Off</button>
+          <button class="rules-opt" id="rule-press-on" onclick="setRule('autopress','on',this)">On</button>
         </div>
       </div>
       <!-- 4-player format — shown only when 4 players -->
@@ -588,6 +626,68 @@
   </div>
   <div class="bottom-nav">
     <button class="nav-back" style="width:100%;" onclick="goTo('players')">← Edit players</button>
+  </div>
+</div>
+<!-- NASSAU SCORING -->
+<div id="s-nassau" class="screen">
+  <div class="scoring-header">
+    <button class="scoring-nav-btn" id="nsc-back-btn" onclick="nassauBack()">‹</button>
+    <div class="scoring-hole-info">
+      <div class="scoring-hole-label">HOLE</div>
+      <div class="scoring-hole-num" id="nsc-hole-num">1</div>
+    </div>
+    <button class="scoring-nav-btn" style="visibility:hidden;">›</button>
+  </div>
+  <div class="scoring-stats-bar">
+    <div class="scoring-stat"><span id="nsc-par">4</span><div class="scoring-stat-lbl">PAR</div></div>
+    <div class="scoring-stat"><span id="nsc-yards">—</span><div class="scoring-stat-lbl">YARDS</div></div>
+    <div class="scoring-stat"><span id="nsc-hcp">—</span><div class="scoring-stat-lbl">HANDICAP</div></div>
+    <div class="scoring-stat"><span id="nsc-bets">3</span><div class="scoring-stat-lbl">BETS LIVE</div></div>
+  </div>
+  <!-- Press notification banner -->
+  <div id="nsc-press-banner" style="display:none;background:rgba(200,168,75,0.1);border-bottom:1px solid rgba(200,168,75,0.3);padding:10px 20px;font-size:13px;color:var(--flag);flex-shrink:0;"></div>
+  <!-- Active bets strip -->
+  <div id="nsc-bets-strip" style="padding:10px 20px 0;flex-shrink:0;"></div>
+  <!-- Player scores -->
+  <div id="nsc-players" style="flex:1;overflow-y:auto;"></div>
+  <!-- Manual press button -->
+  <div id="nsc-press-btn-wrap" style="padding:0 20px 6px;flex-shrink:0;display:none;">
+    <button class="btn" onclick="triggerPress('manual')" style="margin-bottom:0;border-color:rgba(200,168,75,0.4);color:var(--flag);">Press →</button>
+  </div>
+  <div class="scoring-bottom">
+    <button class="btn cta" onclick="nassauSubmitHole()">Record hole →</button>
+  </div>
+</div>
+
+<!-- NASSAU HOLE RESULT -->
+<div id="s-nassau-result" class="screen">
+  <div class="scoring-header">
+    <div style="width:44px;"></div>
+    <div class="scoring-hole-info">
+      <div class="scoring-hole-label">RESULT</div>
+      <div class="scoring-hole-num" id="nhr-hole-num">1</div>
+    </div>
+    <div style="width:44px;"></div>
+  </div>
+  <div class="body" style="padding-top:8px;">
+    <div id="nhr-scores-block"></div>
+    <div class="section-lbl" style="margin-top:14px;">Match status</div>
+    <div id="nhr-bets-block"></div>
+    <div id="nhr-press-block" style="margin-top:10px;"></div>
+  </div>
+  <div class="scoring-bottom">
+    <button class="btn cta" id="nhr-next-btn" onclick="nassauNextHole()">Next hole →</button>
+  </div>
+</div>
+
+<!-- NASSAU END ROUND -->
+<div id="s-nassau-end" class="screen">
+  <header><div class="logo">Pure<span>Play</span></div><div class="logo-sub">Round complete</div></header>
+  <div class="body" style="padding-top:16px;">
+    <div id="ner-content"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="nav-back" style="width:100%;" onclick="goTo('home')">← Back to home</button>
   </div>
 </div>
 
@@ -1115,7 +1215,7 @@ function chkP(){
 }
 
 // ── SUMMARY ───────────────────────────────────────────────────────
-const G_RULES={hdcp:'full', tie:'void', fmt:'ffa', team1:[]};
+const G_RULES={hdcp:'full', tie:'void', fmt:'ffa', team1:[], autopress:'off'};
 
 function setRule(type,val,el){
   const group=el.closest('.rules-row,.rules-block').querySelectorAll('.rules-opt[id^="rule-'+type+'"]');
@@ -1166,7 +1266,11 @@ function buildSum(){
     const ini=p.name.split(' ').filter(Boolean).map(w=>w[0]).join('').toUpperCase().slice(0,2);
     return `<div class="sum-player"><div class="sum-av">${ini}</div><div class="sum-name">${p.name}</div><div class="sum-hdcp">HCP ${p.hdcp.toFixed(1)}</div></div>`;
   }).join('');
-  // Show format rule only for 4 players
+  // Show/hide rules based on game type
+  const isNassau = G.game==='nassau';
+  document.getElementById('rule-tie-row').style.display = isNassau?'none':'flex';
+  document.getElementById('rule-press-row').style.display = isNassau?'flex':'none';
+  // Format row only for 4 players
   document.getElementById('rule-format-row').style.display=G.players.length===4?'flex':'none';
   document.getElementById('rule-teams-wrap').style.display='none';
 }
@@ -1176,20 +1280,38 @@ function buildSum(){
 // Then apply full or 85% modifier
 // Returns strokes per hole for a player as array indexed by hole
 
-function calcCourseHdcp(playerHdcp, tee, coursePar){
-  const slope=tee?.slope||113;
-  const rating=tee?.rating||coursePar;
-  const raw=playerHdcp*(slope/113)+(rating-coursePar);
-  const modifier=G_RULES.hdcp==='mod'?0.85:1.0;
-  return Math.round(raw*modifier);
+function calcCourseHdcp(playerHdcp, tee, coursePar, holeCount){
+  const slope    = tee?.slope  || 113;
+  const rating   = tee?.rating || coursePar;
+  const modifier = G_RULES.hdcp === 'mod' ? 0.85 : 1.0;
+
+  // USGA course handicap formula
+  const raw18 = playerHdcp * (slope / 113) + (rating - coursePar);
+  const ch18  = Math.round(raw18 * modifier);
+
+  // 9-hole rounds: halve the 18-hole course handicap (USGA standard)
+  // holeCount is the actual number of holes in G.course.holes
+  const isNineHole = holeCount && holeCount <= 9;
+  const ch = isNineHole ? Math.round(ch18 / 2) : ch18;
+
+  console.log('[HCP] playerHdcp=' + playerHdcp
+    + ' slope=' + slope + ' rating=' + rating + ' par=' + coursePar
+    + ' ch18=' + ch18 + ' holes=' + holeCount + ' finalCH=' + ch);
+  return ch;
 }
 
-// Returns array[holeIndex] = strokes player gets on that hole (0 or 1, occasionally 2)
+// Returns array[holeIndex] = strokes player gets on that hole (0, 1, or rarely 2)
 function strokesPerHole(courseHdcp, holes){
-  return holes.map(h=>{
-    if(courseHdcp<=0) return 0;
-    if(courseHdcp>=holes.length) return Math.floor(courseHdcp/holes.length)+(h.hcp<=(courseHdcp%holes.length)?1:0);
-    return h.hcp<=courseHdcp?1:0;
+  const n = holes.length;
+  return holes.map(h => {
+    if(courseHdcp <= 0) return 0;
+    // Full strokes everyone receives
+    const base  = Math.floor(courseHdcp / n);
+    // Remainder strokes go to hardest holes (lowest hcp number = hardest)
+    const extra = (courseHdcp % n > 0 && h.hcp <= (courseHdcp % n)) ? 1 : 0;
+    const total = base + extra;
+    // Safety cap: never give more than 2 strokes on a single hole
+    return Math.min(total, 2);
   });
 }
 
@@ -1205,9 +1327,12 @@ let RS={
 };
 
 function startRound(){
+  // Validate team selection
   if(G_RULES.fmt==='2v2'&&G_RULES.team1.length!==2){
     alert('Please select 2 players for Team 1 first.');return;
   }
+  if(G.game==='nassau') { nassauStartRound(); return; }
+
   const holes=G.course.holes;
   const tee=G.tee;
   const coursePar=holes.reduce((s,h)=>s+h.par,0);
@@ -1217,11 +1342,10 @@ function startRound(){
   RS.scores=G.players.map(()=>Array(holes.length).fill(null));
   RS.skins=G.players.map(()=>0);
   RS.holeResults=[];
-  RS.pendingScores=G.players.map((_,i)=>holes[0].par); // default to par
+  RS.pendingScores=G.players.map((_,i)=>holes[0].par);
 
-  // Calculate stroke matrix for all players across all holes
   RS.strokeMatrix=G.players.map(p=>{
-    const ch=calcCourseHdcp(p.hdcp,tee,coursePar);
+    const ch=calcCourseHdcp(p.hdcp,tee,coursePar,holes.length);
     return strokesPerHole(ch,holes);
   });
 
@@ -1312,17 +1436,14 @@ function renderStanding(){
     const t2skins=t2.reduce((s,i)=>s+RS.skins[i],0);
     const t1names=G_RULES.team1.map(i=>G.players[i].name).join(' & ');
     const t2names=t2.map(i=>G.players[i].name).join(' & ');
-    const t1clinch=canClinch(t1skins,t2skins,holesLeft);
-    const t2clinch=canClinch(t2skins,t1skins,holesLeft);
-    rows=`<div class="standing-row"><div class="standing-name">${t1names}</div>${t1clinch?'<span class="standing-clinch">win clinches</span>':''}<div class="standing-skins">${t1skins} 🏌</div></div>
-    <div class="standing-row"><div class="standing-name">${t2names}</div>${t2clinch?'<span class="standing-clinch">win clinches</span>':''}<div class="standing-skins">${t2skins} 🏌</div></div>`;
+    rows=`<div class="standing-row"><div class="standing-name">${t1names}</div>${clinchBadge(t1skins,t2skins,holesLeft,'standing-clinch')}<div class="standing-skins">${t1skins} 🏌</div></div>
+    <div class="standing-row"><div class="standing-name">${t2names}</div>${clinchBadge(t2skins,t1skins,holesLeft,'standing-clinch')}<div class="standing-skins">${t2skins} 🏌</div></div>`;
   } else {
     const sorted=[...G.players.map((p,i)=>({name:p.name,skins:RS.skins[i],idx:i}))]
       .sort((a,b)=>b.skins-a.skins);
     const maxOther=i=>Math.max(...G.players.map((_,j)=>j!==i?RS.skins[j]:0));
     rows=sorted.map(p=>{
-      const clinch=canClinch(p.skins,maxOther(p.idx),holesLeft);
-      return `<div class="standing-row"><div class="standing-name">${p.name}</div>${clinch?'<span class="standing-clinch">win clinches</span>':''}<div class="standing-skins">${p.skins} 🏌</div></div>`;
+      return `<div class="standing-row"><div class="standing-name">${p.name}</div>${clinchBadge(p.skins,maxOther(p.idx),holesLeft,'standing-clinch')}<div class="standing-skins">${p.skins} 🏌</div></div>`;
     }).join('');
   }
   el.innerHTML=`<div style="font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">${G.course.holes.length-h} holes remaining</div>`+rows;
@@ -1333,6 +1454,21 @@ function renderStanding(){
 function canClinch(mySkins, bestOpponentSkins, holesLeft){
   if(holesLeft<=0) return false;
   return (mySkins+1) > (bestOpponentSkins+(holesLeft-1));
+}
+
+// Already won: uncatchable even without winning current hole
+function alreadyWon(mySkins, bestOpponentSkins, holesLeft){
+  return mySkins > (bestOpponentSkins + holesLeft);
+}
+
+// Returns badge HTML for a player's standing state
+// state: 'won' | 'clinch' | null
+function clinchBadge(mySkins, bestOpponentSkins, holesLeft, badgeClass){
+  if(alreadyWon(mySkins, bestOpponentSkins, holesLeft))
+    return `<span class="${badgeClass}" style="color:#4a9a4a;background:rgba(74,154,74,0.12);border-color:rgba(74,154,74,0.3);">Won ✓</span>`;
+  if(canClinch(mySkins, bestOpponentSkins, holesLeft))
+    return `<span class="${badgeClass}">Win clinches</span>`;
+  return '';
 }
 
 // ── SUBMIT HOLE ───────────────────────────────────────────────────
@@ -1436,19 +1572,21 @@ function showHoleResult(h, netScores, winner, skinValue){
     const t2s=t2.reduce((s,i)=>s+RS.skins[i],0)/t2.length;
     const t1names=G_RULES.team1.map(i=>G.players[i].name).join(' & ');
     const t2names=t2.map(i=>G.players[i].name).join(' & ');
-    standingRows=[{name:t1names,skins:Math.round(t1s),clinch:canClinch(Math.round(t1s),Math.round(t2s),holesLeft)},
-                  {name:t2names,skins:Math.round(t2s),clinch:canClinch(Math.round(t2s),Math.round(t1s),holesLeft)}]
-      .sort((a,b)=>b.skins-a.skins);
+    standingRows=[
+      {name:t1names,skins:Math.round(t1s),bestOpp:Math.round(t2s)},
+      {name:t2names,skins:Math.round(t2s),bestOpp:Math.round(t1s)}
+    ].sort((a,b)=>b.skins-a.skins);
   } else {
     standingRows=G.players.map((p,i)=>({
-      name:p.name, skins:RS.skins[i],
-      clinch:canClinch(RS.skins[i],Math.max(...G.players.map((_,j)=>j!==i?RS.skins[j]:0)),holesLeft)
+      name:p.name,
+      skins:RS.skins[i],
+      bestOpp:Math.max(...G.players.map((_,j)=>j!==i?RS.skins[j]:0))
     })).sort((a,b)=>b.skins-a.skins);
   }
   document.getElementById('hr-standings').innerHTML=standingRows.map(r=>
     `<div class="hr-standing-row">
       <div class="hr-standing-name">${r.name}</div>
-      ${r.clinch?'<span class="hr-clinch-badge">win clinches</span>':''}
+      ${clinchBadge(r.skins,r.bestOpp,holesLeft,'hr-clinch-badge')}
       <div class="hr-standing-skins">${r.skins} skin${r.skins!==1?'s':''}</div>
     </div>`
   ).join('');
@@ -1538,6 +1676,467 @@ function showEndRound(){
 
   document.getElementById('er-content').innerHTML=html;
   goTo('end-round');
+}
+
+
+// ══════════════════════════════════════════════════════════════════
+// NASSAU GAME ENGINE
+// ══════════════════════════════════════════════════════════════════
+
+// Nassau round state
+let NR = {
+  currentHole: 0,
+  scores: [],          // scores[playerIdx][holeIdx] = gross
+  strokeMatrix: [],    // strokeMatrix[playerIdx][holeIdx] = strokes given
+  pendingScores: [],
+  bets: [],            // array of bet objects
+  pressedThisHole: new Set(), // bets already pressed this hole
+};
+
+// Bet object: { id, type('front'|'back'|'total'|'press'), startHole, endHole, status (per side) }
+// status = { a: number, b: number } where positive = A is up, negative = B is up
+// For 1v1: A = player 0, B = player 1
+// For 2v2: A = team1, B = team2
+
+function nassauStartRound(){
+  const holes = G.course.holes;
+  const tee = G.tee;
+  const coursePar = holes.reduce((s,h)=>s+h.par,0);
+  const totalHoles = holes.length;
+  const half = Math.floor(totalHoles/2);
+
+  NR.currentHole = 0;
+  NR.scores = G.players.map(()=>Array(totalHoles).fill(null));
+  NR.pendingScores = G.players.map(()=>holes[0].par);
+  NR.pressedThisHole = new Set();
+
+  // Stroke matrix
+  NR.strokeMatrix = G.players.map(p=>{
+    const ch = calcCourseHdcp(p.hdcp, tee, coursePar, holes.length);
+    return strokesPerHole(ch, holes);
+  });
+
+  // Initialize 3 core bets
+  NR.bets = [
+    { id:0, type:'front', label:'Front '+half, startHole:0, endHole:half-1, status:0, settled:false, winner:null, score:'' },
+    { id:1, type:'back',  label:'Back '+half,  startHole:half, endHole:totalHoles-1, status:0, settled:false, winner:null, score:'' },
+    { id:2, type:'total', label:'Total '+totalHoles, startHole:0, endHole:totalHoles-1, status:0, settled:false, winner:null, score:'' },
+  ];
+
+  renderNassauScreen();
+  goTo('nassau');
+}
+
+// Get team net score for a hole (lowest net in team)
+function teamNetScore(teamIdxs, holeIdx){
+  return Math.min(...teamIdxs.map(i => NR.scores[i][holeIdx] - NR.strokeMatrix[i][holeIdx]));
+}
+
+// Get net scores for current hole comparison
+// Returns {aNet, bNet} where a/b are the two competing sides
+function getSideNets(holeIdx){
+  if(G_RULES.fmt==='2v2' && G_RULES.team1.length===2){
+    const t2 = G.players.map((_,i)=>i).filter(i=>!G_RULES.team1.includes(i));
+    return {
+      aNet: teamNetScore(G_RULES.team1, holeIdx),
+      bNet: teamNetScore(t2, holeIdx)
+    };
+  } else {
+    // 1v1
+    return {
+      aNet: NR.scores[0][holeIdx] - NR.strokeMatrix[0][holeIdx],
+      bNet: NR.scores[1][holeIdx] - NR.strokeMatrix[1][holeIdx]
+    };
+  }
+}
+
+// Side names
+function sideNames(){
+  if(G_RULES.fmt==='2v2' && G_RULES.team1.length===2){
+    const t2 = G.players.map((_,i)=>i).filter(i=>!G_RULES.team1.includes(i));
+    return {
+      a: G_RULES.team1.map(i=>G.players[i].name).join(' & '),
+      b: t2.map(i=>G.players[i].name).join(' & ')
+    };
+  }
+  return { a: G.players[0].name, b: G.players[1].name };
+}
+
+// Match status string for display
+function matchStatusStr(status, holesLeft, bet){
+  if(bet.settled) return bet.score;
+  if(status === 0) return 'All Square';
+  const side = status > 0 ? 'A' : 'B';
+  const margin = Math.abs(status);
+  const names = sideNames();
+  const leader = status > 0 ? names.a.split(' ')[0] : names.b.split(' ')[0];
+  if(holesLeft === 0) return margin + ' UP — ' + leader;
+  // Dormie check
+  if(margin >= holesLeft) return 'Dormie ' + margin + ' — ' + leader;
+  return margin + ' UP — ' + leader;
+}
+
+function matchStatusClass(status){
+  if(status === 0) return 'sq';
+  return status > 0 ? 'up' : 'down';
+}
+
+// Holes remaining for a bet from current hole
+function betHolesLeft(bet){
+  return Math.max(0, bet.endHole - NR.currentHole);
+}
+
+// Check if a bet is active on this hole
+function betActiveOnHole(bet, holeIdx){
+  return !bet.settled && holeIdx >= bet.startHole && holeIdx <= bet.endHole;
+}
+
+// Trigger a press on a bet
+function triggerPress(source, betId){
+  const h = NR.currentHole;
+  if(NR.pressedThisHole.has(betId !== undefined ? betId : 'manual')) return;
+
+  // Find the most eligible bet to press (most negative = most down)
+  let targetBet;
+  if(betId !== undefined){
+    targetBet = NR.bets.find(b=>b.id===betId);
+  } else {
+    // Manual press — find active bet where current side is most down
+    const active = NR.bets.filter(b=>betActiveOnHole(b,h) && !NR.pressedThisHole.has(b.id));
+    if(!active.length) return;
+    targetBet = active.reduce((worst,b)=> b.status < worst.status ? b : worst, active[0]);
+  }
+  if(!targetBet) return;
+
+  const newPress = {
+    id: NR.bets.length,
+    type: 'press',
+    label: 'Press ' + (NR.bets.filter(b=>b.type==='press').length+1) + ' (H' + (h+1) + ')',
+    startHole: h,
+    endHole: targetBet.endHole,
+    status: 0,
+    settled: false,
+    winner: null,
+    score: ''
+  };
+  NR.bets.push(newPress);
+  NR.pressedThisHole.add(targetBet.id);
+  renderNassauScreen();
+}
+
+// ── NASSAU SCORING SCREEN ─────────────────────────────────────────
+function renderNassauScreen(){
+  const h = NR.currentHole;
+  const hole = G.course.holes[h];
+  const holes = G.course.holes;
+
+  document.getElementById('nsc-hole-num').textContent = h+1;
+  document.getElementById('nsc-par').textContent = hole.par;
+  document.getElementById('nsc-yards').textContent = Array.isArray(hole.yards)?hole.yards[0]:hole.yards||'—';
+  document.getElementById('nsc-hcp').textContent = hole.hcp||'—';
+
+  const activeBets = NR.bets.filter(b=>betActiveOnHole(b,h));
+  document.getElementById('nsc-bets').textContent = activeBets.length;
+
+  // Auto-press check — fire before rendering if rule is on
+  if(G_RULES.autopress==='on'){
+    activeBets.forEach(b=>{
+      if(!NR.pressedThisHole.has(b.id) && Math.abs(b.status)>=2){
+        // Check if the losing side hasn't already pressed this bet
+        triggerPress('auto', b.id);
+      }
+    });
+  }
+
+  // Press banner
+  const banner = document.getElementById('nsc-press-banner');
+  const newPresses = NR.bets.filter(b=>b.type==='press' && b.startHole===h);
+  if(newPresses.length){
+    banner.style.display='block';
+    banner.textContent = '⬡ ' + newPresses.map(p=>p.label).join(', ') + ' — new bet starts this hole';
+  } else {
+    banner.style.display='none';
+  }
+
+  // Bets strip
+  const strip = document.getElementById('nsc-bets-strip');
+  strip.innerHTML = NR.bets.filter(b=>betActiveOnHole(b,h)).map(b=>{
+    const hl = betHolesLeft(b);
+    const statusStr = matchStatusStr(b.status, hl, b);
+    const cls = matchStatusClass(b.status);
+    const dormie = !b.settled && Math.abs(b.status) >= hl && hl > 0 && b.status !== 0;
+    const badge = dormie ? '<span class="bet-chip-badge dormie">Dormie</span>' : '';
+    return `<div class="bet-chip ${b.type}">
+      <div class="bet-chip-label">${b.label}</div>
+      <div class="bet-chip-status ${cls}">${statusStr}</div>
+      ${badge}
+    </div>`;
+  }).join('');
+
+  // Manual press button — show if any active bet is 2+ down and auto-press is off
+  const pressWrap = document.getElementById('nsc-press-btn-wrap');
+  const canPress = activeBets.some(b=>Math.abs(b.status)>=2 && !NR.pressedThisHole.has(b.id));
+  pressWrap.style.display = canPress ? 'block' : 'none';
+
+  // Player score inputs
+  const playersEl = document.getElementById('nsc-players');
+  playersEl.innerHTML = G.players.map((p,i)=>{
+    const strokes = NR.strokeMatrix[i][h];
+    const score = NR.pendingScores[i];
+    const rel = score - hole.par;
+    const relLabel = rel<=-2?'Eagle':rel===-1?'Birdie':rel===0?'Par':rel===1?'Bogey':rel===2?'Double':'+'+(rel);
+    const relCls = rel<=-2?'eagle':rel===-1?'birdie':rel===0?'par':rel===1?'bogey':'double';
+    return `<div class="score-player-row">
+      <div class="score-player-top">
+        <div class="score-player-name">${p.name}</div>
+        ${strokes>0?`<div class="stroke-ball"></div>`:'<div class="stroke-ball hidden"></div>'}
+        ${strokes>1?`<div class="stroke-ball" style="margin-left:-8px;"></div>`:''}
+      </div>
+      <div class="score-controls">
+        <button class="score-adj-btn" onclick="nassauAdjust(${i},-1)">−</button>
+        <div class="score-display-wrap">
+          <div class="score-big" id="nscore-${i}">${score}</div>
+          <div class="score-par-lbl">Par ${hole.par}</div>
+          <div class="score-rel-badge ${relCls}" id="nscore-rel-${i}">${relLabel}</div>
+        </div>
+        <button class="score-adj-btn" onclick="nassauAdjust(${i},1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Back button visibility
+  document.getElementById('nsc-back-btn').style.visibility = h===0?'hidden':'visible';
+}
+
+function nassauAdjust(pi, dir){
+  const hole = G.course.holes[NR.currentHole];
+  NR.pendingScores[pi] = Math.max(1, Math.min(hole.par+8, NR.pendingScores[pi]+dir));
+  const score = NR.pendingScores[pi];
+  document.getElementById('nscore-'+pi).textContent = score;
+  const rel = score - hole.par;
+  const relLabel = rel<=-2?'Eagle':rel===-1?'Birdie':rel===0?'Par':rel===1?'Bogey':rel===2?'Double':'+'+(rel);
+  const relCls = rel<=-2?'eagle':rel===-1?'birdie':rel===0?'par':rel===1?'bogey':'double';
+  const badge = document.getElementById('nscore-rel-'+pi);
+  badge.textContent = relLabel; badge.className = 'score-rel-badge '+relCls;
+}
+
+// ── NASSAU SUBMIT HOLE ────────────────────────────────────────────
+function nassauSubmitHole(){
+  const h = NR.currentHole;
+
+  // Save scores
+  G.players.forEach((_,i)=>{ NR.scores[i][h] = NR.pendingScores[i]; });
+
+  // Get net scores for this hole
+  const {aNet, bNet} = getSideNets(h);
+
+  // Update all active bets
+  NR.bets.forEach(b=>{
+    if(!betActiveOnHole(b,h)) return;
+    if(aNet < bNet) b.status++;      // A wins hole
+    else if(bNet < aNet) b.status--; // B wins hole
+    // halved — no change to status
+
+    // Check if bet is now settled
+    const holesLeft = betHolesLeft(b);
+    if(holesLeft === 0 || Math.abs(b.status) > holesLeft){
+      settleBet(b, holesLeft);
+    }
+  });
+
+  showNassauResult(h, aNet, bNet);
+}
+
+function settleBet(bet, holesLeft){
+  bet.settled = true;
+  const names = sideNames();
+  if(bet.status === 0){
+    bet.winner = 'tie';
+    bet.score = 'All Square';
+  } else {
+    const margin = Math.abs(bet.status);
+    bet.winner = bet.status > 0 ? 'a' : 'b';
+    const winnerName = bet.status > 0 ? names.a.split(' ')[0] : names.b.split(' ')[0];
+    if(holesLeft > 0){
+      // Closed out early — X&Y format
+      bet.score = margin + '&' + holesLeft + ' — ' + winnerName;
+    } else {
+      bet.score = margin + ' UP — ' + winnerName;
+    }
+  }
+}
+
+// ── NASSAU HOLE RESULT SCREEN ─────────────────────────────────────
+function showNassauResult(h, aNet, bNet){
+  const hole = G.course.holes[h];
+  const names = sideNames();
+  document.getElementById('nhr-hole-num').textContent = h+1;
+
+  // Scores block
+  const scoresHtml = G.players.map((p,i)=>{
+    const gross = NR.scores[i][h];
+    const strokes = NR.strokeMatrix[i][h];
+    const net = gross - strokes;
+    return `<div class="hr-player-row">
+      <div class="hr-name">${p.name}${strokes>0?` <span style="font-size:11px;color:var(--muted);">(${strokes} stroke)</span>`:''}</div>
+      <div class="hr-scores"><div class="hr-gross">${gross}</div><div class="hr-net">net ${net}</div></div>
+    </div>`;
+  }).join('');
+  document.getElementById('nhr-scores-block').innerHTML =
+    `<div style="background:var(--rough);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:4px;">${scoresHtml}</div>`;
+
+  // Hole outcome
+  let holeOutcome;
+  if(aNet < bNet) holeOutcome = `⛳ ${names.a.split(' ')[0]} wins hole ${h+1}`;
+  else if(bNet < aNet) holeOutcome = `⛳ ${names.b.split(' ')[0]} wins hole ${h+1}`;
+  else holeOutcome = `Hole ${h+1} halved — match statuses unchanged`;
+
+  // Bets block
+  const holesLeft = G.course.holes.length - (h+1);
+  const betsHtml = NR.bets.map(b=>{
+    if(b.startHole > h) return ''; // press not yet started
+    const hl = Math.max(0, b.endHole - h);
+    const statusStr = matchStatusStr(b.status, hl, b);
+    const cls = matchStatusClass(b.status);
+    const dormie = !b.settled && b.status!==0 && Math.abs(b.status) >= hl && hl>0;
+    const wonBadge = b.settled && b.winner!=='tie' ? `<span class="bet-chip-badge won">Settled</span>` : '';
+    const dormieBadge = dormie ? `<span class="bet-chip-badge dormie">Dormie</span>` : '';
+    return `<div class="bet-chip ${b.type}" style="margin-bottom:6px;">
+      <div class="bet-chip-label">${b.label}</div>
+      <div class="bet-chip-status ${cls}">${statusStr}</div>
+      ${wonBadge}${dormieBadge}
+    </div>`;
+  }).join('');
+
+  document.getElementById('nhr-bets-block').innerHTML =
+    `<div style="font-size:13px;color:var(--muted);margin-bottom:10px;">${holeOutcome}</div>` + betsHtml;
+
+  // New presses triggered
+  const newPresses = NR.bets.filter(b=>b.type==='press' && b.startHole===h+1);
+  document.getElementById('nhr-press-block').innerHTML = newPresses.length
+    ? `<div style="background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.3);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--flag);">⬡ ${newPresses.map(p=>p.label).join(', ')} begins next hole</div>`
+    : '';
+
+  const isLast = h === G.course.holes.length-1;
+  document.getElementById('nhr-next-btn').textContent = isLast ? 'View results →' : 'Next hole →';
+
+  goTo('nassau-result');
+}
+
+function nassauNextHole(){
+  const isLast = NR.currentHole === G.course.holes.length-1;
+  if(isLast){ showNassauEnd(); return; }
+  NR.currentHole++;
+  NR.pendingScores = G.players.map(()=>G.course.holes[NR.currentHole].par);
+  NR.pressedThisHole = new Set();
+  renderNassauScreen();
+  goTo('nassau');
+}
+
+function nassauBack(){
+  if(NR.currentHole===0) return;
+  if(confirm('Go back and edit hole ' + NR.currentHole + '?')){
+    // Undo last hole — revert bet statuses
+    const h = NR.currentHole - 1;
+    // Only undo status if scores were actually saved for this hole
+    const scoresExist = NR.scores[0][h] !== null;
+    if(scoresExist){
+      const {aNet, bNet} = getSideNets(h);
+      NR.bets.forEach(b=>{
+        if(!betActiveOnHole(b,h)) return;
+        if(aNet < bNet) b.status--;
+        else if(bNet < aNet) b.status++;
+        b.settled = false; b.winner = null; b.score = '';
+      });
+    }
+    // Remove any presses that started on this hole
+    NR.bets = NR.bets.filter(pb=>!(pb.type==='press' && pb.startHole===h));
+    NR.currentHole--;
+    NR.pendingScores = G.players.map((_,i)=>NR.scores[i][NR.currentHole]||G.course.holes[NR.currentHole].par);
+    NR.pressedThisHole = new Set();
+    renderNassauScreen();
+    goTo('nassau');
+  }
+}
+
+// ── NASSAU END OF ROUND ───────────────────────────────────────────
+function showNassauEnd(){
+  // Settle any remaining open bets
+  NR.bets.forEach(b=>{ if(!b.settled) settleBet(b, 0); });
+
+  const names = sideNames();
+  const betColors = { front:'#4a90d9', back:'#4a9a4a', total:'#c8a84b', press:'#e08232' };
+
+  // Tally wins per side
+  let aWins = 0, bWins = 0;
+  NR.bets.forEach(b=>{
+    if(b.winner==='a') aWins++;
+    else if(b.winner==='b') bWins++;
+  });
+
+  let html = '';
+
+  // Winner banner
+  if(aWins !== bWins){
+    const winner = aWins > bWins ? names.a : names.b;
+    const margin = Math.abs(aWins - bWins);
+    html += `<div class="er-winner">
+      <div class="er-winner-label">Winner</div>
+      <div class="er-winner-name">${winner}</div>
+      <div class="er-winner-skins">+${margin} bet${margin!==1?'s':''}</div>
+    </div>`;
+  } else {
+    html += `<div class="er-winner" style="border-color:rgba(255,255,255,0.2);">
+      <div class="er-winner-label">Result</div>
+      <div class="er-winner-name">All Square</div>
+      <div class="er-winner-skins">Bets tied</div>
+    </div>`;
+  }
+
+  // Bet breakdown
+  html += `<div class="section-lbl">Bet results</div>`;
+  NR.bets.forEach(b=>{
+    const winnerName = b.winner==='a' ? names.a : b.winner==='b' ? names.b : 'Tied';
+    html += `<div class="ner-bet-row">
+      <div class="ner-bet-color" style="background:${betColors[b.type]||'#888'};"></div>
+      <div class="ner-bet-info">
+        <div class="ner-bet-name">${b.label}</div>
+        <div class="ner-bet-result">${winnerName}</div>
+      </div>
+      <div class="ner-bet-score">${b.score}</div>
+    </div>`;
+  });
+
+  // Summary totals
+  html += `<div class="section-lbl">Point totals</div>
+  <div class="ner-summary">
+    <div class="ner-summary-row">
+      <div class="ner-summary-name">${names.a}</div>
+      <div class="ner-summary-bets">${aWins} bet${aWins!==1?'s':''}</div>
+    </div>
+    <div class="ner-summary-row">
+      <div class="ner-summary-name">${names.b}</div>
+      <div class="ner-summary-bets">${bWins} bet${bWins!==1?'s':''}</div>
+    </div>
+  </div>`;
+
+  // Hole-by-hole scorecard
+  const holeCount = G.course.holes.length;
+  html += `<div class="section-lbl">Scorecard</div>
+  <div class="er-table" style="--cols:${holeCount};overflow-x:auto;">
+    <div class="er-table-head">
+      <div class="er-th">Player</div>
+      ${G.course.holes.map((_,i)=>`<div class="er-th">${i+1}</div>`).join('')}
+    </div>
+    ${G.players.map((p,pi)=>`
+      <div class="er-table-row">
+        <div class="er-td">${p.name}</div>
+        ${G.course.holes.map((_,hi)=>`<div class="er-td">${NR.scores[pi][hi]||'—'}</div>`).join('')}
+      </div>`).join('')}
+  </div>`;
+
+  document.getElementById('ner-content').innerHTML = html;
+  goTo('nassau-end');
 }
 
 </script>
