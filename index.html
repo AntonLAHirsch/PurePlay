@@ -651,9 +651,7 @@
   <!-- Player scores -->
   <div id="nsc-players" style="flex:1;overflow-y:auto;"></div>
   <!-- Manual press button -->
-  <div id="nsc-press-btn-wrap" style="padding:0 20px 6px;flex-shrink:0;display:none;">
-    <button class="btn" id="nsc-press-btn" onclick="triggerPress('manual')" style="margin-bottom:0;border-color:rgba(200,168,75,0.4);color:var(--flag);">Press →</button>
-  </div>
+  <div id="nsc-press-btn-wrap" style="padding:0 20px 6px;flex-shrink:0;"></div>
   <div class="scoring-bottom">
     <button class="btn cta" onclick="nassauSubmitHole()">Record hole →</button>
   </div>
@@ -1796,11 +1794,7 @@ function triggerPress(source, betId){
   const h = NR.currentHole;
   if(NR.pressedThisHole.has(betId !== undefined ? betId : 'manual')) return;
 
-  // Immediately disable the manual press button to prevent rage-clicking
-  if(source === 'manual'){
-    const btn = document.getElementById('nsc-press-btn');
-    if(btn){ btn.disabled = true; btn.style.opacity = '0.4'; btn.textContent = 'Pressed ✓'; }
-  }
+  // Button state handled by renderNassauScreen rebuild
 
   // Find the most eligible bet to press (most negative = most down)
   let targetBet;
@@ -1827,6 +1821,8 @@ function triggerPress(source, betId){
   };
   NR.bets.push(newPress);
   NR.pressedThisHole.add(targetBet.id);
+  // Also mark 'manual' so any subsequent manual call is blocked this hole
+  NR.pressedThisHole.add('manual');
   renderNassauScreen();
 }
 
@@ -1880,9 +1876,17 @@ function renderNassauScreen(){
   }).join('');
 
   // Manual press button — show if any active bet is 2+ down and auto-press is off
+  // Rebuild press button fresh each render — resets disabled/text state
   const pressWrap = document.getElementById('nsc-press-btn-wrap');
-  const canPress = activeBets.some(b=>Math.abs(b.status)>=2 && !NR.pressedThisHole.has(b.id));
-  pressWrap.style.display = canPress ? 'block' : 'none';
+  const canPress = activeBets.some(b => Math.abs(b.status) >= 2 && !NR.pressedThisHole.has(b.id));
+  const alreadyPressed = activeBets.some(b => NR.pressedThisHole.has(b.id));
+  if(canPress){
+    pressWrap.innerHTML = `<button class="btn" id="nsc-press-btn" onclick="triggerPress('manual')" style="margin-bottom:0;border-color:rgba(200,168,75,0.4);color:var(--flag);">Press →</button>`;
+  } else if(alreadyPressed){
+    pressWrap.innerHTML = `<button class="btn" disabled style="margin-bottom:0;opacity:0.4;border-color:rgba(200,168,75,0.4);color:var(--flag);">Pressed ✓</button>`;
+  } else {
+    pressWrap.innerHTML = '';
+  }
 
   // Player score inputs
   const playersEl = document.getElementById('nsc-players');
