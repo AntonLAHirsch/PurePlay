@@ -1878,11 +1878,13 @@ function renderNassauScreen(){
   // Manual press button — show if any active bet is 2+ down and auto-press is off
   // Rebuild press button fresh each render — resets disabled/text state
   const pressWrap = document.getElementById('nsc-press-btn-wrap');
-  const canPress = activeBets.some(b => Math.abs(b.status) >= 2 && !NR.pressedThisHole.has(b.id));
-  const alreadyPressed = activeBets.some(b => NR.pressedThisHole.has(b.id));
+  // canPress: any active bet is 2+ down AND manual hasn't been used this hole
+  const manualUsedThisHole = NR.pressedThisHole.has('manual');
+  const eligible = activeBets.some(b => Math.abs(b.status) >= 2);
+  const canPress = eligible && !manualUsedThisHole;
   if(canPress){
     pressWrap.innerHTML = `<button class="btn" id="nsc-press-btn" onclick="triggerPress('manual')" style="margin-bottom:0;border-color:rgba(200,168,75,0.4);color:var(--flag);">Press →</button>`;
-  } else if(alreadyPressed){
+  } else if(manualUsedThisHole){
     pressWrap.innerHTML = `<button class="btn" disabled style="margin-bottom:0;opacity:0.4;border-color:rgba(200,168,75,0.4);color:var(--flag);">Pressed ✓</button>`;
   } else {
     pressWrap.innerHTML = '';
