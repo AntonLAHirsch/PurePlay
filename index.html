@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PurePlay">
 <meta name="theme-color" content="#1a2e1a">
-<link rel="manifest" href="/pureplay/manifest.json">
+<link rel="manifest" href="/PurePlay/manifest.json">
 <link rel="apple-touch-icon" href="https://antonlahirsch.github.io/purestrike/icon.jpeg">
 <title>PurePlay</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -331,7 +331,7 @@
 <script>
   if('serviceWorker' in navigator){
     window.addEventListener('load',()=>{
-      navigator.serviceWorker.register('/pureplay/sw.js',{scope:'/pureplay/'})
+      navigator.serviceWorker.register('/PurePlay/sw.js',{scope:'/PurePlay/'})
         .then(()=>{navigator.serviceWorker.addEventListener('message',e=>{if(e.data?.type==='UPDATE_AVAILABLE')showBanner();});})
         .catch(e=>console.log('SW:',e));
     });
